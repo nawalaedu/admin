@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HKI Buku</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fa;
+  color:#183b56;
+}
+
+.header{
+  background:linear-gradient(135deg,#183b56,#2f6f95);
+  color:white;
+  padding:22px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.container{
+  max-width:850px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.back{
+  background:#718096;
+  color:white;
+  border:0;
+  padding:12px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+.form-card{
+  background:white;
+  padding:35px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+.form-title{
+  margin-bottom:30px;
+}
+
+.form-title h1{
+  margin:0 0 8px;
+}
+
+.form-title p{
+  color:#718096;
+  line-height:1.5;
+}
+
+.form-group{
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+input,
+select{
+  width:100%;
+  padding:13px;
+  border:1px solid #d6dee6;
+  border-radius:9px;
+  font-size:14px;
+}
+
+.readonly{
+  background:#f1f5f9;
+}
+
+small{
+  display:block;
+  margin-top:7px;
+  color:#718096;
+  line-height:1.5;
+}
+
+.info-box{
+  background:#f0f7fb;
+  border-left:4px solid #2f6f95;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:25px;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.section{
+  display:none;
+  margin-top:25px;
+  padding-top:25px;
+  border-top:1px solid #e5e7eb;
+}
+
+.section.active{
+  display:block;
+}
+
+.btn-save{
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:9px;
+  background:#183b56;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.btn-save:hover{
+  background:#2f6f95;
+}
+
+</style>
+
+  <script src="api.js"></script>
+</head>
+
+
+<body>
+
+<header class="header">
+
+<div>ADMIN MANAGEMENT</div>
+
+<div>HKI</div>
+
+</header>
+
+
+<div class="container">
+
+<button
+type="button"
+class="back"
+onclick="kembali()">
+
+← Kembali ke Buku
+
+</button>
+
+
+<div class="form-card">
+
+<div class="form-title">
+
+<h1>©️ Form HKI</h1>
+
+<p>
+Kelola pengajuan dan pelaporan HKI berdasarkan
+order buku.
+</p>
+
+</div>
+
+
+<div class="info-box">
+
+<strong>Informasi:</strong><br>
+
+Pilih ID Order untuk menghubungkan data HKI
+dengan buku yang sesuai.
+
+</div>
+
+
+<form
+id="hkiForm"
+onsubmit="simpanHKI(event)">
+
+
+<!-- ID ORDER -->
+
+<div class="form-group">
+
+<label>
+ID Order Buku
+</label>
+
+<select
+id="idOrder"
+required
+onchange="ambilDetailOrder()">
+
+<option value="">
+Pilih ID Order
+</option>
+
+</select>
+
+<small>
+Pilih ID Order buku yang sudah dibuat.
+</small>
+
+</div>
+
+
+<!-- JUDUL BUKU -->
+
+<div class="form-group">
+
+<label>
+Judul Buku
+</label>
+
+<input
+type="text"
+id="judulBuku"
+class="readonly"
+placeholder="Otomatis berdasarkan ID Order"
+readonly>
+
+</div>
+
+
+<!-- JENIS PROSES -->
+
+<div class="form-group">
+
+<label>
+Jenis Proses HKI
+</label>
+
+<select
+id="jenisHKI"
+required
+onchange="ubahForm()">
+
+<option value="">
+Pilih jenis proses
+</option>
+
+<option value="pengajuan">
+Pengajuan
+</option>
+
+<option value="pelaporan">
+Pelaporan
+</option>
+
+</select>
+
+</div>
+
+
+<!-- =========================
+     PENGAJUAN
+========================= -->
+
+<div
+id="pengajuan"
+class="section">
+
+
+<div class="form-group">
+
+<label>
+Nama Marketing
+</label>
+
+<select
+id="marketingPengajuan">
+
+<option value="">
+Pilih Marketing
+</option>
+
+<option>Marketing 1</option>
+<option>Marketing 2</option>
+<option>Marketing 3</option>
+<option>Marketing 4</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Syarat HKI
+</label>
+
+<input
+type="url"
+id="syaratHKI"
+placeholder="Masukkan link Google Drive">
+
+<small>
+
+Masukkan link Google Drive yang berisi
+dokumen persyaratan pengajuan HKI.
+
+</small>
+
+</div>
+
+
+<button
+type="submit"
+class="btn-save">
+
+SIMPAN PENGAJUAN
+
+</button>
+
+
+</div>
+
+
+<!-- =========================
+     PELAPORAN
+========================= -->
+
+<div
+id="pelaporan"
+class="section">
+
+
+<div class="form-group">
+
+<label>
+Nama Tim Riset
+</label>
+
+<select
+id="timRiset">
+
+<option value="">
+Pilih Tim Riset
+</option>
+
+<option>Tim Riset 1</option>
+<option>Tim Riset 2</option>
+<option>Tim Riset 3</option>
+<option>Tim Riset 4</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Arsip Sertifikat HKI
+</label>
+
+<input
+type="url"
+id="arsipSertifikat"
+placeholder="Masukkan link Google Drive">
+
+<small>
+
+Masukkan link Google Drive yang berisi
+arsip sertifikat HKI.
+
+</small>
+
+</div>
+
+
+<button
+type="submit"
+class="btn-save">
+
+SIMPAN PELAPORAN
+
+</button>
+
+
+</div>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   UBAH FORM
+========================= */
+
+function ubahForm(){
+
+const jenis =
+document.getElementById(
+"jenisHKI"
+).value;
+
+
+const pengajuan =
+document.getElementById(
+"pengajuan"
+);
+
+const pelaporan =
+document.getElementById(
+"pelaporan"
+);
+
+
+pengajuan.classList.remove(
+"active"
+);
+
+pelaporan.classList.remove(
+"active"
+);
+
+
+if(jenis==="pengajuan"){
+
+pengajuan.classList.add(
+"active"
+);
+
+}
+
+
+if(jenis==="pelaporan"){
+
+pelaporan.classList.add(
+"active"
+);
+
+}
+
+}
+
+
+/* =========================
+   DETAIL ORDER
+========================= */
+
+function ambilDetailOrder(){
+
+const idOrder =
+document.getElementById(
+"idOrder"
+).value;
+
+const judul =
+document.getElementById(
+"judulBuku"
+);
+
+judul.value="";
+
+if(!idOrder){
+
+return;
+
+}
+
+/*
+NANTI:
+
+google.script.run
+.withSuccessHandler(function(data){
+
+judul.value=data.judulBuku;
+
+})
+.ambilDetailOrder(idOrder);
+*/
+
+}
+
+
+/* =========================
+   SIMPAN HKI
+========================= */
+
+function simpanHKI(event){
+
+event.preventDefault();
+
+
+const jenis =
+document.getElementById(
+"jenisHKI"
+).value;
+
+
+if(!jenis){
+
+alert(
+"Silakan pilih jenis proses HKI."
+);
+
+return;
+
+}
+
+
+let data={
+
+idOrder:
+document.getElementById(
+"idOrder"
+).value,
+
+judulBuku:
+document.getElementById(
+"judulBuku"
+).value,
+
+jenisProses:
+jenis
+
+};
+
+
+if(jenis==="pengajuan"){
+
+data.marketing=
+document.getElementById(
+"marketingPengajuan"
+).value;
+
+data.syaratHKI=
+document.getElementById(
+"syaratHKI"
+).value;
+
+}
+
+
+if(jenis==="pelaporan"){
+
+data.timRiset=
+document.getElementById(
+"timRiset"
+).value;
+
+data.arsipSertifikat=
+document.getElementById(
+"arsipSertifikat"
+).value;
+
+}
+
+
+/*
+NANTI:
+
+google.script.run
+.withSuccessHandler(function(result){
+
+alert(
+"Data HKI berhasil disimpan."
+);
+
+document.getElementById(
+"hkiForm"
+).reset();
+
+ubahForm();
+
+})
+.withFailureHandler(function(error){
+
+alert(
+"Gagal menyimpan HKI: "+
+error.message
+);
+
+})
+.simpanHKI(data);
+*/
+
+
+alert(
+"Data HKI siap disimpan.\n\n"+
+"ID Order: "+data.idOrder+
+"\nJudul: "+data.judulBuku+
+"\nProses: "+data.jenisProses
+);
+
+}
+
+
+function kembali(){
+
+window.location.href="buku.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

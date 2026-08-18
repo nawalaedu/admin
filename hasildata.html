@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hasil Data</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fa;
+  color:#183b56;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  background:linear-gradient(135deg,#183b56,#2f6f95);
+  color:white;
+  padding:22px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header-left{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.header-right{
+  font-size:15px;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+  max-width:850px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+.back{
+  background:#718096;
+  color:white;
+  border:0;
+  padding:12px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-bottom:20px;
+  font-size:14px;
+}
+
+.back:hover{
+  background:#4a5568;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.form-card{
+  background:white;
+  padding:35px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.form-title{
+  margin-bottom:30px;
+}
+
+.form-title h1{
+  margin:0 0 8px;
+  font-size:28px;
+}
+
+.form-title p{
+  color:#718096;
+  line-height:1.5;
+  margin:0;
+}
+
+
+/* =========================
+   INFO BOX
+========================= */
+
+.info-box{
+  background:#f0f7fb;
+  border-left:4px solid #2f6f95;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:25px;
+  font-size:14px;
+  line-height:1.6;
+  color:#4a5568;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.required{
+  color:#e53e3e;
+}
+
+input,
+select{
+  width:100%;
+  padding:13px;
+  border:1px solid #d6dee6;
+  border-radius:9px;
+  font-size:14px;
+  font-family:Arial,sans-serif;
+  background:white;
+}
+
+input:focus,
+select:focus{
+  outline:none;
+  border-color:#2f6f95;
+  box-shadow:0 0 0 2px rgba(47,111,149,.08);
+}
+
+
+/* =========================
+   READONLY
+========================= */
+
+.readonly{
+  background:#f1f5f9;
+  color:#4a5568;
+  cursor:not-allowed;
+}
+
+
+/* =========================
+   SMALL
+========================= */
+
+small{
+  display:block;
+  margin-top:7px;
+  color:#718096;
+  line-height:1.5;
+  font-size:12px;
+}
+
+
+/* =========================
+   DETAIL SECTION
+========================= */
+
+.detail-section{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:25px;
+}
+
+.detail-title{
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom:20px;
+  color:#183b56;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-title{
+  font-size:16px;
+  font-weight:bold;
+  margin:30px 0 18px;
+  padding-bottom:9px;
+  border-bottom:1px solid #e2e8f0;
+  color:#183b56;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-save{
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:9px;
+  background:#183b56;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+  margin-top:5px;
+}
+
+.btn-save:hover{
+  background:#2f6f95;
+}
+
+.btn-save:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  display:none;
+  text-align:center;
+  margin-top:15px;
+  color:#718096;
+  font-size:14px;
+}
+
+.loading.active{
+  display:block;
+}
+
+
+/* =========================
+   POPUP
+========================= */
+
+.popup-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:20px;
+}
+
+.popup-overlay.active{
+  display:flex;
+}
+
+.popup{
+  width:90%;
+  max-width:500px;
+  background:white;
+  border-radius:18px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,.2);
+  animation:popupIn .25s ease;
+}
+
+@keyframes popupIn{
+
+  from{
+    opacity:0;
+    transform:scale(.9);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+
+}
+
+.popup-icon{
+  font-size:50px;
+  margin-bottom:15px;
+}
+
+.popup h2{
+  margin:0 0 10px;
+  color:#183b56;
+}
+
+.popup p{
+  color:#718096;
+  line-height:1.5;
+}
+
+.result-box{
+  background:#f0f7fb;
+  border:1px solid #d6e7f0;
+  border-radius:12px;
+  padding:18px;
+  margin:20px 0;
+  text-align:left;
+}
+
+.result-row{
+  margin-bottom:14px;
+}
+
+.result-row:last-child{
+  margin-bottom:0;
+}
+
+.result-label{
+  font-size:12px;
+  color:#718096;
+  margin-bottom:4px;
+}
+
+.result-value{
+  font-weight:bold;
+  color:#183b56;
+  word-break:break-word;
+}
+
+.btn-popup{
+  width:100%;
+  border:0;
+  padding:13px;
+  border-radius:9px;
+  background:#183b56;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.btn-popup:hover{
+  background:#2f6f95;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:650px){
+
+  .header{
+    padding:20px;
+  }
+
+  .header-left{
+    font-size:17px;
+  }
+
+  .header-right{
+    font-size:13px;
+  }
+
+  .form-card{
+    padding:25px 20px;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-title h1{
+    font-size:24px;
+  }
+
+}
+
+</style>
+
+  <script src="api.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     HEADER
+================================================== -->
+
+<header class="header">
+
+  <div class="header-left">
+    ADMIN MANAGEMENT
+  </div>
+
+  <div class="header-right">
+    HASIL DATA
+  </div>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- ==================================================
+     BACK
+================================================== -->
+
+<button
+type="button"
+class="back"
+onclick="kembali()">
+
+← Kembali ke Olah Data
+
+</button>
+
+
+<!-- ==================================================
+     FORM CARD
+================================================== -->
+
+<div class="form-card">
+
+
+<!-- ==================================================
+     TITLE
+================================================== -->
+
+<div class="form-title">
+
+<h1>
+📊 Hasil Pengolahan Data
+</h1>
+
+<p>
+Kelola dan arsipkan hasil pengolahan data berdasarkan
+ID Order Olah Data yang telah dibuat.
+</p>
+
+</div>
+
+
+<!-- ==================================================
+     INFO
+================================================== -->
+
+<div class="info-box">
+
+<strong>Informasi:</strong><br>
+
+Pilih <strong>ID Order Olah Data</strong> terlebih dahulu.
+Setelah ID Order dipilih, sistem akan menampilkan
+<strong>Nama Pemesan dan Judul Penelitian</strong>
+secara otomatis.
+
+<br><br>
+
+Setelah proses pengolahan data selesai, masukkan
+<strong>link Google Drive hasil pengolahan data</strong>
+pada bagian Arsip Hasil Data.
+
+</div>
+
+
+<!-- ==================================================
+     FORM
+================================================== -->
+
+<form
+id="hasilDataForm"
+onsubmit="simpanHasilData(event)">
+
+
+<!-- ==================================================
+     ID ORDER
+================================================== -->
+
+<div class="form-group">
+
+<label>
+ID Order Olah Data <span class="required">*</span>
+</label>
+
+<select
+id="idOrder"
+required
+onchange="ambilDetailOrder()">
+
+<option value="">
+Pilih ID Order Olah Data
+</option>
+
+</select>
+
+<small>
+Pilih ID Order Olah Data yang sudah dibuat.
+</small>
+
+</div>
+
+
+<!-- ==================================================
+     DETAIL ORDER
+================================================== -->
+
+<div
+id="detailOrderSection"
+class="detail-section">
+
+
+<div class="detail-title">
+
+📋 Informasi Order Olah Data
+
+</div>
+
+
+<div class="detail-grid">
+
+
+<!-- ==================================================
+     NAMA PEMESAN
+================================================== -->
+
+<div class="form-group">
+
+<label>
+Nama Pemesan
+</label>
+
+<input
+type="text"
+id="nama"
+class="readonly"
+placeholder="Akan muncul setelah ID Order dipilih"
+readonly>
+
+</div>
+
+
+<!-- ==================================================
+     JUDUL PENELITIAN
+================================================== -->
+
+<div class="form-group">
+
+<label>
+Judul Penelitian
+</label>
+
+<input
+type="text"
+id="judul"
+class="readonly"
+placeholder="Akan muncul setelah ID Order dipilih"
+readonly>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- ==================================================
+     HASIL DATA
+================================================== -->
+
+<div class="section-title">
+
+1. HASIL PENGOLAHAN DATA
+
+</div>
+
+
+<!-- ==================================================
+     TIM PENGOLAH
+================================================== -->
+
+<div class="form-group">
+
+<label>
+Nama Tim Pengolah Data <span class="required">*</span>
+</label>
+
+<select
+id="timPengolah"
+required>
+
+<option value="">
+Pilih Tim Pengolah Data
+</option>
+
+<option value="Tim Olah Data 1">
+Tim Olah Data 1
+</option>
+
+<option value="Tim Olah Data 2">
+Tim Olah Data 2
+</option>
+
+<option value="Tim Olah Data 3">
+Tim Olah Data 3
+</option>
+
+<option value="Tim Olah Data 4">
+Tim Olah Data 4
+</option>
+
+</select>
+
+<small>
+Pilih tim yang mengerjakan pengolahan data.
+</small>
+
+</div>
+
+
+<!-- ==================================================
+     ARSIP HASIL DATA
+================================================== -->
+
+<div class="form-group">
+
+<label>
+Arsip Hasil Data <span class="required">*</span>
+</label>
+
+<input
+type="url"
+id="arsip"
+placeholder="https://drive.google.com/..."
+required>
+
+<small>
+Masukkan link Google Drive yang berisi output,
+hasil analisis, tabel, grafik, atau file pengolahan data.
+</small>
+
+</div>
+
+
+<!-- ==================================================
+     SIMPAN
+================================================== -->
+
+<button
+type="submit"
+id="btnSimpan"
+class="btn-save">
+
+💾 SIMPAN HASIL DATA
+
+</button>
+
+
+<div
+id="loading"
+class="loading">
+
+⏳ Menyimpan hasil pengolahan data...
+
+</div>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+<!-- ==================================================
+     POPUP BERHASIL
+================================================== -->
+
+<div
+id="popupBerhasil"
+class="popup-overlay">
+
+
+<div class="popup">
+
+
+<div class="popup-icon">
+✅
+</div>
+
+
+<h2>
+Hasil Data Berhasil Disimpan
+</h2>
+
+
+<p>
+Data hasil pengolahan telah berhasil dicatat.
+</p>
+
+
+<div class="result-box">
+
+
+<!-- ID ORDER -->
+
+<div class="result-row">
+
+<div class="result-label">
+ID ORDER
+</div>
+
+<div
+id="resultIdOrder"
+class="result-value">
+
+-
+
+</div>
+
+</div>
+
+
+<!-- NAMA -->
+
+<div class="result-row">
+
+<div class="result-label">
+NAMA PEMESAN
+</div>
+
+<div
+id="resultNama"
+class="result-value">
+
+-
+
+</div>
+
+</div>
+
+
+<!-- JUDUL -->
+
+<div class="result-row">
+
+<div class="result-label">
+JUDUL PENELITIAN
+</div>
+
+<div
+id="resultJudul"
+class="result-value">
+
+-
+
+</div>
+
+</div>
+
+
+<!-- TIM -->
+
+<div class="result-row">
+
+<div class="result-label">
+TIM PENGOLAH DATA
+</div>
+
+<div
+id="resultTimPengolah"
+class="result-value">
+
+-
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<button
+type="button"
+class="btn-popup"
+onclick="tutupPopup()">
+
+SELESAI
+
+</button>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* ==================================================
+   INIT
+================================================== */
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+  muatDaftarOrderOlahData();
+
+});
+
+
+/* ==================================================
+   MUAT DAFTAR ID ORDER
+================================================== */
+
+function muatDaftarOrderOlahData(){
+
+  const select =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Memuat ID Order Olah Data...
+    </option>
+
+  `;
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      isiDropdownOrder
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        select.innerHTML = `
+
+          <option value="">
+            Gagal memuat ID Order
+          </option>
+
+        `;
+
+
+        alert(
+          "Gagal mengambil daftar ID Order Olah Data:\n" +
+          error.message
+        );
+
+      }
+    )
+
+    .ambilDaftarOrderOlahData();
+
+}
+
+
+/* ==================================================
+   ISI DROPDOWN
+================================================== */
+
+function isiDropdownOrder(
+  data
+){
+
+  const select =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Pilih ID Order Olah Data
+    </option>
+
+  `;
+
+
+  if(
+    !Array.isArray(data) ||
+    data.length === 0
+  ){
+
+    select.innerHTML = `
+
+      <option value="">
+        Belum ada Order Olah Data
+      </option>
+
+    `;
+
+    return;
+
+  }
+
+
+  data.forEach(
+    function(item){
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      /*
+        Jika Apps Script mengirim object
+      */
+
+      if(
+        typeof item === "object" &&
+        item !== null
+      ){
+
+        option.value =
+          item.idOrder || "";
+
+
+        option.textContent =
+          item.idOrder +
+          " — " +
+          (
+            item.nama ||
+            ""
+          );
+
+      }
+
+      else{
+
+        option.value =
+          item;
+
+        option.textContent =
+          item;
+
+      }
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   AMBIL DETAIL ORDER
+================================================== */
+
+function ambilDetailOrder(){
+
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value;
+
+
+  /*
+    Jika belum dipilih
+  */
+
+  if(!idOrder){
+
+    kosongkanDetail();
+
+    return;
+
+  }
+
+
+  /*
+    Loading
+  */
+
+  setDetail(
+    "Memuat...",
+    "Memuat..."
+  );
+
+
+  /*
+    Ambil detail dari Code.gs
+  */
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(data){
+
+        if(!data){
+
+          kosongkanDetail();
+
+          alert(
+            "Data ID Order Olah Data tidak ditemukan."
+          );
+
+          return;
+
+        }
+
+
+        /*
+          Nama Pemesan
+        */
+
+        const nama =
+          data.nama ||
+          data.namaPemesan ||
+          "";
+
+
+        /*
+          Judul Penelitian
+          
+          Sistem mencoba beberapa nama field
+          agar fleksibel dengan Code.gs.
+        */
+
+        const judul =
+          data.judul ||
+          data.judulPenelitian ||
+          data.judulArtikel ||
+          data.judulArtikelJurnal ||
+          data.namaPenelitian ||
+          "";
+
+
+        setDetail(
+          nama,
+          judul
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        kosongkanDetail();
+
+        alert(
+          "Gagal mengambil detail order:\n" +
+          error.message
+        );
+
+      }
+    )
+
+    .ambilDetailOrderOlahData(
+      idOrder
+    );
+
+}
+
+
+/* ==================================================
+   SET DETAIL
+================================================== */
+
+function setDetail(
+  nama,
+  judul
+){
+
+  document.getElementById(
+    "nama"
+  ).value =
+    nama;
+
+
+  document.getElementById(
+    "judul"
+  ).value =
+    judul;
+
+}
+
+
+/* ==================================================
+   KOSONGKAN DETAIL
+================================================== */
+
+function kosongkanDetail(){
+
+  setDetail(
+    "",
+    ""
+  );
+
+}
+
+
+/* ==================================================
+   SIMPAN HASIL DATA
+================================================== */
+
+function simpanHasilData(
+  event
+){
+
+  event.preventDefault();
+
+
+  const form =
+    document.getElementById(
+      "hasilDataForm"
+    );
+
+
+  /*
+    Validasi HTML
+  */
+
+  if(!form.checkValidity()){
+
+    form.reportValidity();
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     AMBIL DATA
+  ================================================== */
+
+  const data = {
+
+    idOrder:
+      document.getElementById(
+        "idOrder"
+      ).value,
+
+
+    nama:
+      document.getElementById(
+        "nama"
+      ).value,
+
+
+    judul:
+      document.getElementById(
+        "judul"
+      ).value,
+
+
+    timPengolah:
+      document.getElementById(
+        "timPengolah"
+      ).value,
+
+
+    arsip:
+      document.getElementById(
+        "arsip"
+      ).value.trim()
+
+  };
+
+
+  /* ==================================================
+     VALIDASI TAMBAHAN
+  ================================================== */
+
+  if(!data.idOrder){
+
+    alert(
+      "Silakan pilih ID Order Olah Data."
+    );
+
+    return;
+
+  }
+
+
+  if(!data.nama){
+
+    alert(
+      "Nama pemesan belum ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  if(!data.judul){
+
+    alert(
+      "Judul penelitian belum ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  if(!data.timPengolah){
+
+    alert(
+      "Silakan pilih Tim Pengolah Data."
+    );
+
+    return;
+
+  }
+
+
+  if(!data.arsip){
+
+    alert(
+      "Masukkan link Google Drive hasil data."
+    );
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     BUTTON LOADING
+  ================================================== */
+
+  const btn =
+    document.getElementById(
+      "btnSimpan"
+    );
+
+
+  const loading =
+    document.getElementById(
+      "loading"
+    );
+
+
+  btn.disabled =
+    true;
+
+
+  btn.textContent =
+    "MENYIMPAN...";
+
+
+  loading.classList.add(
+    "active"
+  );
+
+
+  /* ==================================================
+     KIRIM KE CODE.GS
+  ================================================== */
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result){
+
+        btn.disabled =
+          false;
+
+
+        btn.textContent =
+          "💾 SIMPAN HASIL DATA";
+
+
+        loading.classList.remove(
+          "active"
+        );
+
+
+        /*
+          Jika berhasil
+        */
+
+        if(
+          result &&
+          result.success
+        ){
+
+          tampilkanPopupBerhasil(
+            data,
+            result
+          );
+
+
+          /*
+            Reset form hasil
+          */
+
+          document.getElementById(
+            "timPengolah"
+          ).value =
+            "";
+
+
+          document.getElementById(
+            "arsip"
+          ).value =
+            "";
+
+
+          /*
+            Muat kembali daftar order
+          */
+
+          muatDaftarOrderOlahData();
+
+          /*
+            Detail dikosongkan
+          */
+
+          kosongkanDetail();
+
+        }
+
+        else{
+
+          alert(
+
+            result &&
+            result.message
+
+            ?
+
+            result.message
+
+            :
+
+            "Gagal menyimpan hasil data."
+
+          );
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        btn.disabled =
+          false;
+
+
+        btn.textContent =
+          "💾 SIMPAN HASIL DATA";
+
+
+        loading.classList.remove(
+          "active"
+        );
+
+
+        alert(
+          "Gagal menyimpan hasil data:\n" +
+          error.message
+        );
+
+      }
+    )
+
+    .simpanHasilData(
+      data
+    );
+
+}
+
+
+/* ==================================================
+   POPUP BERHASIL
+================================================== */
+
+function tampilkanPopupBerhasil(
+  data,
+  result
+){
+
+  document.getElementById(
+    "resultIdOrder"
+  ).textContent =
+    data.idOrder || "-";
+
+
+  document.getElementById(
+    "resultNama"
+  ).textContent =
+    data.nama || "-";
+
+
+  document.getElementById(
+    "resultJudul"
+  ).textContent =
+    data.judul || "-";
+
+
+  document.getElementById(
+    "resultTimPengolah"
+  ).textContent =
+    data.timPengolah || "-";
+
+
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.add(
+    "active"
+  );
+
+}
+
+
+/* ==================================================
+   TUTUP POPUP
+================================================== */
+
+function tutupPopup(){
+
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.remove(
+    "active"
+  );
+
+}
+
+
+/* ==================================================
+   KEMBALI
+================================================== */
+
+function kembali(){
+
+  window.location.href =
+    "data.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

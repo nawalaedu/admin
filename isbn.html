@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISBN Buku</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fa;
+  color:#183b56;
+}
+
+.header{
+  background:linear-gradient(135deg,#183b56,#2f6f95);
+  color:white;
+  padding:22px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.container{
+  max-width:850px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.back{
+  background:#718096;
+  color:white;
+  border:0;
+  padding:12px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+.form-card{
+  background:white;
+  padding:35px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+.form-title{
+  margin-bottom:30px;
+}
+
+.form-title h1{
+  margin:0 0 8px;
+}
+
+.form-title p{
+  color:#718096;
+  line-height:1.5;
+}
+
+.form-group{
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+input,
+select{
+  width:100%;
+  padding:13px;
+  border:1px solid #d6dee6;
+  border-radius:9px;
+  font-size:14px;
+}
+
+.readonly{
+  background:#f1f5f9;
+}
+
+small{
+  display:block;
+  margin-top:7px;
+  color:#718096;
+  line-height:1.5;
+}
+
+.info-box{
+  background:#f0f7fb;
+  border-left:4px solid #2f6f95;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:25px;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.btn-save{
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:9px;
+  background:#183b56;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.btn-save:hover{
+  background:#2f6f95;
+}
+
+</style>
+
+  <script src="api.js"></script>
+</head>
+
+
+<body>
+
+<header class="header">
+
+<div>ADMIN MANAGEMENT</div>
+
+<div>ISBN</div>
+
+</header>
+
+
+<div class="container">
+
+<button
+type="button"
+class="back"
+onclick="kembali()">
+
+← Kembali ke Buku
+
+</button>
+
+
+<div class="form-card">
+
+<div class="form-title">
+
+<h1>🔖 Form ISBN</h1>
+
+<p>
+Kelola data ISBN berdasarkan order buku.
+</p>
+
+</div>
+
+
+<div class="info-box">
+
+<strong>Informasi:</strong><br>
+
+Pilih ID Order untuk menghubungkan data ISBN
+dengan buku yang sesuai.
+
+</div>
+
+
+<form
+id="isbnForm"
+onsubmit="simpanISBN(event)">
+
+
+<!-- ID ORDER -->
+
+<div class="form-group">
+
+<label>
+ID Order Buku
+</label>
+
+<select
+id="idOrder"
+required
+onchange="ambilDetailOrder()">
+
+<option value="">
+Pilih ID Order
+</option>
+
+</select>
+
+<small>
+Pilih ID Order dari order buku yang telah dibuat.
+</small>
+
+</div>
+
+
+<!-- JUDUL -->
+
+<div class="form-group">
+
+<label>
+Judul Buku
+</label>
+
+<input
+type="text"
+id="judulBuku"
+class="readonly"
+placeholder="Otomatis berdasarkan ID Order"
+readonly>
+
+</div>
+
+
+<!-- TIM RISET -->
+
+<div class="form-group">
+
+<label>
+Nama Tim Riset
+</label>
+
+<select
+id="timRiset"
+required>
+
+<option value="">
+Pilih Tim Riset
+</option>
+
+<option>Tim Riset 1</option>
+<option>Tim Riset 2</option>
+<option>Tim Riset 3</option>
+<option>Tim Riset 4</option>
+
+</select>
+
+</div>
+
+
+<!-- NOMOR ISBN -->
+
+<div class="form-group">
+
+<label>
+Nomor ISBN
+</label>
+
+<input
+type="text"
+id="nomorISBN"
+placeholder="Masukkan nomor ISBN"
+required>
+
+</div>
+
+
+<!-- ARSIP -->
+
+<div class="form-group">
+
+<label>
+Arsip
+</label>
+
+<input
+type="url"
+id="arsip"
+placeholder="Masukkan link Google Drive"
+required>
+
+<small>
+Masukkan link Google Drive yang berisi
+arsip dokumen ISBN.
+</small>
+
+</div>
+
+
+<button
+type="submit"
+class="btn-save">
+
+SIMPAN ISBN
+
+</button>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+function ambilDetailOrder(){
+
+const idOrder =
+document.getElementById(
+"idOrder"
+).value;
+
+const judul =
+document.getElementById(
+"judulBuku"
+);
+
+judul.value="";
+
+if(!idOrder){
+
+return;
+
+}
+
+/*
+NANTI:
+
+google.script.run
+.withSuccessHandler(function(data){
+
+judul.value=data.judulBuku;
+
+})
+.ambilDetailOrder(idOrder);
+*/
+
+}
+
+
+function simpanISBN(event){
+
+event.preventDefault();
+
+const data={
+
+idOrder:
+document.getElementById(
+"idOrder"
+).value,
+
+judulBuku:
+document.getElementById(
+"judulBuku"
+).value,
+
+timRiset:
+document.getElementById(
+"timRiset"
+).value,
+
+nomorISBN:
+document.getElementById(
+"nomorISBN"
+).value,
+
+arsip:
+document.getElementById(
+"arsip"
+).value
+
+};
+
+
+/*
+NANTI:
+
+google.script.run
+.withSuccessHandler(function(result){
+
+alert(
+"Data ISBN berhasil disimpan."
+);
+
+document.getElementById(
+"isbnForm"
+).reset();
+
+})
+.simpanISBN(data);
+*/
+
+
+alert(
+"Data ISBN siap disimpan.\n\n"+
+"ID Order: "+data.idOrder+
+"\nJudul: "+data.judulBuku+
+"\nISBN: "+data.nomorISBN
+);
+
+}
+
+
+function kembali(){
+
+window.location.href="buku.html";
+
+}
+
+</script>
+
+</body>
+</html>
