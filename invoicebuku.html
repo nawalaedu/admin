@@ -134,11 +134,6 @@ small{
   cursor:not-allowed;
 }
 
-
-/* =========================
-   POPUP
-========================= */
-
 .popup-overlay{
   display:none;
   position:fixed;
@@ -225,11 +220,6 @@ small{
   background:#2f6f95;
 }
 
-
-/* =========================
-   LOADING
-========================= */
-
 .loading{
   display:none;
   text-align:center;
@@ -243,941 +233,1385 @@ small{
 
 </style>
 
-  <script src="api.js"></script>
-</head>
+<script src="api.js"></script>
 
+</head>
 
 <body>
 
-
 <header class="header">
 
-<div>ADMIN MANAGEMENT</div>
+  <div>ADMIN MANAGEMENT</div>
 
-<div>INVOICE BUKU</div>
+  <div>INVOICE BUKU</div>
 
 </header>
 
 
 <div class="container">
 
+  <button
+    type="button"
+    class="back"
+    onclick="kembali()">
 
-<button
-type="button"
-class="back"
-onclick="kembali()">
+    ← Kembali ke Buku
 
-← Kembali ke Buku
-
-</button>
-
-
-<div class="form-card">
+  </button>
 
 
-<div class="form-title">
+  <div class="form-card">
 
-<h1>🧾 Form Invoice</h1>
+    <div class="form-title">
 
-<p>
-Catat invoice dan pembayaran berdasarkan
-order serta author buku.
-</p>
+      <h1>🧾 Form Invoice</h1>
+
+      <p>
+        Catat invoice dan pembayaran berdasarkan
+        order serta author buku.
+      </p>
+
+    </div>
+
+
+    <div class="info-box">
+
+      <strong>Informasi:</strong><br>
+
+      Satu ID Order dapat memiliki banyak author.
+      Setiap author juga dapat memiliki beberapa
+      transaksi invoice, seperti DP dan pelunasan.
+
+    </div>
+
+
+    <form
+      id="invoiceForm"
+      onsubmit="simpanInvoice(event)">
+
+
+      <!-- ID ORDER -->
+
+      <div class="form-group">
+
+        <label>
+          ID Order Buku
+        </label>
+
+        <select
+          id="idOrder"
+          required
+          onchange="ambilDetailOrder()">
+
+          <option value="">
+            Memuat ID Order...
+          </option>
+
+        </select>
+
+        <small>
+          Pilih ID Order buku yang sudah dibuat.
+        </small>
+
+      </div>
+
+
+      <!-- JUDUL BUKU -->
+
+      <div class="form-group">
+
+        <label>
+          Judul Buku
+        </label>
+
+        <input
+          type="text"
+          id="judulBuku"
+          class="readonly"
+          placeholder="Otomatis berdasarkan ID Order"
+          readonly>
+
+      </div>
+
+
+      <!-- AUTHOR -->
+
+      <div class="form-group">
+
+        <label>
+          Author
+        </label>
+
+        <select
+          id="idAuthor"
+          required
+          onchange="ambilDetailAuthor()">
+
+          <option value="">
+            Pilih Author
+          </option>
+
+        </select>
+
+        <small>
+          Author akan ditampilkan berdasarkan
+          ID Order yang dipilih.
+        </small>
+
+      </div>
+
+
+      <!-- NAMA AUTHOR -->
+
+      <div class="form-group">
+
+        <label>
+          Nama Author
+        </label>
+
+        <input
+          type="text"
+          id="namaAuthor"
+          class="readonly"
+          placeholder="Otomatis berdasarkan ID Author"
+          readonly>
+
+      </div>
+
+
+      <!-- BAB -->
+
+      <div class="form-group">
+
+        <label>
+          Bab
+        </label>
+
+        <input
+          type="text"
+          id="bab"
+          class="readonly"
+          placeholder="Otomatis berdasarkan author"
+          readonly>
+
+      </div>
+
+
+      <!-- MARKETING -->
+
+      <div class="form-group">
+
+        <label>
+          Marketing Input
+        </label>
+
+        <select
+          id="marketingInput"
+          required>
+
+          <option value="">
+            Pilih Marketing
+          </option>
+
+          <option>Marketing 1</option>
+          <option>Marketing 2</option>
+          <option>Marketing 3</option>
+          <option>Marketing 4</option>
+
+        </select>
+
+        <small>
+          Pilih marketing yang melakukan input invoice.
+        </small>
+
+      </div>
+
+
+      <!-- TANGGAL -->
+
+      <div class="form-group">
+
+        <label>
+          Tanggal Pembayaran
+        </label>
+
+        <input
+          type="date"
+          id="tanggal"
+          required>
+
+      </div>
+
+
+      <!-- HARGA -->
+
+      <div class="form-group">
+
+        <label>
+          Harga
+        </label>
+
+        <input
+          type="number"
+          id="harga"
+          min="0"
+          placeholder="Masukkan harga author"
+          required>
+
+        <small>
+          Masukkan harga yang harus dibayarkan
+          oleh author.
+        </small>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="form-group">
+
+        <label>
+          Status Pembayaran
+        </label>
+
+        <select
+          id="statusPembayaran"
+          required
+          onchange="ubahStatusPembayaran()">
+
+          <option value="">
+            Pilih status pembayaran
+          </option>
+
+          <option value="DP">
+            DP
+          </option>
+
+          <option value="Pelunasan">
+            Pelunasan
+          </option>
+
+          <option value="Lunas">
+            Lunas
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- NOMINAL -->
+
+      <div class="form-group">
+
+        <label id="labelNominal">
+          Nominal Pembayaran
+        </label>
+
+        <input
+          type="number"
+          id="nominal"
+          min="0"
+          placeholder="Masukkan nominal pembayaran"
+          required>
+
+        <small id="deskripsiNominal">
+          Nominal pembayaran sesuai transaksi.
+        </small>
+
+      </div>
+
+
+      <!-- SIMPAN -->
+
+      <button
+        type="submit"
+        id="btnSimpan"
+        class="btn-save">
+
+        SIMPAN INVOICE
+
+      </button>
+
+
+      <div
+        id="loading"
+        class="loading">
+
+        ⏳ Menyimpan invoice...
+
+      </div>
+
+    </form>
+
+  </div>
 
 </div>
 
 
-<div class="info-box">
-
-<strong>Informasi:</strong><br>
-
-Satu ID Order dapat memiliki banyak author.
-Setiap author juga dapat memiliki beberapa
-transaksi invoice, seperti DP dan pelunasan.
-
-</div>
-
-
-<form
-id="invoiceForm"
-onsubmit="simpanInvoice(event)">
-
-
-<!-- =========================
-     ID ORDER
-========================= -->
-
-<div class="form-group">
-
-<label>
-ID Order Buku
-</label>
-
-<select
-id="idOrder"
-required
-onchange="ambilDetailOrder()">
-
-<option value="">
-Pilih ID Order
-</option>
-
-<!--
-Nanti otomatis diisi dari Code.gs
--->
-
-</select>
-
-<small>
-Pilih ID Order buku yang sudah dibuat.
-</small>
-
-</div>
-
-
-<!-- =========================
-     JUDUL BUKU
-========================= -->
-
-<div class="form-group">
-
-<label>
-Judul Buku
-</label>
-
-<input
-type="text"
-id="judulBuku"
-class="readonly"
-placeholder="Otomatis berdasarkan ID Order"
-readonly>
-
-</div>
-
-
-<!-- =========================
-     AUTHOR
-========================= -->
-
-<div class="form-group">
-
-<label>
-Author
-</label>
-
-<select
-id="idAuthor"
-required
-onchange="ambilDetailAuthor()">
-
-<option value="">
-Pilih Author
-</option>
-
-</select>
-
-<small>
-Author akan ditampilkan berdasarkan
-ID Order yang dipilih.
-</small>
-
-</div>
-
-
-<!-- =========================
-     NAMA AUTHOR
-========================= -->
-
-<div class="form-group">
-
-<label>
-Nama Author
-</label>
-
-<input
-type="text"
-id="namaAuthor"
-class="readonly"
-placeholder="Otomatis berdasarkan ID Author"
-readonly>
-
-</div>
-
-
-<!-- =========================
-     BAB
-========================= -->
-
-<div class="form-group">
-
-<label>
-Bab
-</label>
-
-<input
-type="text"
-id="bab"
-class="readonly"
-placeholder="Otomatis berdasarkan author"
-readonly>
-
-</div>
-
-
-<!-- =========================
-     MARKETING INPUT
-========================= -->
-
-<div class="form-group">
-
-<label>
-Marketing Input
-</label>
-
-<select
-id="marketingInput"
-required>
-
-<option value="">
-Pilih Marketing
-</option>
-
-<option>Marketing 1</option>
-<option>Marketing 2</option>
-<option>Marketing 3</option>
-<option>Marketing 4</option>
-
-</select>
-
-<small>
-Pilih marketing yang melakukan input invoice.
-</small>
-
-</div>
-
-
-<!-- =========================
-     TANGGAL
-========================= -->
-
-<div class="form-group">
-
-<label>
-Tanggal Pembayaran
-</label>
-
-<input
-type="date"
-id="tanggal"
-required>
-
-</div>
-
-
-<!-- =========================
-     HARGA
-========================= -->
-
-<div class="form-group">
-
-<label>
-Harga
-</label>
-
-<input
-type="number"
-id="harga"
-min="0"
-placeholder="Masukkan harga author"
-required>
-
-<small>
-Masukkan harga yang harus dibayarkan
-oleh author.
-</small>
-
-</div>
-
-
-<!-- =========================
-     STATUS
-========================= -->
-
-<div class="form-group">
-
-<label>
-Status Pembayaran
-</label>
-
-<select
-id="statusPembayaran"
-required
-onchange="ubahStatusPembayaran()">
-
-<option value="">
-Pilih status pembayaran
-</option>
-
-<option value="DP">
-DP
-</option>
-
-<option value="Pelunasan">
-Pelunasan
-</option>
-
-<option value="Lunas">
-Lunas
-</option>
-
-</select>
-
-</div>
-
-
-<!-- =========================
-     NOMINAL
-========================= -->
-
-<div class="form-group">
-
-<label id="labelNominal">
-Nominal Pembayaran
-</label>
-
-<input
-type="number"
-id="nominal"
-min="0"
-placeholder="Masukkan nominal pembayaran"
-required>
-
-<small id="deskripsiNominal">
-Nominal pembayaran sesuai transaksi.
-</small>
-
-</div>
-
-
-<!-- =========================
-     SIMPAN
-========================= -->
-
-<button
-type="submit"
-id="btnSimpan"
-class="btn-save">
-
-SIMPAN INVOICE
-
-</button>
-
+<!-- POPUP -->
 
 <div
-id="loading"
-class="loading">
+  id="popupBerhasil"
+  class="popup-overlay">
 
-⏳ Menyimpan invoice...
+  <div class="popup">
 
-</div>
+    <div class="popup-icon">
+      ✅
+    </div>
 
+    <h2>
+      Invoice Berhasil Disimpan
+    </h2>
 
-</form>
+    <p>
+      Data invoice telah berhasil disimpan.
+    </p>
 
+    <div class="invoice-number">
 
-</div>
+      <small>
+        Nomor Invoice
+      </small>
 
-</div>
+      <strong id="nomorInvoice">
+        INV/001
+      </strong>
 
+    </div>
 
+    <p id="detailInvoice"></p>
 
-<!-- =========================
-     POPUP BERHASIL
-========================= -->
+    <button
+      type="button"
+      class="btn-popup"
+      onclick="tutupPopup()">
 
-<div
-id="popupBerhasil"
-class="popup-overlay">
+      SELESAI
 
+    </button>
 
-<div class="popup">
-
-
-<div class="popup-icon">
-✅
-</div>
-
-
-<h2>
-Invoice Berhasil Disimpan
-</h2>
-
-
-<p>
-Data invoice telah berhasil disimpan.
-</p>
-
-
-<div class="invoice-number">
-
-<small>
-Nomor Invoice
-</small>
-
-<strong id="nomorInvoice">
-INV/001
-</strong>
+  </div>
 
 </div>
-
-
-<p id="detailInvoice">
-</p>
-
-
-<button
-type="button"
-class="btn-popup"
-onclick="tutupPopup()">
-
-SELESAI
-
-</button>
-
-
-</div>
-
-</div>
-
 
 
 <script>
 
-
-/* =========================
-   TANGGAL OTOMATIS
-========================= */
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 document.addEventListener(
-"DOMContentLoaded",
-function(){
+  "DOMContentLoaded",
+  function(){
 
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
+    const today =
+      new Date()
+        .toISOString()
+        .split("T")[0];
 
-document.getElementById(
-"tanggal"
-).value=today;
-
-});
+    document.getElementById(
+      "tanggal"
+    ).value = today;
 
 
-/* =========================
+    /*
+     * INI BAGIAN YANG SEBELUMNYA TIDAK ADA.
+     *
+     * Saat invoice dibuka:
+     * HTML -> api.js -> GAS
+     * kemudian mengambil ORDER_BUKU.
+     */
+
+    ambilDaftarOrder();
+
+  }
+);
+
+
+/* =========================================================
+   AMBIL DAFTAR ORDER
+========================================================= */
+
+function ambilDaftarOrder(){
+
+  const select =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  select.innerHTML =
+    '<option value="">Memuat ID Order...</option>';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result){
+
+        console.log(
+          "DAFTAR ORDER BUKU:",
+          result
+        );
+
+
+        select.innerHTML =
+          '<option value="">Pilih ID Order</option>';
+
+
+        /*
+         * Bentuk normal yang diharapkan:
+         *
+         * [
+         *   {
+         *     idOrder:"ORD-BK-001",
+         *     judulBuku:"Judul..."
+         *   }
+         * ]
+         */
+
+
+        let orders = result;
+
+
+        /*
+         * Antisipasi jika backend membungkus
+         * array dalam result.data.
+         */
+
+        if(
+          result &&
+          !Array.isArray(result) &&
+          Array.isArray(result.data)
+        ){
+
+          orders =
+            result.data;
+
+        }
+
+
+        if(!Array.isArray(orders)){
+
+          console.error(
+            "Format daftar Order tidak benar:",
+            result
+          );
+
+          select.innerHTML =
+            '<option value="">Data ID Order tidak valid</option>';
+
+          return;
+
+        }
+
+
+        if(orders.length === 0){
+
+          select.innerHTML =
+            '<option value="">Belum ada ID Order Buku</option>';
+
+          return;
+
+        }
+
+
+        orders.forEach(
+          function(item){
+
+            if(!item){
+              return;
+            }
+
+
+            const idOrder =
+              item.idOrder ||
+              item.orderId ||
+              item.ID_Order ||
+              item["ID Order"] ||
+              "";
+
+
+            const judulBuku =
+              item.judulBuku ||
+              item.judul ||
+              item["Judul Buku"] ||
+              "";
+
+
+            if(!idOrder){
+              return;
+            }
+
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            option.value =
+              idOrder;
+
+
+            option.textContent =
+              idOrder +
+              (
+                judulBuku
+                  ? " - " + judulBuku
+                  : ""
+              );
+
+
+            select.appendChild(
+              option
+            );
+
+          }
+        );
+
+
+        /*
+         * Kalau setelah proses ternyata
+         * tidak ada option yang berhasil
+         * dibuat.
+         */
+
+        if(select.options.length === 1){
+
+          select.innerHTML =
+            '<option value="">ID Order tidak ditemukan</option>';
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        console.error(
+          "ERROR DAFTAR ORDER:",
+          error
+        );
+
+
+        select.innerHTML =
+          '<option value="">Gagal memuat ID Order</option>';
+
+
+        alert(
+          "Gagal mengambil ID Order Buku:\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+        );
+
+      }
+    )
+
+    /*
+     * PENTING:
+     *
+     * Jangan gunakan:
+     * ambilDaftarOrderBuku()
+     *
+     * karena api.js Anda sudah dibuat
+     * untuk meneruskan:
+     *
+     * ambilDaftarOrder
+     *
+     * dan otomatis menambahkan:
+     *
+     * currentPage() = buku
+     */
+
+    .ambilDaftarOrder();
+
+}
+
+
+/* =========================================================
    AMBIL DETAIL ORDER
-========================= */
+========================================================= */
 
 function ambilDetailOrder(){
 
-const idOrder =
-document.getElementById(
-"idOrder"
-).value;
-
-const judul =
-document.getElementById(
-"judulBuku"
-);
-
-const author =
-document.getElementById(
-"idAuthor"
-);
-
-judul.value="";
-
-author.innerHTML=
-'<option value="">Pilih Author</option>';
-
-document.getElementById(
-"namaAuthor"
-).value="";
-
-document.getElementById(
-"bab"
-).value="";
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value;
 
 
-if(!idOrder){
+  const judul =
+    document.getElementById(
+      "judulBuku"
+    );
 
-return;
+
+  const author =
+    document.getElementById(
+      "idAuthor"
+    );
+
+
+  const nama =
+    document.getElementById(
+      "namaAuthor"
+    );
+
+
+  const bab =
+    document.getElementById(
+      "bab"
+    );
+
+
+  /*
+   * Reset field.
+   */
+
+  judul.value = "";
+
+  nama.value = "";
+
+  bab.value = "";
+
+  author.innerHTML =
+    '<option value="">Pilih Author</option>';
+
+
+  if(!idOrder){
+
+    return;
+
+  }
+
+
+  console.log(
+    "AMBIL DETAIL ORDER:",
+    idOrder
+  );
+
+
+  /*
+   * api.js Anda menangani:
+   *
+   * ambilDetailOrder
+   *
+   * dan mengubahnya menjadi:
+   *
+   * {
+   *   idOrder: "...",
+   *   _page: "buku"
+   * }
+   *
+   * Jadi gunakan ambilDetailOrder().
+   */
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result){
+
+        console.log(
+          "DETAIL ORDER:",
+          result
+        );
+
+
+        if(!result){
+
+          alert(
+            "Data Order tidak ditemukan."
+          );
+
+          return;
+
+        }
+
+
+        if(
+          result.success === false
+        ){
+
+          alert(
+            result.message ||
+            "Gagal mengambil detail Order."
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * Isi Judul Buku
+         */
+
+        judul.value =
+          result.judulBuku ||
+          result.judul ||
+          "";
+
+
+        /*
+         * Ambil daftar Author.
+         */
+
+        let authors =
+          result.authors ||
+          result.author ||
+          [];
+
+
+        if(!Array.isArray(authors)){
+
+          authors = [];
+
+        }
+
+
+        if(authors.length === 0){
+
+          author.innerHTML =
+            '<option value="">Belum ada Author</option>';
+
+          return;
+
+        }
+
+
+        author.innerHTML =
+          '<option value="">Pilih Author</option>';
+
+
+        authors.forEach(
+          function(item){
+
+            if(!item){
+              return;
+            }
+
+
+            const idAuthor =
+              item.idAuthor ||
+              item.authorId ||
+              item.ID_Author ||
+              item["ID Author"] ||
+              "";
+
+
+            const namaAuthor =
+              item.namaAuthor ||
+              item.nama ||
+              item.nama_author ||
+              item["Nama Author"] ||
+              "";
+
+
+            if(!idAuthor){
+
+              return;
+
+            }
+
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            option.value =
+              idAuthor;
+
+
+            option.textContent =
+              idAuthor +
+              (
+                namaAuthor
+                  ? " - " + namaAuthor
+                  : ""
+              );
+
+
+            author.appendChild(
+              option
+            );
+
+          }
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        console.error(
+          "ERROR DETAIL ORDER:",
+          error
+        );
+
+
+        alert(
+          "Gagal mengambil detail Order:\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+        );
+
+      }
+    )
+
+    /*
+     * PENTING:
+     *
+     * api.js Anda punya:
+     *
+     * if(method === 'ambilDetailOrder')
+     *
+     * sehingga ini yang dipakai.
+     */
+
+    .ambilDetailOrder(
+      idOrder
+    );
 
 }
 
 
-/*
-====================================
-CODE.GS AKAN MENGISI BAGIAN INI
-====================================
-
-google.script.run
-
-.withSuccessHandler(function(data){
-
-judul.value=data.judulBuku;
-
-data.authors.forEach(function(item){
-
-const option=
-document.createElement("option");
-
-option.value=
-item.idAuthor;
-
-option.textContent=
-item.idAuthor+" - "+item.namaAuthor;
-
-author.appendChild(option);
-
-});
-
-})
-
-.withFailureHandler(function(error){
-
-alert(
-"Gagal mengambil data order: "+
-error.message
-);
-
-})
-
-.ambilOrderUntukInvoice(idOrder);
-
-*/
-
-}
-
-
-/* =========================
-   DETAIL AUTHOR
-========================= */
+/* =========================================================
+   AMBIL DETAIL AUTHOR
+========================================================= */
 
 function ambilDetailAuthor(){
 
-const idAuthor =
-document.getElementById(
-"idAuthor"
-).value;
-
-const nama =
-document.getElementById(
-"namaAuthor"
-);
-
-const bab =
-document.getElementById(
-"bab"
-);
-
-nama.value="";
-bab.value="";
+  const idAuthor =
+    document.getElementById(
+      "idAuthor"
+    ).value;
 
 
-if(!idAuthor){
+  const nama =
+    document.getElementById(
+      "namaAuthor"
+    );
 
-return;
+
+  const bab =
+    document.getElementById(
+      "bab"
+    );
+
+
+  nama.value = "";
+
+  bab.value = "";
+
+
+  if(!idAuthor){
+
+    return;
+
+  }
+
+
+  console.log(
+    "AMBIL DETAIL AUTHOR:",
+    idAuthor
+  );
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result){
+
+        console.log(
+          "DETAIL AUTHOR:",
+          result
+        );
+
+
+        if(!result){
+
+          alert(
+            "Data Author tidak ditemukan."
+          );
+
+          return;
+
+        }
+
+
+        if(
+          result.success === false
+        ){
+
+          alert(
+            result.message ||
+            "Gagal mengambil detail Author."
+          );
+
+          return;
+
+        }
+
+
+        nama.value =
+          result.namaAuthor ||
+          result.nama ||
+          result["Nama Author"] ||
+          "";
+
+
+        bab.value =
+          result.bab ||
+          result.Bab ||
+          "";
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        console.error(
+          "ERROR DETAIL AUTHOR:",
+          error
+        );
+
+
+        alert(
+          "Gagal mengambil detail Author:\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+        );
+
+      }
+    )
+
+    .ambilDetailAuthor(
+      idAuthor
+    );
 
 }
 
 
-/*
-====================================
-CODE.GS AKAN MENGISI BAGIAN INI
-====================================
-
-google.script.run
-
-.withSuccessHandler(function(data){
-
-nama.value=data.namaAuthor;
-
-bab.value=data.bab;
-
-})
-
-.withFailureHandler(function(error){
-
-alert(
-"Gagal mengambil data author: "+
-error.message
-);
-
-})
-
-.ambilDetailAuthor(idAuthor);
-
-*/
-
-}
-
-
-/* =========================
+/* =========================================================
    STATUS PEMBAYARAN
-========================= */
+========================================================= */
 
 function ubahStatusPembayaran(){
 
-const status =
-document.getElementById(
-"statusPembayaran"
-).value;
-
-const label =
-document.getElementById(
-"labelNominal"
-);
-
-const deskripsi =
-document.getElementById(
-"deskripsiNominal"
-);
+  const status =
+    document.getElementById(
+      "statusPembayaran"
+    ).value;
 
 
-if(status==="DP"){
+  const label =
+    document.getElementById(
+      "labelNominal"
+    );
 
-label.textContent=
-"Nominal DP";
 
-deskripsi.textContent=
-"Masukkan nominal pembayaran DP.";
+  const deskripsi =
+    document.getElementById(
+      "deskripsiNominal"
+    );
+
+
+  if(status === "DP"){
+
+    label.textContent =
+      "Nominal DP";
+
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran DP.";
+
+  }
+
+  else if(status === "Pelunasan"){
+
+    label.textContent =
+      "Nominal Pelunasan";
+
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran pelunasan.";
+
+  }
+
+  else if(status === "Lunas"){
+
+    label.textContent =
+      "Nominal Lunas";
+
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran lunas.";
+
+  }
+
+  else{
+
+    label.textContent =
+      "Nominal Pembayaran";
+
+    deskripsi.textContent =
+      "Nominal pembayaran sesuai transaksi.";
+
+  }
 
 }
 
-else if(status==="Pelunasan"){
 
-label.textContent=
-"Nominal Pelunasan";
-
-deskripsi.textContent=
-"Masukkan nominal pembayaran pelunasan.";
-
-}
-
-else if(status==="Lunas"){
-
-label.textContent=
-"Nominal Lunas";
-
-deskripsi.textContent=
-"Masukkan nominal pembayaran lunas.";
-
-}
-
-else{
-
-label.textContent=
-"Nominal Pembayaran";
-
-deskripsi.textContent=
-"Nominal pembayaran sesuai transaksi.";
-
-}
-
-}
-
-
-/* =========================
+/* =========================================================
    SIMPAN INVOICE
-========================= */
+========================================================= */
 
 function simpanInvoice(event){
 
-event.preventDefault();
+  event.preventDefault();
 
 
-const btn =
-document.getElementById(
-"btnSimpan"
-);
-
-const loading =
-document.getElementById(
-"loading"
-);
+  const btn =
+    document.getElementById(
+      "btnSimpan"
+    );
 
 
-const data={
-
-idOrder:
-document.getElementById(
-"idOrder"
-).value,
-
-idAuthor:
-document.getElementById(
-"idAuthor"
-).value,
-
-judulBuku:
-document.getElementById(
-"judulBuku"
-).value,
-
-namaAuthor:
-document.getElementById(
-"namaAuthor"
-).value,
-
-bab:
-document.getElementById(
-"bab"
-).value,
-
-marketingInput:
-document.getElementById(
-"marketingInput"
-).value,
-
-tanggal:
-document.getElementById(
-"tanggal"
-).value,
-
-harga:
-document.getElementById(
-"harga"
-).value,
-
-statusPembayaran:
-document.getElementById(
-"statusPembayaran"
-).value,
-
-nominal:
-document.getElementById(
-"nominal"
-).value
-
-};
+  const loading =
+    document.getElementById(
+      "loading"
+    );
 
 
-/* VALIDASI */
+  const data = {
 
-if(!data.idOrder){
+    idOrder:
+      document.getElementById(
+        "idOrder"
+      ).value,
 
-alert(
-"Silakan pilih ID Order."
-);
+    idAuthor:
+      document.getElementById(
+        "idAuthor"
+      ).value,
 
-return;
+    judulBuku:
+      document.getElementById(
+        "judulBuku"
+      ).value,
+
+    namaAuthor:
+      document.getElementById(
+        "namaAuthor"
+      ).value,
+
+    bab:
+      document.getElementById(
+        "bab"
+      ).value,
+
+    marketingInput:
+      document.getElementById(
+        "marketingInput"
+      ).value,
+
+    tanggal:
+      document.getElementById(
+        "tanggal"
+      ).value,
+
+    harga:
+      document.getElementById(
+        "harga"
+      ).value,
+
+    statusPembayaran:
+      document.getElementById(
+        "statusPembayaran"
+      ).value,
+
+    nominal:
+      document.getElementById(
+        "nominal"
+      ).value
+
+  };
+
+
+  /*
+   * VALIDASI ID ORDER
+   */
+
+  if(!data.idOrder){
+
+    alert(
+      "Silakan pilih ID Order."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * VALIDASI AUTHOR
+   */
+
+  if(!data.idAuthor){
+
+    alert(
+      "Silakan pilih Author."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * VALIDASI MARKETING
+   */
+
+  if(!data.marketingInput){
+
+    alert(
+      "Silakan pilih Marketing Input."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * VALIDASI STATUS
+   */
+
+  if(!data.statusPembayaran){
+
+    alert(
+      "Silakan pilih Status Pembayaran."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * LOADING
+   */
+
+  btn.disabled = true;
+
+  btn.textContent =
+    "MENYIMPAN...";
+
+  loading.classList.add(
+    "active"
+  );
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result){
+
+        console.log(
+          "HASIL SIMPAN INVOICE:",
+          result
+        );
+
+
+        btn.disabled = false;
+
+        btn.textContent =
+          "SIMPAN INVOICE";
+
+        loading.classList.remove(
+          "active"
+        );
+
+
+        if(
+          result &&
+          result.success
+        ){
+
+          document.getElementById(
+            "nomorInvoice"
+          ).textContent =
+            result.idInvoice ||
+            "-";
+
+
+          document.getElementById(
+            "detailInvoice"
+          ).innerHTML =
+
+            "ID Order: <strong>" +
+            data.idOrder +
+            "</strong><br>" +
+
+            "Author: <strong>" +
+            data.namaAuthor +
+            "</strong><br>" +
+
+            "Status: <strong>" +
+            data.statusPembayaran +
+            "</strong><br>" +
+
+            "Nominal: <strong>Rp " +
+            formatRupiah(
+              data.nominal
+            ) +
+            "</strong>";
+
+
+          document.getElementById(
+            "popupBerhasil"
+          ).classList.add(
+            "active"
+          );
+
+
+          /*
+           * Reset form.
+           */
+
+          document.getElementById(
+            "invoiceForm"
+          ).reset();
+
+
+          /*
+           * Tanggal kembali hari ini.
+           */
+
+          document.getElementById(
+            "tanggal"
+          ).value =
+            new Date()
+              .toISOString()
+              .split("T")[0];
+
+
+          /*
+           * Muat kembali daftar Order.
+           */
+
+          ambilDaftarOrder();
+
+        }
+
+        else{
+
+          alert(
+            (
+              result &&
+              result.message
+            ) ||
+            "Gagal menyimpan invoice."
+          );
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        btn.disabled = false;
+
+        btn.textContent =
+          "SIMPAN INVOICE";
+
+        loading.classList.remove(
+          "active"
+        );
+
+
+        console.error(
+          "ERROR SIMPAN INVOICE:",
+          error
+        );
+
+
+        alert(
+          "Gagal menyimpan invoice:\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+        );
+
+      }
+    )
+
+    .simpanInvoice(data);
 
 }
 
-if(!data.idAuthor){
 
-alert(
-"Silakan pilih Author."
-);
-
-return;
-
-}
-
-if(!data.marketingInput){
-
-alert(
-"Silakan pilih Marketing Input."
-);
-
-return;
-
-}
-
-if(!data.statusPembayaran){
-
-alert(
-"Silakan pilih Status Pembayaran."
-);
-
-return;
-
-}
-
-
-/* LOADING */
-
-btn.disabled=true;
-
-btn.textContent=
-"MENYIMPAN...";
-
-loading.classList.add(
-"active"
-);
-
-
-/*
-========================================
-SIMPAN KE CODE.GS
-========================================
-
-Code.gs nantinya akan:
-
-1. Membuat ID Invoice otomatis
-2. Mengecek nomor invoice terakhir
-3. Membuat INV/001, INV/002, dst.
-4. Menyimpan data ke Sheet INVOICE
-5. Mengembalikan nomor invoice ke HTML
-
-*/
-
-google.script.run
-
-.withSuccessHandler(function(result){
-
-btn.disabled=false;
-
-btn.textContent=
-"SIMPAN INVOICE";
-
-loading.classList.remove(
-"active"
-);
-
-
-/*
-Jika Code.gs mengembalikan:
-
-{
-  success:true,
-  idInvoice:"INV/001"
-}
-
-*/
-
-if(result && result.success){
-
-document.getElementById(
-"nomorInvoice"
-).textContent=
-result.idInvoice;
-
-
-document.getElementById(
-"detailInvoice"
-).innerHTML=
-
-"ID Order: <strong>"+
-data.idOrder+
-"</strong><br>"+
-
-"Author: <strong>"+
-data.namaAuthor+
-"</strong><br>"+
-
-"Status: <strong>"+
-data.statusPembayaran+
-"</strong><br>"+
-
-"Nominal: <strong>Rp "+
-formatRupiah(data.nominal)+
-"</strong>";
-
-
-document.getElementById(
-"popupBerhasil"
-).classList.add(
-"active"
-);
-
-
-document.getElementById(
-"invoiceForm"
-).reset();
-
-
-/* Tanggal kembali hari ini */
-
-document.getElementById(
-"tanggal"
-).value=
-new Date()
-.toISOString()
-.split("T")[0];
-
-}
-
-else{
-
-alert(
-"Gagal menyimpan invoice."
-);
-
-}
-
-})
-
-.withFailureHandler(function(error){
-
-btn.disabled=false;
-
-btn.textContent=
-"SIMPAN INVOICE";
-
-loading.classList.remove(
-"active"
-);
-
-alert(
-"Gagal menyimpan invoice:\n"+
-error.message
-);
-
-})
-
-.simpanInvoice(data);
-
-}
-
-
-/* =========================
+/* =========================================================
    FORMAT RUPIAH
-========================= */
+========================================================= */
 
 function formatRupiah(angka){
 
-return new Intl.NumberFormat(
-"id-ID"
-).format(angka);
+  return new Intl.NumberFormat(
+    "id-ID"
+  ).format(
+    Number(angka) || 0
+  );
 
 }
 
 
-/* =========================
+/* =========================================================
    TUTUP POPUP
-========================= */
+========================================================= */
 
 function tutupPopup(){
 
-document.getElementById(
-"popupBerhasil"
-).classList.remove(
-"active"
-);
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.remove(
+    "active"
+  );
 
 }
 
 
-/* =========================
+/* =========================================================
    KEMBALI
-========================= */
+========================================================= */
 
 function kembali(){
 
-window.location.href=
-"buku.html";
+  window.location.href =
+    "buku.html";
 
 }
 
