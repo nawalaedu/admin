@@ -465,9 +465,9 @@ small{
 
 </style>
 
-  <script src="api.js"></script>
-</head>
+<script src="api.js"></script>
 
+</head>
 
 <body>
 
@@ -620,32 +620,16 @@ Masukkan tanggal batas waktu penyelesaian order.
 Marketing <span class="required">*</span>
 </label>
 
-<select
+<input
+type="text"
 id="marketing"
 name="marketing"
+placeholder="Ketik nama marketing"
 required>
 
-<option value="">
-Pilih Marketing
-</option>
-
-<option value="Marketing 1">
-Marketing 1
-</option>
-
-<option value="Marketing 2">
-Marketing 2
-</option>
-
-<option value="Marketing 3">
-Marketing 3
-</option>
-
-<option value="Marketing 4">
-Marketing 4
-</option>
-
-</select>
+<small>
+Masukkan nama marketing yang menangani order ini.
+</small>
 
 </div>
 
@@ -2082,7 +2066,7 @@ function simpanOrder(
     marketing:
       document.getElementById(
         "marketing"
-      ).value,
+      ).value.trim(),
 
     kategori:
       document.getElementById(
