@@ -323,6 +323,8 @@ small{
   background:white;
   width:100%;
   max-width:480px;
+  max-height:90vh;
+  overflow-y:auto;
   border-radius:16px;
   padding:30px;
   text-align:center;
@@ -710,6 +712,30 @@ required>
 </div>
 
 
+<!-- ==================================================
+     JUDUL OLAH DATA
+================================================== -->
+
+<div class="form-group full">
+
+<label>
+Judul Olah Data <span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="judulOlahData"
+name="judulOlahData"
+placeholder="Contoh: Analisis Pengaruh Kualitas Pelayanan terhadap Kepuasan Pelanggan"
+required>
+
+<small>
+Masukkan judul penelitian, judul skripsi, atau judul pekerjaan olah data.
+</small>
+
+</div>
+
+
 <!-- INSTITUSI -->
 
 <div class="form-group">
@@ -921,7 +947,7 @@ Tuliskan Software Lainnya
 type="text"
 id="softwareLainnyaText"
 name="softwareLainnyaText"
-placeholder="Contoh: Python, AMOS, Gephi, MAXQDA, dll.">
+placeholder="Contoh: Python, Gephi, MAXQDA, dll.">
 
 <small>
 Isi jika software yang dibutuhkan tidak tersedia pada pilihan.
@@ -1162,9 +1188,7 @@ Lainnya
 </div>
 
 
-<!-- ==================================================
-     UJI ANALISIS LAINNYA
-================================================== -->
+<!-- UJI ANALISIS LAINNYA -->
 
 <div
 id="ujiLainnyaBox"
@@ -1432,6 +1456,8 @@ Data order olah data telah berhasil disimpan.
 <div class="order-result">
 
 
+<!-- ID ORDER -->
+
 <div class="result-row">
 
 <div class="result-label">
@@ -1449,6 +1475,8 @@ class="result-value id-order">
 </div>
 
 
+<!-- NAMA -->
+
 <div class="result-row">
 
 <div class="result-label">
@@ -1465,6 +1493,27 @@ class="result-value">
 
 </div>
 
+
+<!-- JUDUL -->
+
+<div class="result-row">
+
+<div class="result-label">
+JUDUL OLAH DATA
+</div>
+
+<div
+id="resultJudul"
+class="result-value">
+
+-
+
+</div>
+
+</div>
+
+
+<!-- DEADLINE -->
 
 <div class="result-row">
 
@@ -1519,6 +1568,7 @@ TUTUP
 
 <script>
 
+
 /* ==================================================
    INIT
 ================================================== */
@@ -1529,9 +1579,11 @@ document.addEventListener(
 
     const now = new Date();
 
+
     const tanggal =
       now.toISOString()
         .split("T")[0];
+
 
     const jam =
       String(
@@ -1574,8 +1626,6 @@ document.addEventListener(
 
     /* =========================
        MINIMUM DEADLINE
-       TIDAK BOLEH SEBELUM
-       TANGGAL ORDER
     ========================= */
 
     document.getElementById(
@@ -1587,8 +1637,7 @@ document.addEventListener(
 
 
 /* ==================================================
-   JIKA TANGGAL ORDER DIUBAH
-   MAKA MINIMUM DEADLINE IKUT BERUBAH
+   TANGGAL ORDER BERUBAH
 ================================================== */
 
 document.getElementById(
@@ -1600,18 +1649,16 @@ document.getElementById(
     const tanggalOrder =
       this.value;
 
+
     const deadline =
       document.getElementById(
         "deadline"
       );
 
+
     deadline.min =
       tanggalOrder;
 
-
-    /* Jika deadline lebih kecil
-       dari tanggal order,
-       otomatis disamakan */
 
     if(
       deadline.value &&
@@ -1667,10 +1714,12 @@ function toggleSoftwareLainnya(){
       "softwareLainnya"
     );
 
+
   const box =
     document.getElementById(
       "softwareLainnyaBox"
     );
+
 
   const input =
     document.getElementById(
@@ -1686,7 +1735,10 @@ function toggleSoftwareLainnya(){
       "show"
     );
 
-    input.required = true;
+
+    input.required =
+      true;
+
 
     input.focus();
 
@@ -1697,9 +1749,13 @@ function toggleSoftwareLainnya(){
       "show"
     );
 
-    input.required = false;
 
-    input.value = "";
+    input.required =
+      false;
+
+
+    input.value =
+      "";
 
   }
 
@@ -1717,10 +1773,12 @@ function toggleUjiLainnya(){
       "ujiLainnya"
     );
 
+
   const box =
     document.getElementById(
       "ujiLainnyaBox"
     );
+
 
   const input =
     document.getElementById(
@@ -1736,7 +1794,10 @@ function toggleUjiLainnya(){
       "show"
     );
 
-    input.required = true;
+
+    input.required =
+      true;
+
 
     input.focus();
 
@@ -1747,9 +1808,13 @@ function toggleUjiLainnya(){
       "show"
     );
 
-    input.required = false;
 
-    input.value = "";
+    input.required =
+      false;
+
+
+    input.value =
+      "";
 
   }
 
@@ -1765,7 +1830,9 @@ function formatTanggalIndonesia(
 ){
 
   if(!tanggal){
+
     return "-";
+
   }
 
 
@@ -1785,8 +1852,10 @@ function formatTanggalIndonesia(
   const tahun =
     bagian[0];
 
+
   const bulan =
     bagian[1];
+
 
   const hari =
     bagian[2];
@@ -1875,9 +1944,11 @@ function simpanOrder(
       "Deadline tidak boleh lebih awal dari tanggal order."
     );
 
+
     document.getElementById(
       "deadline"
     ).focus();
+
 
     return;
 
@@ -1901,6 +1972,7 @@ function simpanOrder(
     alert(
       "Silakan pilih minimal satu software."
     );
+
 
     return;
 
@@ -1928,9 +2000,11 @@ function simpanOrder(
       "Silakan tuliskan software lainnya."
     );
 
+
     document.getElementById(
       "softwareLainnyaText"
     ).focus();
+
 
     return;
 
@@ -1954,6 +2028,7 @@ function simpanOrder(
     alert(
       "Silakan pilih minimal satu uji/analisis."
     );
+
 
     return;
 
@@ -1981,9 +2056,11 @@ function simpanOrder(
       "Silakan tuliskan uji/analisis lainnya."
     );
 
+
     document.getElementById(
       "ujiAnalisisLainnya"
     ).focus();
+
 
     return;
 
@@ -2053,76 +2130,102 @@ function simpanOrder(
         "tanggal"
       ).value,
 
+
     jamOrder:
       document.getElementById(
         "jamOrder"
       ).value,
+
 
     deadline:
       document.getElementById(
         "deadline"
       ).value,
 
+
     marketing:
       document.getElementById(
         "marketing"
       ).value.trim(),
+
 
     kategori:
       document.getElementById(
         "kategori"
       ).value,
 
+
     nama:
       document.getElementById(
         "nama"
       ).value.trim(),
+
+
+    /* =========================
+       JUDUL OLAH DATA
+    ========================= */
+
+    judulOlahData:
+      document.getElementById(
+        "judulOlahData"
+      ).value.trim(),
+
 
     institusi:
       document.getElementById(
         "institusi"
       ).value.trim(),
 
+
     bidangPenelitian:
       document.getElementById(
         "bidangPenelitian"
       ).value.trim(),
 
+
     software:
       daftarSoftware.join(", "),
 
+
     ujiAnalisis:
       daftarUji.join(", "),
+
 
     output:
       document.getElementById(
         "output"
       ).value.trim(),
 
+
     jumlahData:
       document.getElementById(
         "jumlahData"
       ).value,
+
 
     jumlahVariabel:
       document.getElementById(
         "jumlahVariabel"
       ).value,
 
+
     jumlahIndikator:
       document.getElementById(
         "jumlahIndikator"
       ).value,
+
 
     kelengkapanData:
       document.getElementById(
         "kelengkapanData"
       ).value,
 
+
     rawFile:
       document.getElementById(
         "rawFile"
       ).value.trim(),
+
 
     catatan:
       document.getElementById(
@@ -2130,6 +2233,29 @@ function simpanOrder(
       ).value.trim()
 
   };
+
+
+  /* ==================================================
+     VALIDASI JUDUL
+  ================================================== */
+
+  if(
+    !data.judulOlahData
+  ){
+
+    alert(
+      "Silakan masukkan Judul Olah Data."
+    );
+
+
+    document.getElementById(
+      "judulOlahData"
+    ).focus();
+
+
+    return;
+
+  }
 
 
   /* ==================================================
@@ -2181,6 +2307,7 @@ function simpanOrder(
             tampilkanPopupOrder(
               result.idOrder,
               data.nama,
+              data.judulOlahData,
               data.deadline
             );
 
@@ -2244,7 +2371,7 @@ function simpanOrder(
 
 
             /* =========================
-               TUTUP BOX LAINNYA
+               RESET BOX SOFTWARE
             ========================= */
 
             document.getElementById(
@@ -2255,10 +2382,26 @@ function simpanOrder(
 
 
             document.getElementById(
+              "softwareLainnyaText"
+            ).required =
+              false;
+
+
+            /* =========================
+               RESET BOX UJI
+            ========================= */
+
+            document.getElementById(
               "ujiLainnyaBox"
             ).classList.remove(
               "show"
             );
+
+
+            document.getElementById(
+              "ujiAnalisisLainnya"
+            ).required =
+              false;
 
           }
           else{
@@ -2300,7 +2443,7 @@ function simpanOrder(
 
 
   /* ==================================================
-     PREVIEW
+     PREVIEW / MODE NON GOOGLE APPS SCRIPT
   ================================================== */
 
   console.log(
@@ -2320,6 +2463,7 @@ function simpanOrder(
   tampilkanPopupOrder(
     "ORD/DATA/001",
     data.nama,
+    data.judulOlahData,
     data.deadline
   );
 
@@ -2327,12 +2471,13 @@ function simpanOrder(
 
 
 /* ==================================================
-   POPUP
+   POPUP ORDER
 ================================================== */
 
 function tampilkanPopupOrder(
   idOrder,
   nama,
+  judulOlahData,
   deadline
 ){
 
@@ -2346,6 +2491,12 @@ function tampilkanPopupOrder(
     "resultNama"
   ).textContent =
     nama;
+
+
+  document.getElementById(
+    "resultJudul"
+  ).textContent =
+    judulOlahData;
 
 
   document.getElementById(
