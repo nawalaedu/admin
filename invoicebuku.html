@@ -81,25 +81,26 @@ label{
   margin-bottom:8px;
 }
 
-input{
+input,
+select{
   width:100%;
   padding:13px;
   border:1px solid #d6dee6;
   border-radius:9px;
   font-size:14px;
   font-family:Arial,sans-serif;
+  background:white;
 }
 
-input:focus{
+input:focus,
+select:focus{
   outline:none;
   border-color:#2f6f95;
-  box-shadow:0 0 0 2px rgba(47,111,149,.08);
 }
 
 .readonly{
   background:#f1f5f9;
   color:#4a5568;
-  cursor:not-allowed;
 }
 
 small{
@@ -118,78 +119,6 @@ small{
   font-size:14px;
   line-height:1.6;
 }
-
-/* =========================
-   AUTHOR ID AREA
-========================= */
-
-.author-id-row{
-  display:flex;
-  gap:10px;
-  align-items:flex-end;
-}
-
-.author-id-input{
-  flex:1;
-}
-
-.btn-author{
-  border:0;
-  padding:13px 18px;
-  border-radius:9px;
-  background:#2f6f95;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-.btn-author:hover{
-  background:#183b56;
-}
-
-.btn-author:disabled{
-  background:#9ca3af;
-  cursor:not-allowed;
-}
-
-
-/* =========================
-   STATUS DETAIL AUTHOR
-========================= */
-
-.author-status{
-  display:none;
-  margin-top:10px;
-  padding:10px 12px;
-  border-radius:8px;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.author-status.show{
-  display:block;
-}
-
-.author-status.loading{
-  background:#f0f7fb;
-  color:#2f6f95;
-}
-
-.author-status.success{
-  background:#f0fff4;
-  color:#276749;
-}
-
-.author-status.error{
-  background:#fff5f5;
-  color:#c53030;
-}
-
-
-/* =========================
-   BUTTON SAVE
-========================= */
 
 .btn-save{
   width:100%;
@@ -303,6 +232,11 @@ small{
   background:#2f6f95;
 }
 
+
+/* =========================
+   LOADING
+========================= */
+
 .loading{
   display:none;
   text-align:center;
@@ -329,15 +263,6 @@ small{
     padding:25px 20px;
   }
 
-  .author-id-row{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .btn-author{
-    width:100%;
-  }
-
 }
 
 </style>
@@ -350,9 +275,9 @@ small{
 <body>
 
 
-<!-- =========================================================
+<!-- ==================================================
      HEADER
-========================================================= -->
+================================================== -->
 
 <header class="header">
 
@@ -370,397 +295,378 @@ small{
 <div class="container">
 
 
-  <!-- =======================================================
-       BACK
-  ======================================================== -->
+<!-- ==================================================
+     BACK
+================================================== -->
 
-  <button
-    type="button"
-    class="back"
-    onclick="kembali()">
+<button
+  type="button"
+  class="back"
+  onclick="kembali()">
 
-    ← Kembali ke Buku
+  ← Kembali ke Buku
 
-  </button>
+</button>
 
 
-  <div class="form-card">
+<div class="form-card">
 
 
-    <!-- =====================================================
-         TITLE
-    ====================================================== -->
+<!-- ==================================================
+     TITLE
+================================================== -->
 
-    <div class="form-title">
+<div class="form-title">
 
-      <h1>
-        🧾 Form Invoice
-      </h1>
+  <h1>
+    🧾 Form Invoice Buku
+  </h1>
 
-      <p>
-        Catat invoice dan pembayaran berdasarkan
-        order serta author buku.
-      </p>
-
-    </div>
-
-
-    <!-- =====================================================
-         INFO
-    ====================================================== -->
-
-    <div class="info-box">
-
-      <strong>Informasi:</strong><br>
-
-      Satu ID Order dapat memiliki banyak author.
-      Setiap author juga dapat memiliki beberapa
-      transaksi invoice, seperti DP dan pelunasan.
-
-      <br><br>
-
-      Untuk Author, masukkan langsung
-      <strong>ID Author</strong> yang sudah terdaftar.
-      Setelah itu klik
-      <strong>AMBIL DATA AUTHOR</strong>.
-
-    </div>
-
-
-    <form
-      id="invoiceForm"
-      onsubmit="simpanInvoice(event)">
-
-
-      <!-- ===================================================
-           ID ORDER
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          ID Order Buku
-        </label>
-
-        <input
-          type="text"
-          id="idOrder"
-          placeholder="Masukkan ID Order Buku"
-          autocomplete="off"
-          required>
-
-        <small>
-          Masukkan ID Order Buku yang sudah dibuat.
-          Contoh: ORD-BK-001
-        </small>
-
-      </div>
-
-
-      <!-- ===================================================
-           JUDUL BUKU
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Judul Buku
-        </label>
-
-        <input
-          type="text"
-          id="judulBuku"
-          class="readonly"
-          placeholder="Otomatis berdasarkan ID Order"
-          readonly>
-
-        <small>
-          Judul buku akan diambil otomatis
-          berdasarkan ID Order.
-        </small>
-
-      </div>
-
-
-      <!-- ===================================================
-           ID AUTHOR
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          ID Author
-        </label>
-
-
-        <div class="author-id-row">
-
-          <div class="author-id-input">
-
-            <input
-              type="text"
-              id="idAuthor"
-              placeholder="Masukkan ID Author"
-              autocomplete="off"
-              required>
-
-          </div>
-
-
-          <button
-            type="button"
-            id="btnAmbilAuthor"
-            class="btn-author"
-            onclick="ambilDetailAuthor()">
-
-            🔍 AMBIL DATA AUTHOR
-
-          </button>
-
-        </div>
-
-
-        <small>
-          Masukkan ID Author secara manual.
-          Contoh: AUT-001.
-          Sistem akan mengambil nama author dan bab
-          berdasarkan ID Author tersebut.
-        </small>
-
-
-        <div
-          id="authorStatus"
-          class="author-status">
-        </div>
-
-      </div>
-
-
-      <!-- ===================================================
-           NAMA AUTHOR
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Nama Author
-        </label>
-
-        <input
-          type="text"
-          id="namaAuthor"
-          class="readonly"
-          placeholder="Otomatis berdasarkan ID Author"
-          readonly>
-
-      </div>
-
-
-      <!-- ===================================================
-           BAB
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Bab
-        </label>
-
-        <input
-          type="text"
-          id="bab"
-          class="readonly"
-          placeholder="Otomatis berdasarkan ID Author"
-          readonly>
-
-      </div>
-
-
-      <!-- ===================================================
-           MARKETING
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Marketing Input
-        </label>
-
-        <input
-          type="text"
-          id="marketingInput"
-          placeholder="Ketik nama marketing"
-          autocomplete="off"
-          required>
-
-        <small>
-          Ketik nama marketing yang melakukan
-          input invoice.
-        </small>
-
-      </div>
-
-
-      <!-- ===================================================
-           TANGGAL
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Tanggal Pembayaran
-        </label>
-
-        <input
-          type="date"
-          id="tanggal"
-          required>
-
-      </div>
-
-
-      <!-- ===================================================
-           HARGA
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Harga
-        </label>
-
-        <input
-          type="number"
-          id="harga"
-          min="0"
-          placeholder="Masukkan harga author"
-          required>
-
-        <small>
-          Masukkan harga yang harus dibayarkan
-          oleh author.
-        </small>
-
-      </div>
-
-
-      <!-- ===================================================
-           STATUS PEMBAYARAN
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label>
-          Status Pembayaran
-        </label>
-
-        <select
-          id="statusPembayaran"
-          required
-          onchange="ubahStatusPembayaran()">
-
-          <option value="">
-            Pilih status pembayaran
-          </option>
-
-          <option value="DP">
-            DP
-          </option>
-
-          <option value="Pelunasan">
-            Pelunasan
-          </option>
-
-          <option value="Lunas">
-            Lunas
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- ===================================================
-           NOMINAL
-      ==================================================== -->
-
-      <div class="form-group">
-
-        <label id="labelNominal">
-          Nominal Pembayaran
-        </label>
-
-        <input
-          type="number"
-          id="nominal"
-          min="0"
-          placeholder="Masukkan nominal pembayaran"
-          required>
-
-        <small id="deskripsiNominal">
-          Nominal pembayaran sesuai transaksi.
-        </small>
-
-      </div>
-
-
-      <!-- ===================================================
-           SIMPAN
-      ==================================================== -->
-
-      <button
-        type="submit"
-        id="btnSimpan"
-        class="btn-save">
-
-        SIMPAN INVOICE
-
-      </button>
-
-
-      <div
-        id="loading"
-        class="loading">
-
-        ⏳ Menyimpan invoice...
-
-      </div>
-
-
-    </form>
-
-
-  </div>
+  <p>
+    Catat invoice dan pembayaran berdasarkan
+    order buku serta author buku.
+  </p>
 
 </div>
 
 
-<!-- =========================================================
-     POPUP BERHASIL
-========================================================= -->
+<!-- ==================================================
+     INFO
+================================================== -->
+
+<div class="info-box">
+
+  <strong>Informasi:</strong><br>
+
+  Satu ID Order Buku dapat memiliki banyak author.
+  Setiap author dapat memiliki beberapa transaksi
+  invoice seperti DP dan pelunasan.
+
+  <br><br>
+
+  ID Author akan ditampilkan berdasarkan
+  ID Order Buku yang dipilih.
+  Nama Author dan Bab akan mengikuti
+  ID Author yang dipilih.
+
+</div>
+
+
+<form
+  id="invoiceForm"
+  onsubmit="simpanInvoice(event)">
+
+
+<!-- ==================================================
+     ID ORDER BUKU
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    ID Order Buku
+  </label>
+
+  <select
+    id="idOrder"
+    required
+    onchange="ambilDetailOrder()">
+
+    <option value="">
+      Memuat ID Order Buku...
+    </option>
+
+  </select>
+
+  <small>
+    Pilih ID Order Buku yang sudah dibuat.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     JUDUL BUKU
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Judul Buku
+  </label>
+
+  <input
+    type="text"
+    id="judulBuku"
+    class="readonly"
+    placeholder="Otomatis berdasarkan ID Order"
+    readonly>
+
+  <small>
+    Judul buku diambil otomatis berdasarkan
+    ID Order Buku.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     ID AUTHOR
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    ID Author
+  </label>
+
+  <select
+    id="idAuthor"
+    required
+    onchange="ambilDetailAuthor()">
+
+    <option value="">
+      Pilih ID Author
+    </option>
+
+  </select>
+
+  <small>
+    ID Author ditampilkan berdasarkan ID Order Buku
+    yang dipilih.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     NAMA AUTHOR
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Nama Author
+  </label>
+
+  <input
+    type="text"
+    id="namaAuthor"
+    class="readonly"
+    placeholder="Otomatis berdasarkan ID Author"
+    readonly>
+
+  <small>
+    Nama Author diambil berdasarkan ID Author.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     BAB
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Bab
+  </label>
+
+  <input
+    type="text"
+    id="bab"
+    class="readonly"
+    placeholder="Otomatis berdasarkan ID Author"
+    readonly>
+
+  <small>
+    Bab diambil berdasarkan ID Author.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     MARKETING
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Marketing Input
+  </label>
+
+  <input
+    type="text"
+    id="marketingInput"
+    placeholder="Ketik nama marketing"
+    autocomplete="off"
+    required>
+
+  <small>
+    Ketik nama marketing yang melakukan
+    input invoice.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     TANGGAL
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Tanggal Pembayaran
+  </label>
+
+  <input
+    type="date"
+    id="tanggal"
+    required>
+
+</div>
+
+
+<!-- ==================================================
+     HARGA
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Harga
+  </label>
+
+  <input
+    type="number"
+    id="harga"
+    min="0"
+    placeholder="Masukkan harga author"
+    required>
+
+  <small>
+    Masukkan total harga yang harus
+    dibayarkan kepada author.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     STATUS PEMBAYARAN
+================================================== -->
+
+<div class="form-group">
+
+  <label>
+    Status Pembayaran
+  </label>
+
+  <select
+    id="statusPembayaran"
+    required
+    onchange="ubahStatusPembayaran()">
+
+    <option value="">
+      Pilih status pembayaran
+    </option>
+
+    <option value="DP">
+      DP
+    </option>
+
+    <option value="Pelunasan">
+      Pelunasan
+    </option>
+
+    <option value="Lunas">
+      Lunas
+    </option>
+
+  </select>
+
+</div>
+
+
+<!-- ==================================================
+     NOMINAL
+================================================== -->
+
+<div class="form-group">
+
+  <label id="labelNominal">
+    Nominal Pembayaran
+  </label>
+
+  <input
+    type="number"
+    id="nominal"
+    min="0"
+    placeholder="Masukkan nominal pembayaran"
+    required>
+
+  <small id="deskripsiNominal">
+    Nominal pembayaran sesuai transaksi.
+  </small>
+
+</div>
+
+
+<!-- ==================================================
+     SIMPAN
+================================================== -->
+
+<button
+  type="submit"
+  id="btnSimpan"
+  class="btn-save">
+
+  SIMPAN INVOICE BUKU
+
+</button>
+
+
+<div
+  id="loading"
+  class="loading">
+
+  ⏳ Menyimpan invoice buku...
+
+</div>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+<!-- ==================================================
+     POPUP
+================================================== -->
 
 <div
   id="popupBerhasil"
   class="popup-overlay">
 
-
   <div class="popup">
-
 
     <div class="popup-icon">
       ✅
     </div>
 
-
     <h2>
-      Invoice Berhasil Disimpan
+      Invoice Buku Berhasil Disimpan
     </h2>
 
-
     <p>
-      Data invoice telah berhasil disimpan.
+      Data invoice buku telah berhasil disimpan.
     </p>
-
 
     <div class="invoice-number">
 
@@ -774,9 +680,7 @@ small{
 
     </div>
 
-
     <p id="detailInvoice"></p>
-
 
     <button
       type="button"
@@ -787,7 +691,6 @@ small{
 
     </button>
 
-
   </div>
 
 </div>
@@ -796,9 +699,9 @@ small{
 <script>
 
 
-/* =========================================================
+/* ==================================================
    INITIAL LOAD
-========================================================= */
+================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -816,44 +719,34 @@ document.addEventListener(
 
 
     /*
-     * Tidak lagi mengambil daftar ID Order
-     * karena sekarang ID Order diketik manual.
+     * Ambil seluruh ID Order Buku
+     * ketika halaman pertama kali dibuka.
      */
+
+    ambilDaftarOrderBuku();
 
   }
 );
 
 
-/* =========================================================
-   AMBIL DETAIL ORDER
-========================================================= */
+/* ==================================================
+   AMBIL DAFTAR ORDER BUKU
+================================================== */
 
-function ambilDetailOrder(){
+function ambilDaftarOrderBuku(){
 
-  const idOrder =
+  const select =
     document.getElementById(
       "idOrder"
-    ).value.trim();
-
-
-  const judul =
-    document.getElementById(
-      "judulBuku"
     );
 
 
-  if(!idOrder){
-
-    judul.value = "";
-
-    return;
-
-  }
+  select.innerHTML =
+    '<option value="">Memuat ID Order Buku...</option>';
 
 
   /*
-   * Jika backend Anda menyediakan
-   * ambilDetailOrder(), kita tetap gunakan.
+   * Pastikan Google Apps Script tersedia.
    */
 
   if(
@@ -862,17 +755,17 @@ function ambilDetailOrder(){
     !google.script.run
   ){
 
-    console.warn(
+    console.error(
       "google.script.run tidak tersedia."
     );
+
+
+    select.innerHTML =
+      '<option value="">Google Apps Script tidak tersedia</option>';
 
     return;
 
   }
-
-
-  judul.value =
-    "Memuat...";
 
 
   google.script.run
@@ -881,46 +774,153 @@ function ambilDetailOrder(){
       function(result){
 
         console.log(
-          "DETAIL ORDER:",
+          "DAFTAR ORDER BUKU:",
           result
         );
 
 
-        if(!result){
+        select.innerHTML =
+          '<option value="">Pilih ID Order Buku</option>';
 
-          judul.value = "";
 
-          alert(
-            "Data Order tidak ditemukan."
-          );
+        /*
+         * Antisipasi beberapa bentuk response.
+         *
+         * Array langsung:
+         *
+         * [
+         *   {...},
+         *   {...}
+         * ]
+         *
+         * atau:
+         *
+         * {
+         *   data:[...]
+         * }
+         */
 
-          return;
-
-        }
+        let orders =
+          result;
 
 
         if(
-          result.success === false
+          result &&
+          !Array.isArray(result) &&
+          Array.isArray(result.data)
         ){
 
-          judul.value = "";
+          orders =
+            result.data;
 
-          alert(
-            result.message ||
-            "Gagal mengambil detail Order."
+        }
+
+
+        if(!Array.isArray(orders)){
+
+          console.error(
+            "Format daftar Order Buku tidak valid:",
+            result
           );
+
+
+          select.innerHTML =
+            '<option value="">Data ID Order tidak valid</option>';
 
           return;
 
         }
 
 
-        judul.value =
-          result.judulBuku ||
-          result.judul ||
-          result.namaBuku ||
-          result["Judul Buku"] ||
-          "";
+        if(orders.length === 0){
+
+          select.innerHTML =
+            '<option value="">Belum ada ID Order Buku</option>';
+
+          return;
+
+        }
+
+
+        orders.forEach(
+          function(item){
+
+            if(!item){
+              return;
+            }
+
+
+            /*
+             * Ambil ID Order dari beberapa kemungkinan
+             * nama field.
+             */
+
+            const idOrder =
+              item.idOrder ||
+              item.orderId ||
+              item.ID_Order ||
+              item.IDOrder ||
+              item["ID Order"] ||
+              "";
+
+
+            /*
+             * Ambil Judul Buku.
+             */
+
+            const judulBuku =
+              item.judulBuku ||
+              item.judul ||
+              item.namaBuku ||
+              item["Judul Buku"] ||
+              "";
+
+
+            if(!idOrder){
+
+              return;
+
+            }
+
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            option.value =
+              idOrder;
+
+
+            option.textContent =
+              idOrder +
+              (
+                judulBuku
+                  ? " — " + judulBuku
+                  : ""
+              );
+
+
+            select.appendChild(
+              option
+            );
+
+          }
+        );
+
+
+        /*
+         * Tidak ada ID Order yang berhasil
+         * dimasukkan.
+         */
+
+        if(select.options.length === 1){
+
+          select.innerHTML =
+            '<option value="">ID Order Buku tidak ditemukan</option>';
+
+        }
 
       }
     )
@@ -928,16 +928,18 @@ function ambilDetailOrder(){
     .withFailureHandler(
       function(error){
 
-        judul.value = "";
-
         console.error(
-          "ERROR DETAIL ORDER:",
+          "ERROR DAFTAR ORDER BUKU:",
           error
         );
 
 
+        select.innerHTML =
+          '<option value="">Gagal memuat ID Order Buku</option>';
+
+
         alert(
-          "Gagal mengambil detail Order:\n" +
+          "Gagal mengambil ID Order Buku:\n" +
           (
             error &&
             error.message
@@ -949,50 +951,417 @@ function ambilDetailOrder(){
       }
     )
 
-    .ambilDetailOrder(
+
+    /*
+     * Nama fungsi backend.
+     *
+     * Jika di Code.gs nama fungsi berbeda,
+     * ubah bagian ini saja.
+     */
+
+    .ambilDaftarOrderBuku();
+
+}
+
+
+/* ==================================================
+   AMBIL DETAIL ORDER BUKU
+================================================== */
+
+function ambilDetailOrder(){
+
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value;
+
+
+  const judul =
+    document.getElementById(
+      "judulBuku"
+    );
+
+
+  const author =
+    document.getElementById(
+      "idAuthor"
+    );
+
+
+  const namaAuthor =
+    document.getElementById(
+      "namaAuthor"
+    );
+
+
+  const bab =
+    document.getElementById(
+      "bab"
+    );
+
+
+  /*
+   * Reset field turunan.
+   */
+
+  judul.value = "";
+
+  namaAuthor.value = "";
+
+  bab.value = "";
+
+
+  author.innerHTML =
+    '<option value="">Pilih ID Author</option>';
+
+
+  if(!idOrder){
+
+    return;
+
+  }
+
+
+  /*
+   * Pastikan Google Apps Script tersedia.
+   */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    alert(
+      "Google Apps Script tidak tersedia."
+    );
+
+    return;
+
+  }
+
+
+  console.log(
+    "AMBIL DETAIL ORDER BUKU:",
+    idOrder
+  );
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result){
+
+        console.log(
+          "DETAIL ORDER BUKU:",
+          result
+        );
+
+
+        if(!result){
+
+          alert(
+            "Data Order Buku tidak ditemukan."
+          );
+
+          return;
+
+        }
+
+
+        if(
+          result.success === false
+        ){
+
+          alert(
+            result.message ||
+            "Gagal mengambil detail Order Buku."
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * ========================================
+         * JUDUL BUKU
+         * ========================================
+         */
+
+        judul.value =
+          result.judulBuku ||
+          result.judul ||
+          result.namaBuku ||
+          result["Judul Buku"] ||
+          "";
+
+
+        /*
+         * ========================================
+         * DAFTAR AUTHOR
+         * ========================================
+         */
+
+        let authors =
+          result.author ||
+          result.authors ||
+          result.authorList ||
+          result.penulis ||
+          result.penulisList ||
+          [];
+
+
+        /*
+         * Antisipasi response dibungkus:
+         *
+         * {
+         *   data:{
+         *      authors:[...]
+         *   }
+         * }
+         */
+
+        if(
+          result.data &&
+          typeof result.data === "object"
+        ){
+
+          authors =
+            result.data.author ||
+            result.data.authors ||
+            result.data.authorList ||
+            result.data.penulis ||
+            result.data.penulisList ||
+            authors;
+
+        }
+
+
+        /*
+         * Kalau backend hanya mengembalikan satu
+         * object author, jadikan array.
+         */
+
+        if(
+          authors &&
+          !Array.isArray(authors) &&
+          typeof authors === "object"
+        ){
+
+          authors = [authors];
+
+        }
+
+
+        if(!Array.isArray(authors)){
+
+          authors = [];
+
+        }
+
+
+        if(authors.length === 0){
+
+          author.innerHTML =
+            '<option value="">Belum ada ID Author</option>';
+
+          return;
+
+        }
+
+
+        author.innerHTML =
+          '<option value="">Pilih ID Author</option>';
+
+
+        authors.forEach(
+          function(item,index){
+
+            if(!item){
+
+              return;
+
+            }
+
+
+            /*
+             * ==================================
+             * ID AUTHOR
+             * ==================================
+             */
+
+            const idAuthor =
+              item.idAuthor ||
+              item.authorId ||
+              item.authorID ||
+              item.id ||
+              item.ID_Author ||
+              item.IDAuthor ||
+              item["ID Author"] ||
+              "";
+
+
+            /*
+             * ==================================
+             * NAMA AUTHOR
+             * ==================================
+             */
+
+            const nama =
+              item.namaAuthor ||
+              item.nama ||
+              item.nama_author ||
+              item.authorNama ||
+              item["Nama Author"] ||
+              "";
+
+
+            /*
+             * ==================================
+             * BAB
+             * ==================================
+             */
+
+            const dataBab =
+              item.bab ||
+              item.Bab ||
+              item.namaBab ||
+              item["Bab"] ||
+              "";
+
+
+            /*
+             * Jangan masukkan jika ID Author
+             * tidak tersedia.
+             */
+
+            if(!idAuthor){
+
+              return;
+
+            }
+
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            /*
+             * VALUE = ID AUTHOR
+             */
+
+            option.value =
+              idAuthor;
+
+
+            /*
+             * Tampilkan ID Author dan nama
+             * agar admin mudah memilih.
+             */
+
+            option.textContent =
+              idAuthor +
+              (
+                nama
+                  ? " — " + nama
+                  : ""
+              );
+
+
+            /*
+             * Simpan data sementara.
+             */
+
+            option.dataset.nama =
+              nama;
+
+
+            option.dataset.bab =
+              dataBab;
+
+
+            author.appendChild(
+              option
+            );
+
+          }
+        );
+
+
+        /*
+         * Jika tidak ada option author.
+         */
+
+        if(author.options.length === 1){
+
+          author.innerHTML =
+            '<option value="">ID Author tidak ditemukan</option>';
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        console.error(
+          "ERROR DETAIL ORDER BUKU:",
+          error
+        );
+
+
+        alert(
+          "Gagal mengambil detail Order Buku:\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+        );
+
+      }
+    )
+
+
+    /*
+     * Fungsi backend untuk mengambil
+     * detail Order Buku.
+     */
+
+    .ambilOrderBukuUntukInvoice(
       idOrder
     );
 
 }
 
 
-/* =========================================================
-   ID ORDER KETIKA SELESAI DIKETIK
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
-
-    const inputOrder =
-      document.getElementById(
-        "idOrder"
-      );
-
-
-    inputOrder.addEventListener(
-      "blur",
-      function(){
-
-        ambilDetailOrder();
-
-      }
-    );
-
-  }
-);
-
-
-/* =========================================================
-   AMBIL DETAIL AUTHOR BERDASARKAN ID AUTHOR
-========================================================= */
+/* ==================================================
+   AMBIL DETAIL AUTHOR
+================================================== */
 
 function ambilDetailAuthor(){
 
   const idAuthor =
     document.getElementById(
       "idAuthor"
-    ).value.trim();
+    ).value;
+
+
+  const select =
+    document.getElementById(
+      "idAuthor"
+    );
+
+
+  const option =
+    select.options[
+      select.selectedIndex
+    ];
 
 
   const nama =
@@ -1007,20 +1376,8 @@ function ambilDetailAuthor(){
     );
 
 
-  const button =
-    document.getElementById(
-      "btnAmbilAuthor"
-    );
-
-
-  const status =
-    document.getElementById(
-      "authorStatus"
-    );
-
-
   /*
-   * Reset
+   * Reset.
    */
 
   nama.value = "";
@@ -1030,16 +1387,40 @@ function ambilDetailAuthor(){
 
   if(!idAuthor){
 
-    status.className =
-      "author-status show error";
-
-    status.textContent =
-      "Silakan masukkan ID Author terlebih dahulu.";
-
     return;
 
   }
 
+
+  /*
+   * ========================================
+   * DATA DARI OPTION
+   * ========================================
+   *
+   * Jika data author sudah dikirim bersama
+   * detail order, field langsung terisi.
+   */
+
+  if(option){
+
+    nama.value =
+      option.dataset.nama ||
+      "";
+
+
+    bab.value =
+      option.dataset.bab ||
+      "";
+
+  }
+
+
+  /*
+   * ========================================
+   * AMBIL DETAIL LANGSUNG BERDASARKAN
+   * ID AUTHOR
+   * ========================================
+   */
 
   if(
     typeof google === "undefined" ||
@@ -1047,35 +1428,16 @@ function ambilDetailAuthor(){
     !google.script.run
   ){
 
-    console.warn(
-      "google.script.run tidak tersedia."
-    );
-
     return;
 
   }
 
 
-  /*
-   * Loading
-   */
+  console.log(
+    "AMBIL DETAIL ID AUTHOR:",
+    idAuthor
+  );
 
-  button.disabled = true;
-
-  button.textContent =
-    "⏳ MEMUAT...";
-
-
-  status.className =
-    "author-status show loading";
-
-  status.textContent =
-    "Sedang mengambil data Author...";
-
-
-  /*
-   * Panggil backend
-   */
 
   google.script.run
 
@@ -1088,49 +1450,21 @@ function ambilDetailAuthor(){
         );
 
 
-        button.disabled = false;
-
-        button.textContent =
-          "🔍 AMBIL DATA AUTHOR";
-
-
-        /*
-         * Tidak ada data
-         */
-
         if(!result){
-
-          status.className =
-            "author-status show error";
-
-          status.textContent =
-            "ID Author tidak ditemukan.";
-
-          nama.value = "";
-          bab.value = "";
 
           return;
 
         }
 
-
-        /*
-         * Backend mengembalikan success:false
-         */
 
         if(
           result.success === false
         ){
 
-          status.className =
-            "author-status show error";
-
-          status.textContent =
+          console.error(
             result.message ||
-            "Data Author tidak ditemukan.";
-
-          nama.value = "";
-          bab.value = "";
+            "Detail Author gagal diambil."
+          );
 
           return;
 
@@ -1138,72 +1472,54 @@ function ambilDetailAuthor(){
 
 
         /*
-         * Ambil nama author
+         * Antisipasi backend mengembalikan
+         * object langsung atau dibungkus data.
          */
 
-        const namaAuthor =
-          result.namaAuthor ||
-          result.nama ||
-          result.nama_author ||
-          result["Nama Author"] ||
-          result.authorNama ||
-          "";
+        let data =
+          result;
 
 
-        /*
-         * Ambil bab
-         */
+        if(
+          result.data &&
+          typeof result.data === "object"
+        ){
 
-        const dataBab =
-          result.bab ||
-          result.Bab ||
-          result.namaBab ||
-          result["Bab"] ||
-          "";
-
-
-        /*
-         * Jika tidak ada nama author,
-         * anggap ID tidak ditemukan.
-         */
-
-        if(!namaAuthor){
-
-          status.className =
-            "author-status show error";
-
-          status.textContent =
-            "ID Author tidak ditemukan atau data Author kosong.";
-
-          nama.value = "";
-          bab.value = "";
-
-          return;
+          data =
+            result.data;
 
         }
 
 
         /*
-         * Isi data
+         * ====================================
+         * NAMA AUTHOR
+         * ====================================
          */
 
         nama.value =
-          namaAuthor;
-
-
-        bab.value =
-          dataBab;
+          data.namaAuthor ||
+          data.nama ||
+          data.nama_author ||
+          data.authorNama ||
+          data["Nama Author"] ||
+          nama.value ||
+          "";
 
 
         /*
-         * Status berhasil
+         * ====================================
+         * BAB
+         * ====================================
          */
 
-        status.className =
-          "author-status show success";
-
-        status.textContent =
-          "✓ Data Author berhasil ditemukan.";
+        bab.value =
+          data.bab ||
+          data.Bab ||
+          data.namaBab ||
+          data["Bab"] ||
+          bab.value ||
+          "";
 
       }
     )
@@ -1211,37 +1527,25 @@ function ambilDetailAuthor(){
     .withFailureHandler(
       function(error){
 
-        button.disabled = false;
-
-        button.textContent =
-          "🔍 AMBIL DATA AUTHOR";
-
-
-        status.className =
-          "author-status show error";
-
-        status.textContent =
-          "Gagal mengambil data Author.";
-
-
         console.error(
           "ERROR DETAIL AUTHOR:",
           error
         );
 
 
-        alert(
-          "Gagal mengambil detail Author:\n" +
-          (
-            error &&
-            error.message
-              ? error.message
-              : error
-          )
-        );
+        /*
+         * Tidak menggunakan alert di sini
+         * supaya data dari option tetap dapat
+         * digunakan apabila sudah tersedia.
+         */
 
       }
     )
+
+
+    /*
+     * ID AUTHOR dikirim langsung ke backend.
+     */
 
     .ambilDetailAuthor(
       idAuthor
@@ -1250,44 +1554,9 @@ function ambilDetailAuthor(){
 }
 
 
-/* =========================================================
-   ID AUTHOR ENTER
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
-
-    const inputAuthor =
-      document.getElementById(
-        "idAuthor"
-      );
-
-
-    inputAuthor.addEventListener(
-      "keydown",
-      function(event){
-
-        if(
-          event.key === "Enter"
-        ){
-
-          event.preventDefault();
-
-          ambilDetailAuthor();
-
-        }
-
-      }
-    );
-
-  }
-);
-
-
-/* =========================================================
+/* ==================================================
    STATUS PEMBAYARAN
-========================================================= */
+================================================== */
 
 function ubahStatusPembayaran(){
 
@@ -1314,6 +1583,7 @@ function ubahStatusPembayaran(){
     label.textContent =
       "Nominal DP";
 
+
     deskripsi.textContent =
       "Masukkan nominal pembayaran DP.";
 
@@ -1323,6 +1593,7 @@ function ubahStatusPembayaran(){
 
     label.textContent =
       "Nominal Pelunasan";
+
 
     deskripsi.textContent =
       "Masukkan nominal pembayaran pelunasan.";
@@ -1334,6 +1605,7 @@ function ubahStatusPembayaran(){
     label.textContent =
       "Nominal Lunas";
 
+
     deskripsi.textContent =
       "Masukkan nominal pembayaran lunas.";
 
@@ -1344,6 +1616,7 @@ function ubahStatusPembayaran(){
     label.textContent =
       "Nominal Pembayaran";
 
+
     deskripsi.textContent =
       "Nominal pembayaran sesuai transaksi.";
 
@@ -1352,9 +1625,9 @@ function ubahStatusPembayaran(){
 }
 
 
-/* =========================================================
+/* ==================================================
    SIMPAN INVOICE
-========================================================= */
+================================================== */
 
 function simpanInvoice(event){
 
@@ -1368,7 +1641,7 @@ function simpanInvoice(event){
 
 
   /*
-   * Validasi HTML
+   * Validasi HTML.
    */
 
   if(!form.checkValidity()){
@@ -1393,7 +1666,9 @@ function simpanInvoice(event){
 
 
   /*
-   * Ambil data
+   * ========================================
+   * AMBIL DATA FORM
+   * ========================================
    */
 
   const data = {
@@ -1401,47 +1676,56 @@ function simpanInvoice(event){
     idOrder:
       document.getElementById(
         "idOrder"
-      ).value.trim(),
+      ).value,
 
-    idAuthor:
-      document.getElementById(
-        "idAuthor"
-      ).value.trim(),
 
     judulBuku:
       document.getElementById(
         "judulBuku"
-      ).value.trim(),
+      ).value,
+
+
+    idAuthor:
+      document.getElementById(
+        "idAuthor"
+      ).value,
+
 
     namaAuthor:
       document.getElementById(
         "namaAuthor"
-      ).value.trim(),
+      ).value,
+
 
     bab:
       document.getElementById(
         "bab"
-      ).value.trim(),
+      ).value,
+
 
     marketingInput:
       document.getElementById(
         "marketingInput"
       ).value.trim(),
 
+
     tanggal:
       document.getElementById(
         "tanggal"
       ).value,
+
 
     harga:
       document.getElementById(
         "harga"
       ).value,
 
+
     statusPembayaran:
       document.getElementById(
         "statusPembayaran"
       ).value,
+
 
     nominal:
       document.getElementById(
@@ -1451,25 +1735,16 @@ function simpanInvoice(event){
   };
 
 
-  /* =======================================================
-     VALIDASI
-  ======================================================== */
+  /*
+   * ========================================
+   * VALIDASI ID ORDER
+   * ========================================
+   */
 
   if(!data.idOrder){
 
     alert(
-      "ID Order wajib diisi."
-    );
-
-    return;
-
-  }
-
-
-  if(!data.idAuthor){
-
-    alert(
-      "ID Author wajib diisi."
+      "Silakan pilih ID Order Buku."
     );
 
     return;
@@ -1478,32 +1753,78 @@ function simpanInvoice(event){
 
 
   /*
-   * Pastikan data Author sudah berhasil diambil.
+   * ========================================
+   * VALIDASI JUDUL BUKU
+   * ========================================
+   */
+
+  if(!data.judulBuku){
+
+    alert(
+      "Judul Buku belum tersedia."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * ========================================
+   * VALIDASI ID AUTHOR
+   * ========================================
+   */
+
+  if(!data.idAuthor){
+
+    alert(
+      "Silakan pilih ID Author."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * ========================================
+   * VALIDASI NAMA AUTHOR
+   * ========================================
    */
 
   if(!data.namaAuthor){
 
     alert(
-      "Data Author belum ditemukan.\n\n" +
-      "Silakan masukkan ID Author kemudian klik " +
-      "AMBIL DATA AUTHOR terlebih dahulu."
+      "Nama Author belum tersedia berdasarkan ID Author."
     );
 
     return;
 
   }
 
+
+  /*
+   * ========================================
+   * VALIDASI MARKETING
+   * ========================================
+   */
 
   if(!data.marketingInput){
 
     alert(
-      "Nama Marketing wajib diisi."
+      "Silakan masukkan nama Marketing."
     );
 
     return;
 
   }
 
+
+  /*
+   * ========================================
+   * VALIDASI TANGGAL
+   * ========================================
+   */
 
   if(!data.tanggal){
 
@@ -1516,19 +1837,31 @@ function simpanInvoice(event){
   }
 
 
+  /*
+   * ========================================
+   * VALIDASI HARGA
+   * ========================================
+   */
+
   if(
     data.harga === "" ||
     Number(data.harga) < 0
   ){
 
     alert(
-      "Harga tidak valid."
+      "Harga belum diisi dengan benar."
     );
 
     return;
 
   }
 
+
+  /*
+   * ========================================
+   * VALIDASI STATUS
+   * ========================================
+   */
 
   if(!data.statusPembayaran){
 
@@ -1541,13 +1874,19 @@ function simpanInvoice(event){
   }
 
 
+  /*
+   * ========================================
+   * VALIDASI NOMINAL
+   * ========================================
+   */
+
   if(
     data.nominal === "" ||
     Number(data.nominal) < 0
   ){
 
     alert(
-      "Nominal pembayaran tidak valid."
+      "Nominal pembayaran belum diisi dengan benar."
     );
 
     return;
@@ -1556,7 +1895,9 @@ function simpanInvoice(event){
 
 
   /*
-   * Loading
+   * ========================================
+   * LOADING
+   * ========================================
    */
 
   btn.disabled = true;
@@ -1564,13 +1905,16 @@ function simpanInvoice(event){
   btn.textContent =
     "MENYIMPAN...";
 
+
   loading.classList.add(
     "active"
   );
 
 
   /*
-   * Kirim ke Google Apps Script
+   * ========================================
+   * KIRIM KE CODE.GS
+   * ========================================
    */
 
   if(
@@ -1582,7 +1926,8 @@ function simpanInvoice(event){
     btn.disabled = false;
 
     btn.textContent =
-      "SIMPAN INVOICE";
+      "SIMPAN INVOICE BUKU";
+
 
     loading.classList.remove(
       "active"
@@ -1590,18 +1935,13 @@ function simpanInvoice(event){
 
 
     console.log(
-      "DATA INVOICE:",
+      "DATA INVOICE BUKU:",
       data
     );
 
 
     alert(
-      "Mode preview.\n\n" +
-      JSON.stringify(
-        data,
-        null,
-        2
-      )
+      "Google Apps Script tidak tersedia."
     );
 
     return;
@@ -1615,7 +1955,7 @@ function simpanInvoice(event){
       function(result){
 
         console.log(
-          "HASIL SIMPAN INVOICE:",
+          "HASIL SIMPAN INVOICE BUKU:",
           result
         );
 
@@ -1623,21 +1963,24 @@ function simpanInvoice(event){
         btn.disabled = false;
 
         btn.textContent =
-          "SIMPAN INVOICE";
+          "SIMPAN INVOICE BUKU";
+
 
         loading.classList.remove(
           "active"
         );
 
 
+        /*
+         * ====================================
+         * BERHASIL
+         * ====================================
+         */
+
         if(
           result &&
           result.success
         ){
-
-          /*
-           * Nomor invoice
-           */
 
           document.getElementById(
             "nomorInvoice"
@@ -1648,7 +1991,7 @@ function simpanInvoice(event){
 
 
           /*
-           * Detail popup
+           * Detail popup.
            */
 
           document.getElementById(
@@ -1661,6 +2004,12 @@ function simpanInvoice(event){
             ) +
             "</strong><br>" +
 
+            "Judul Buku: <strong>" +
+            escapeHtml(
+              data.judulBuku
+            ) +
+            "</strong><br>" +
+
             "ID Author: <strong>" +
             escapeHtml(
               data.idAuthor
@@ -1670,6 +2019,12 @@ function simpanInvoice(event){
             "Author: <strong>" +
             escapeHtml(
               data.namaAuthor
+            ) +
+            "</strong><br>" +
+
+            "Bab: <strong>" +
+            escapeHtml(
+              data.bab
             ) +
             "</strong><br>" +
 
@@ -1693,7 +2048,7 @@ function simpanInvoice(event){
 
 
           /*
-           * Tampilkan popup
+           * Tampilkan popup.
            */
 
           document.getElementById(
@@ -1704,7 +2059,7 @@ function simpanInvoice(event){
 
 
           /*
-           * Reset form
+           * Reset form.
            */
 
           resetFormInvoice();
@@ -1718,7 +2073,7 @@ function simpanInvoice(event){
               result &&
               result.message
             ) ||
-            "Gagal menyimpan invoice."
+            "Gagal menyimpan invoice buku."
           );
 
         }
@@ -1732,7 +2087,8 @@ function simpanInvoice(event){
         btn.disabled = false;
 
         btn.textContent =
-          "SIMPAN INVOICE";
+          "SIMPAN INVOICE BUKU";
+
 
         loading.classList.remove(
           "active"
@@ -1740,13 +2096,13 @@ function simpanInvoice(event){
 
 
         console.error(
-          "ERROR SIMPAN INVOICE:",
+          "ERROR SIMPAN INVOICE BUKU:",
           error
         );
 
 
         alert(
-          "Gagal menyimpan invoice:\n" +
+          "Gagal menyimpan invoice buku:\n" +
           (
             error &&
             error.message
@@ -1758,6 +2114,11 @@ function simpanInvoice(event){
       }
     )
 
+
+    /*
+     * Fungsi backend untuk menyimpan.
+     */
+
     .simpanInvoice(
       data
     );
@@ -1765,9 +2126,9 @@ function simpanInvoice(event){
 }
 
 
-/* =========================================================
+/* ==================================================
    RESET FORM
-========================================================= */
+================================================== */
 
 function resetFormInvoice(){
 
@@ -1777,7 +2138,7 @@ function resetFormInvoice(){
 
 
   /*
-   * Reset judul
+   * Reset judul.
    */
 
   document.getElementById(
@@ -1786,7 +2147,7 @@ function resetFormInvoice(){
 
 
   /*
-   * Reset author
+   * Reset author.
    */
 
   document.getElementById(
@@ -1800,23 +2161,17 @@ function resetFormInvoice(){
 
 
   /*
-   * Reset status author
+   * Reset dropdown ID Author.
    */
 
-  const status =
-    document.getElementById(
-      "authorStatus"
-    );
-
-  status.className =
-    "author-status";
-
-  status.textContent =
-    "";
+  document.getElementById(
+    "idAuthor"
+  ).innerHTML =
+    '<option value="">Pilih ID Author</option>';
 
 
   /*
-   * Tanggal hari ini
+   * Tanggal hari ini.
    */
 
   document.getElementById(
@@ -1828,7 +2183,7 @@ function resetFormInvoice(){
 
 
   /*
-   * Reset label nominal
+   * Reset label nominal.
    */
 
   document.getElementById(
@@ -1845,9 +2200,9 @@ function resetFormInvoice(){
 }
 
 
-/* =========================================================
+/* ==================================================
    FORMAT RUPIAH
-========================================================= */
+================================================== */
 
 function formatRupiah(angka){
 
@@ -1860,33 +2215,38 @@ function formatRupiah(angka){
 }
 
 
-/* =========================================================
+/* ==================================================
    ESCAPE HTML
-========================================================= */
+================================================== */
 
-function escapeHtml(value){
+function escapeHtml(text){
 
   return String(
-    value == null
+    text == null
       ? ""
-      : value
+      : text
   )
+
   .replace(
     /&/g,
     "&amp;"
   )
+
   .replace(
     /</g,
     "&lt;"
   )
+
   .replace(
     />/g,
     "&gt;"
   )
+
   .replace(
     /"/g,
     "&quot;"
   )
+
   .replace(
     /'/g,
     "&#039;"
@@ -1895,9 +2255,9 @@ function escapeHtml(value){
 }
 
 
-/* =========================================================
+/* ==================================================
    TUTUP POPUP
-========================================================= */
+================================================== */
 
 function tutupPopup(){
 
@@ -1910,9 +2270,9 @@ function tutupPopup(){
 }
 
 
-/* =========================================================
+/* ==================================================
    KEMBALI
-========================================================= */
+================================================== */
 
 function kembali(){
 
@@ -1922,7 +2282,6 @@ function kembali(){
 }
 
 </script>
-
 
 </body>
 
