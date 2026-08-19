@@ -123,6 +123,48 @@ select:focus{
 }
 
 /* =====================================================
+   ID ORDER SEARCH
+===================================================== */
+
+.order-search{
+  display:flex;
+  gap:10px;
+  align-items:stretch;
+}
+
+.order-search input{
+  flex:1;
+  min-width:0;
+}
+
+/* =====================================================
+   BUTTON CARI
+===================================================== */
+
+.btn-cari{
+  flex:0 0 auto;
+  border:0;
+  padding:0 18px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:.2s;
+}
+
+.btn-cari:hover{
+  background:#183b56;
+}
+
+.btn-cari:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+/* =====================================================
    READONLY
 ===================================================== */
 
@@ -155,6 +197,43 @@ small{
   margin-bottom:25px;
   font-size:14px;
   line-height:1.6;
+}
+
+/* =====================================================
+   STATUS ORDER
+===================================================== */
+
+.status-order{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#f1f5f9;
+  color:#718096;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.status-order.show{
+  display:block;
+}
+
+.status-order.success{
+  background:#ecfdf5;
+  color:#047857;
+  border:1px solid #a7f3d0;
+}
+
+.status-order.error{
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+}
+
+.status-order.loading{
+  background:#eff6ff;
+  color:#1d4ed8;
+  border:1px solid #bfdbfe;
 }
 
 /* =====================================================
@@ -198,24 +277,6 @@ small{
 }
 
 /* =====================================================
-   STATUS ORDER
-===================================================== */
-
-.status-order{
-  display:none;
-  margin-top:8px;
-  padding:9px 12px;
-  border-radius:8px;
-  background:#f1f5f9;
-  color:#718096;
-  font-size:13px;
-}
-
-.status-order.show{
-  display:block;
-}
-
-/* =====================================================
    RESPONSIVE
 ===================================================== */
 
@@ -230,6 +291,15 @@ small{
 
   .form-card{
     padding:25px 20px;
+  }
+
+  .order-search{
+    flex-direction:column;
+  }
+
+  .btn-cari{
+    width:100%;
+    min-height:46px;
   }
 
 }
@@ -311,8 +381,9 @@ Kelola data ISBN berdasarkan order buku.
 
 <strong>Informasi:</strong><br>
 
-Masukkan <strong>ID Order Buku</strong> secara manual
-untuk menghubungkan data ISBN dengan buku yang sesuai.
+Masukkan <strong>ID Order Buku</strong> secara manual,
+kemudian klik tombol <strong>🔍 Cari Data</strong>
+untuk mengambil data buku.
 
 <br><br>
 
@@ -341,6 +412,9 @@ onsubmit="simpanISBN(event)">
 ID Order Buku
 </label>
 
+
+<div class="order-search">
+
 <input
 type="text"
 id="idOrder"
@@ -348,11 +422,26 @@ name="idOrder"
 placeholder="Contoh: ORD/BUK/0001"
 autocomplete="off"
 required
-onchange="ambilDetailOrder()">
+onkeydown="handleEnterCari(event)">
+
+
+<button
+type="button"
+id="btnCariOrder"
+class="btn-cari"
+onclick="cariDataOrder()">
+
+🔍 Cari Data
+
+</button>
+
+</div>
+
 
 <small>
 Ketik ID Order Buku secara manual.
-Contoh: <strong>ORD/BUK/0001</strong>
+Contoh: <strong>ORD/BUK/0001</strong>.
+Anda juga dapat menekan tombol Enter untuk mencari.
 </small>
 
 
@@ -384,7 +473,7 @@ readonly>
 
 <small>
 Judul Buku akan diambil otomatis berdasarkan
-ID Order jika ID Order ditemukan.
+ID Order yang ditemukan.
 </small>
 
 </div>
@@ -410,7 +499,8 @@ required>
 
 <small>
 Masukkan nama Tim Riset secara manual.
-Contoh: Tim Riset 1, Tim Riset Buku, atau nama tim lainnya.
+Contoh: Tim Riset 1, Tim Riset Buku,
+atau nama tim lainnya.
 </small>
 
 </div>
@@ -513,8 +603,6 @@ document.addEventListener(
     );
 
     /*
-     * Tidak lagi memuat daftar ID Order.
-     *
      * ID Order sekarang diketik manual.
      */
 
@@ -534,17 +622,34 @@ document.addEventListener(
 
 
 /* =========================================================
-   AMBIL DETAIL ORDER
+   ENTER UNTUK CARI DATA
 ========================================================= */
 
-function ambilDetailOrder(){
+function handleEnterCari(event){
 
-  const idOrder =
-    String(
-      document.getElementById(
-        "idOrder"
-      ).value || ""
-    ).trim();
+  if(
+    event.key === "Enter"
+  ){
+
+    event.preventDefault();
+
+    cariDataOrder();
+
+  }
+
+}
+
+
+/* =========================================================
+   CARI DATA ORDER
+========================================================= */
+
+function cariDataOrder(){
+
+  const idOrderInput =
+    document.getElementById(
+      "idOrder"
+    );
 
 
   const judul =
@@ -559,27 +664,58 @@ function ambilDetailOrder(){
     );
 
 
+  const btnCari =
+    document.getElementById(
+      "btnCariOrder"
+    );
+
+
   /*
-   * Kosongkan judul terlebih dahulu
+   * Ambil ID Order
+   */
+
+  const idOrder =
+    String(
+      idOrderInput.value || ""
+    ).trim();
+
+
+  /*
+   * Bersihkan judul lama
    */
 
   judul.value =
     "";
 
 
+  /*
+   * Bersihkan status
+   */
+
   status.textContent =
     "";
 
-  status.classList.remove(
-    "show"
-  );
+  status.className =
+    "status-order";
 
 
   /*
-   * Kalau ID Order kosong
+   * Validasi ID Order
    */
 
   if(!idOrder){
+
+    status.textContent =
+      "⚠️ Silakan ketik ID Order Buku terlebih dahulu.";
+
+    status.classList.add(
+      "show",
+      "error"
+    );
+
+
+    idOrderInput.focus();
+
 
     return;
 
@@ -587,32 +723,35 @@ function ambilDetailOrder(){
 
 
   /*
-   * Tampilkan status
+   * Tampilkan loading
    */
 
+  btnCari.disabled =
+    true;
+
+  btnCari.textContent =
+    "⏳ Mencari...";
+
+
   status.textContent =
-    "⏳ Mencari ID Order Buku...";
+    "⏳ Sedang mencari data order...";
 
   status.classList.add(
-    "show"
+    "show",
+    "loading"
   );
 
 
   console.log(
-    "ISBN: mengambil detail order:",
+    "ISBN: mencari ID Order:",
     idOrder
   );
 
 
   /*
    * =====================================================
-   * PANGGIL DETAIL ORDER BUKU
+   * CEK GOOGLE APPS SCRIPT
    * =====================================================
-   *
-   * Code.gs:
-   *
-   * ambilDetailOrderBuku(idOrder)
-   *
    */
 
   if(
@@ -626,8 +765,18 @@ function ambilDetailOrder(){
     );
 
 
+    btnCari.disabled =
+      false;
+
+    btnCari.textContent =
+      "🔍 Cari Data";
+
+
     status.textContent =
-      "Mode preview: detail order tidak dapat diambil.";
+      "⚠️ Mode preview: Google Apps Script tidak tersedia.";
+
+    status.className =
+      "status-order show error";
 
 
     return;
@@ -635,19 +784,38 @@ function ambilDetailOrder(){
   }
 
 
+  /*
+   * =====================================================
+   * PANGGIL CODE.GS
+   * =====================================================
+   */
+
   google.script.run
 
   .withSuccessHandler(
     function(data){
 
       console.log(
-        "ISBN: detail order:",
+        "ISBN: hasil pencarian order:",
         data
       );
 
 
       /*
-       * Jika tidak ditemukan
+       * Kembalikan tombol
+       */
+
+      btnCari.disabled =
+        false;
+
+      btnCari.textContent =
+        "🔍 Cari Data";
+
+
+      /*
+       * =================================================
+       * DATA TIDAK DITEMUKAN
+       * =================================================
        */
 
       if(!data){
@@ -659,16 +827,17 @@ function ambilDetailOrder(){
         status.textContent =
           "❌ ID Order tidak ditemukan.";
 
-
-        status.classList.add(
-          "show"
-        );
+        status.className =
+          "status-order show error";
 
 
         alert(
-          "ID Order Buku tidak ditemukan:\n\n" +
+          "ID Order Buku tidak ditemukan.\n\n" +
           idOrder
         );
+
+
+        idOrderInput.focus();
 
 
         return;
@@ -677,7 +846,9 @@ function ambilDetailOrder(){
 
 
       /*
-       * Ambil judul buku
+       * =================================================
+       * AMBIL JUDUL
+       * =================================================
        */
 
       const judulData =
@@ -691,13 +862,18 @@ function ambilDetailOrder(){
 
 
       /*
-       * Status berhasil
+       * =================================================
+       * HASIL PENCARIAN
+       * =================================================
        */
 
       if(judulData){
 
         status.textContent =
-          "✅ ID Order ditemukan. Judul Buku berhasil diambil.";
+          "✅ Data ditemukan. Judul Buku berhasil diambil.";
+
+        status.className =
+          "status-order show success";
 
       }
 
@@ -706,12 +882,10 @@ function ambilDetailOrder(){
         status.textContent =
           "⚠️ ID Order ditemukan, tetapi Judul Buku kosong.";
 
+        status.className =
+          "status-order show error";
+
       }
-
-
-      status.classList.add(
-        "show"
-      );
 
     }
   )
@@ -721,26 +895,43 @@ function ambilDetailOrder(){
     function(error){
 
       console.error(
-        "ISBN: error detail order:",
+        "ISBN: error pencarian order:",
         error
       );
 
+
+      /*
+       * Kembalikan tombol
+       */
+
+      btnCari.disabled =
+        false;
+
+      btnCari.textContent =
+        "🔍 Cari Data";
+
+
+      /*
+       * Kosongkan judul
+       */
 
       judul.value =
         "";
 
 
+      /*
+       * Status error
+       */
+
       status.textContent =
-        "❌ Gagal mengambil detail order.";
+        "❌ Gagal mengambil data order.";
 
-
-      status.classList.add(
-        "show"
-      );
+      status.className =
+        "status-order show error";
 
 
       alert(
-        "Gagal mengambil detail ID Order.\n\n" +
+        "Gagal mengambil data ID Order.\n\n" +
         (
           error &&
           error.message
@@ -864,7 +1055,7 @@ function simpanISBN(
 
   /* =====================================================
      VALIDASI ID ORDER
-  ===================================================== */
+===================================================== */
 
   if(!data.idOrder){
 
@@ -884,8 +1075,35 @@ function simpanISBN(
 
 
   /* =====================================================
+     VALIDASI JUDUL
+===================================================== */
+
+  if(!data.judulBuku){
+
+    const konfirmasi =
+      confirm(
+        "Judul Buku belum ditemukan otomatis.\n\n" +
+        "Apakah Anda tetap ingin menyimpan data ISBN?"
+      );
+
+
+    if(!konfirmasi){
+
+      document.getElementById(
+        "btnCariOrder"
+      ).focus();
+
+
+      return;
+
+    }
+
+  }
+
+
+  /* =====================================================
      VALIDASI TIM RISET
-  ===================================================== */
+===================================================== */
 
   if(!data.timRiset){
 
@@ -906,7 +1124,7 @@ function simpanISBN(
 
   /* =====================================================
      VALIDASI ISBN
-  ===================================================== */
+===================================================== */
 
   if(!data.nomorISBN){
 
@@ -927,7 +1145,7 @@ function simpanISBN(
 
   /* =====================================================
      VALIDASI ARSIP
-  ===================================================== */
+===================================================== */
 
   if(!data.arsip){
 
@@ -947,8 +1165,8 @@ function simpanISBN(
 
 
   /* =====================================================
-     VALIDASI URL ARSIP
-  ===================================================== */
+     VALIDASI URL
+===================================================== */
 
   try{
 
@@ -978,7 +1196,7 @@ function simpanISBN(
 
   /* =====================================================
      LOADING
-  ===================================================== */
+===================================================== */
 
   btn.disabled =
     true;
@@ -994,8 +1212,8 @@ function simpanISBN(
 
 
   /* =====================================================
-     KIRIM KE CODE.GS
-  ===================================================== */
+     GOOGLE APPS SCRIPT
+===================================================== */
 
   if(
     typeof google === "undefined" ||
@@ -1056,13 +1274,8 @@ function simpanISBN(
 
   /*
    * =====================================================
-   * GOOGLE APPS SCRIPT
+   * SIMPAN KE CODE.GS
    * =====================================================
-   *
-   * Tetap menggunakan:
-   *
-   * simpanISBN(data)
-   *
    */
 
   google.script.run
@@ -1083,10 +1296,8 @@ function simpanISBN(
       btn.disabled =
         false;
 
-
       btn.textContent =
         "SIMPAN ISBN";
-
 
       loading.classList.remove(
         "active"
@@ -1129,7 +1340,7 @@ function simpanISBN(
 
 
         /*
-         * Judul readonly dikosongkan
+         * Kosongkan judul
          */
 
         document.getElementById(
@@ -1139,7 +1350,7 @@ function simpanISBN(
 
 
         /*
-         * Status dikosongkan
+         * Kosongkan status
          */
 
         const status =
@@ -1151,14 +1362,12 @@ function simpanISBN(
         status.textContent =
           "";
 
-
-        status.classList.remove(
-          "show"
-        );
+        status.className =
+          "status-order";
 
 
         /*
-         * Fokus kembali ke ID Order
+         * Fokus ID Order
          */
 
         document.getElementById(
@@ -1195,13 +1404,8 @@ function simpanISBN(
       );
 
 
-      /*
-       * Kembalikan tombol
-       */
-
       btn.disabled =
         false;
-
 
       btn.textContent =
         "SIMPAN ISBN";
@@ -1214,7 +1418,6 @@ function simpanISBN(
 
       alert(
         "Gagal menyimpan ISBN.\n\n" +
-
         (
           error &&
           error.message
