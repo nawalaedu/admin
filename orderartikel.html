@@ -369,6 +369,76 @@ small{
 }
 
 /* =========================
+   BUTTON CARI ORDER
+========================= */
+
+.order-search{
+  display:flex;
+  gap:10px;
+  align-items:stretch;
+}
+
+.order-search input{
+  flex:1;
+}
+
+.btn-search{
+  min-width:130px;
+  border:0;
+  padding:13px 18px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.btn-search:hover{
+  background:#183b56;
+}
+
+.btn-search:disabled{
+  background:#a0aec0;
+  cursor:not-allowed;
+}
+
+/* =========================
+   STATUS ORDER
+========================= */
+
+.order-status{
+  display:none;
+  padding:13px 15px;
+  border-radius:9px;
+  margin-top:12px;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.order-status.show{
+  display:block;
+}
+
+.order-status.loading{
+  background:#edf7fb;
+  border:1px solid #c9e2ee;
+  color:#183b56;
+}
+
+.order-status.success{
+  background:#f0fff4;
+  border:1px solid #9ae6b4;
+  color:#276749;
+}
+
+.order-status.error{
+  background:#fff5f5;
+  border:1px solid #feb2b2;
+  color:#c53030;
+}
+
+/* =========================
    MODAL
 ========================= */
 
@@ -506,6 +576,14 @@ small{
     flex-direction:column;
   }
 
+  .order-search{
+    flex-direction:column;
+  }
+
+  .btn-search{
+    width:100%;
+  }
+
 }
 
 </style>
@@ -517,10 +595,6 @@ small{
 
 <body>
 
-
-<!-- ==================================================
-     HEADER
-================================================== -->
 
 <header class="header">
 
@@ -538,10 +612,6 @@ small{
 <div class="container">
 
 
-<!-- ==================================================
-     BACK
-================================================== -->
-
 <button
 type="button"
 class="back"
@@ -554,10 +624,6 @@ onclick="kembali()">
 
 <div class="form-card">
 
-
-<!-- ==================================================
-     TITLE
-================================================== -->
 
 <div class="form-title">
 
@@ -572,10 +638,6 @@ dalam satu form.
 
 </div>
 
-
-<!-- ==================================================
-     JENIS INPUT
-================================================== -->
 
 <div class="input-type">
 
@@ -653,8 +715,6 @@ id="orderForm"
 onsubmit="simpanOrder(event)">
 
 
-<!-- TANGGAL -->
-
 <div class="form-group">
 
 <label>
@@ -669,11 +729,6 @@ required>
 
 </div>
 
-
-<!-- ==================================================
-     MARKETING
-     SEKARANG INPUT MANUAL
-================================================== -->
 
 <div class="form-group">
 
@@ -695,8 +750,6 @@ Isi nama marketing secara manual.
 </div>
 
 
-<!-- JUDUL -->
-
 <div class="form-group">
 
 <label>
@@ -712,8 +765,6 @@ required>
 
 </div>
 
-
-<!-- RINCIAN BAB -->
 
 <div class="form-group">
 
@@ -745,8 +796,6 @@ untuk author Mandiri dan author Kolaborasi.
 
 </div>
 
-
-<!-- K M T -->
 
 <div class="form-group">
 
@@ -781,8 +830,6 @@ T - Tunggal
 </div>
 
 
-<!-- JENIS PENULISAN -->
-
 <div class="form-group">
 
 <label>
@@ -811,10 +858,6 @@ Naskah Mandiri
 </div>
 
 
-<!-- ==================================================
-     AUTHOR M / T
-================================================== -->
-
 <div
 id="authorMTSection"
 style="display:none;">
@@ -839,8 +882,6 @@ onclick="tambahAuthorMT()">
 </div>
 
 
-<!-- SIMPAN -->
-
 <button
 type="submit"
 class="btn-save">
@@ -856,7 +897,7 @@ SIMPAN ORDER BUKU
 
 
 <!-- ==================================================
-     FORM TAMBAH AUTHOR KOLABORASI
+     FORM TAMBAH AUTHOR
 ================================================== -->
 
 <div
@@ -868,14 +909,14 @@ class="section">
 
 <strong>🤝 Tambah Author (Kolaborasi)</strong><br>
 
-Digunakan untuk menambahkan <strong>1 author</strong>
-pada buku yang sudah memiliki ID Order.
+Masukkan <strong>ID Order</strong> yang sudah ada.
+Sistem hanya akan mencari ID Order tersebut,
+bukan mengambil seluruh daftar order.
 
 <br><br>
 
-Jika ingin menambahkan author kedua, ketiga, dan
-seterusnya, lakukan input kembali menggunakan
-<strong>ID Order yang sama</strong>.
+Setelah ID ditemukan, judul buku dan rincian bab
+akan muncul otomatis.
 
 </div>
 
@@ -885,7 +926,9 @@ id="authorForm"
 onsubmit="simpanAuthor(event)">
 
 
-<!-- ID ORDER -->
+<!-- ==================================================
+     ID ORDER - INPUT MANUAL
+================================================== -->
 
 <div class="form-group">
 
@@ -893,26 +936,47 @@ onsubmit="simpanAuthor(event)">
 ID Order Buku
 </label>
 
-<select
+<div class="order-search">
+
+<input
+type="text"
 id="idOrder"
 name="idOrder"
-onchange="ambilDetailOrder()"
+placeholder="Ketik ID Order, contoh: ORD/BUK/001"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih ID Order
-</option>
+<button
+type="button"
+id="btnCariOrder"
+class="btn-search"
+onclick="cariOrder()">
 
-</select>
+🔎 CARI ORDER
+
+</button>
+
+</div>
 
 <small>
-ID Order menjadi identitas utama buku.
+
+Ketik ID Order secara manual kemudian klik
+<strong>CARI ORDER</strong> atau tekan Enter.
+
 </small>
+
+
+<div
+id="orderStatus"
+class="order-status">
+</div>
 
 </div>
 
 
-<!-- JUDUL -->
+<!-- ==================================================
+     JUDUL
+================================================== -->
 
 <div class="form-group">
 
@@ -924,15 +988,14 @@ Judul Buku
 type="text"
 id="judulBukuAuthor"
 class="readonly"
-placeholder="Otomatis berdasarkan ID Order"
+placeholder="Akan muncul setelah ID Order ditemukan"
 readonly>
 
 </div>
 
 
 <!-- ==================================================
-     MARKETING INPUT
-     SEKARANG INPUT MANUAL
+     MARKETING
 ================================================== -->
 
 <div class="form-group">
@@ -955,7 +1018,9 @@ Isi nama marketing yang melakukan input author kolaborasi.
 </div>
 
 
-<!-- TANGGAL -->
+<!-- ==================================================
+     TANGGAL
+================================================== -->
 
 <div class="form-group">
 
@@ -973,7 +1038,7 @@ required>
 
 
 <!-- ==================================================
-     SATU AUTHOR
+     AUTHOR
 ================================================== -->
 
 <div class="form-group">
@@ -1066,7 +1131,8 @@ Bab yang Ditulis
 class="info-box"
 style="grid-column:1/-1;margin:0;">
 
-Pilih ID Order terlebih dahulu.
+Ketik ID Order terlebih dahulu,
+kemudian klik <strong>CARI ORDER</strong>.
 Daftar bab akan muncul otomatis.
 
 </div>
@@ -1201,6 +1267,10 @@ TUTUP
 let jumlahAuthorMT = 0;
 
 
+/* ==================================================
+   DOM READY
+================================================== */
+
 document.addEventListener(
   "DOMContentLoaded",
   function(){
@@ -1228,6 +1298,88 @@ document.addEventListener(
       function(){
 
         refreshSemuaBabAuthorMT();
+
+      }
+    );
+
+
+    /* ==============================================
+       ENTER PADA ID ORDER = CARI
+    ============================================== */
+
+    document.getElementById(
+      "idOrder"
+    ).addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          cariOrder();
+
+        }
+
+      }
+    );
+
+
+    /* ==============================================
+       HANYA HAPUS STATUS SAAT ID DIUBAH
+    ============================================== */
+
+    document.getElementById(
+      "idOrder"
+    ).addEventListener(
+      "input",
+      function(){
+
+        const status =
+          document.getElementById(
+            "orderStatus"
+          );
+
+
+        status.className =
+          "order-status";
+
+
+        status.innerHTML = "";
+
+
+        /*
+         * Reset detail supaya tidak menampilkan
+         * data ID lama ketika ID sedang diganti.
+         */
+
+        document.getElementById(
+          "judulBukuAuthor"
+        ).value = "";
+
+
+        const container =
+          document.querySelector(
+            "#authorContainer .authorBabContainer .bab-list"
+          );
+
+
+        if(container){
+
+          container.innerHTML = `
+
+            <div
+              class="info-box"
+              style="grid-column:1/-1;margin:0;">
+
+              Klik <strong>CARI ORDER</strong>
+              untuk mengambil data order.
+
+            </div>
+
+          `;
+
+        }
 
       }
     );
@@ -1274,28 +1426,355 @@ function ubahJenisInput(){
       .classList.add("active");
 
 
-    if(
-      typeof google !== "undefined" &&
-      google.script &&
-      google.script.run
-    ){
+    /*
+     * TIDAK ADA LAGI:
+     *
+     * google.script.run.ambilDaftarOrder()
+     *
+     * Karena ID sekarang diketik manual.
+     */
 
-      google.script.run
-        .withSuccessHandler(
-          isiDropdownOrder
-        )
-        .withFailureHandler(
-          function(error){
+    setTimeout(
+      function(){
 
-            console.error(error);
+        document
+          .getElementById("idOrder")
+          .focus();
 
-          }
-        )
-        .ambilDaftarOrder();
-
-    }
+      },
+      100
+    );
 
   }
+
+}
+
+
+/* ==================================================
+   CARI ORDER BERDASARKAN ID
+================================================== */
+
+function cariOrder(){
+
+  const input =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  const idOrder =
+    input.value.trim();
+
+
+  const status =
+    document.getElementById(
+      "orderStatus"
+    );
+
+
+  const btn =
+    document.getElementById(
+      "btnCariOrder"
+    );
+
+
+  /*
+   * Validasi kosong
+   */
+
+  if(!idOrder){
+
+    status.className =
+      "order-status show error";
+
+
+    status.innerHTML =
+      "⚠️ Silakan ketik ID Order terlebih dahulu.";
+
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  /*
+   * Validasi panjang minimum
+   */
+
+  if(idOrder.length < 3){
+
+    status.className =
+      "order-status show error";
+
+
+    status.innerHTML =
+      "⚠️ ID Order terlalu pendek.";
+
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  /*
+   * Reset detail lama
+   */
+
+  document.getElementById(
+    "judulBukuAuthor"
+  ).value = "";
+
+
+  const container =
+    document.querySelector(
+      "#authorContainer .authorBabContainer .bab-list"
+    );
+
+
+  if(container){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Sedang mengambil rincian bab...
+
+      </div>
+
+    `;
+
+  }
+
+
+  /*
+   * Loading
+   */
+
+  status.className =
+    "order-status show loading";
+
+
+  status.innerHTML =
+    "⏳ Mencari ID Order <strong>" +
+    escapeHtml(idOrder) +
+    "</strong>...";
+
+
+  btn.disabled = true;
+
+  btn.textContent =
+    "⏳ MENCARI";
+
+
+  /*
+   * Pastikan google.script tersedia
+   */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    btn.disabled = false;
+
+    btn.textContent =
+      "🔎 CARI ORDER";
+
+
+    status.className =
+      "order-status show error";
+
+
+    status.innerHTML =
+      "❌ Google Apps Script tidak tersedia.";
+
+
+    return;
+
+  }
+
+
+  /*
+   * HANYA PANGGIL SATU ID
+   *
+   * Tidak mengambil daftar seluruh order.
+   */
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(data){
+
+        btn.disabled = false;
+
+        btn.textContent =
+          "🔎 CARI ORDER";
+
+
+        /*
+         * ID tidak ditemukan
+         */
+
+        if(
+          !data ||
+          data.found === false
+        ){
+
+          status.className =
+            "order-status show error";
+
+
+          status.innerHTML =
+
+            "❌ <strong>ID Order tidak ditemukan.</strong>" +
+
+            "<br>" +
+
+            "ID yang dicari: " +
+
+            "<strong>" +
+
+            escapeHtml(idOrder) +
+
+            "</strong>";
+
+
+          document.getElementById(
+            "judulBukuAuthor"
+          ).value = "";
+
+
+          if(container){
+
+            container.innerHTML = `
+
+              <div
+                class="info-box"
+                style="
+                  grid-column:1/-1;
+                  margin:0;
+                  border-left-color:#e53e3e;
+                ">
+
+                ❌ ID Order tidak ditemukan.
+                <br>
+                Silakan periksa kembali ID Order
+                yang diketik.
+
+              </div>
+
+            `;
+
+          }
+
+          return;
+
+        }
+
+
+        /*
+         * DATA DITEMUKAN
+         */
+
+        const judul =
+          data.judulBuku || "";
+
+
+        const rincianBab =
+          data.rincianBab || "";
+
+
+        status.className =
+          "order-status show success";
+
+
+        status.innerHTML =
+
+          "✅ <strong>ID Order ditemukan.</strong>" +
+
+          "<br>" +
+
+          "Judul: " +
+
+          "<strong>" +
+
+          escapeHtml(judul) +
+
+          "</strong>";
+
+
+        document.getElementById(
+          "judulBukuAuthor"
+        ).value =
+          judul;
+
+
+        tampilkanBabKolaborasi(
+          rincianBab
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        btn.disabled = false;
+
+        btn.textContent =
+          "🔎 CARI ORDER";
+
+
+        status.className =
+          "order-status show error";
+
+
+        status.innerHTML =
+
+          "❌ <strong>Gagal mencari ID Order.</strong>" +
+
+          "<br>" +
+
+          escapeHtml(
+            error && error.message
+              ? error.message
+              : "Terjadi kesalahan pada server."
+          );
+
+
+        if(container){
+
+          container.innerHTML = `
+
+            <div
+              class="info-box"
+              style="
+                grid-column:1/-1;
+                margin:0;
+                border-left-color:#e53e3e;
+              ">
+
+              ❌ Gagal mengambil data order.
+
+            </div>
+
+          `;
+
+        }
+
+      }
+    )
+
+    .ambilDetailOrder(
+      idOrder
+    );
 
 }
 
@@ -1343,7 +1822,8 @@ function ubahKMT(){
 
   if(kmt === "K"){
 
-    section.style.display = "none";
+    section.style.display =
+      "none";
 
     return;
 
@@ -1352,9 +1832,12 @@ function ubahKMT(){
 
   if(kmt === "M"){
 
-    section.style.display = "block";
+    section.style.display =
+      "block";
 
-    btnTambah.style.display = "block";
+    btnTambah.style.display =
+      "block";
+
 
     info.innerHTML = `
 
@@ -1378,6 +1861,7 @@ function ubahKMT(){
 
     `;
 
+
     tambahAuthorMT();
 
     return;
@@ -1387,9 +1871,12 @@ function ubahKMT(){
 
   if(kmt === "T"){
 
-    section.style.display = "block";
+    section.style.display =
+      "block";
 
-    btnTambah.style.display = "none";
+    btnTambah.style.display =
+      "none";
+
 
     info.innerHTML = `
 
@@ -1408,6 +1895,7 @@ function ubahKMT(){
 
     `;
 
+
     tambahAuthorMT();
 
     return;
@@ -1415,7 +1903,8 @@ function ubahKMT(){
   }
 
 
-  section.style.display = "none";
+  section.style.display =
+    "none";
 
 }
 
@@ -1817,12 +2306,6 @@ function ubahModeBab(radio){
     radio.value;
 
 
-  const pilihanBab =
-    card.querySelector(
-      ".bab-author-container"
-    );
-
-
   const checkboxBox =
     card.querySelector(
       ".bab-author-container .bab-list"
@@ -1975,96 +2458,6 @@ function perbaruiNomorAuthorMT(){
 
 
 /* ==================================================
-   DETAIL ORDER KOLABORASI
-================================================== */
-
-function ambilDetailOrder(){
-
-  const idOrder =
-    document.getElementById(
-      "idOrder"
-    ).value;
-
-
-  if(!idOrder){
-
-    document.getElementById(
-      "judulBukuAuthor"
-    ).value = "";
-
-
-    const container =
-      document.querySelector(
-        "#authorContainer .authorBabContainer .bab-list"
-      );
-
-
-    if(container){
-
-      container.innerHTML = `
-
-        <div
-          class="info-box"
-          style="grid-column:1/-1;margin:0;">
-
-          Pilih ID Order terlebih dahulu.
-
-        </div>
-
-      `;
-
-    }
-
-    return;
-
-  }
-
-
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
-
-    google.script.run
-      .withSuccessHandler(
-        function(data){
-
-          if(!data){
-            return;
-          }
-
-
-          document.getElementById(
-            "judulBukuAuthor"
-          ).value =
-            data.judulBuku || "";
-
-
-          tampilkanBabKolaborasi(
-            data.rincianBab || ""
-          );
-
-        }
-      )
-      .withFailureHandler(
-        function(error){
-
-          alert(
-            "Gagal mengambil detail order: " +
-            error.message
-          );
-
-        }
-      )
-      .ambilDetailOrder(idOrder);
-
-  }
-
-}
-
-
-/* ==================================================
    TAMPILKAN BAB KOLABORASI
 ================================================== */
 
@@ -2094,7 +2487,7 @@ function tampilkanBabKolaborasi(
         class="info-box"
         style="grid-column:1/-1;margin:0;">
 
-        Rincian bab belum tersedia.
+        ⚠️ Rincian bab belum tersedia.
 
       </div>
 
@@ -2114,6 +2507,27 @@ function tampilkanBabKolaborasi(
       .filter(
         x => x
       );
+
+
+  if(
+    daftarBab.length === 0
+  ){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        ⚠️ Rincian bab belum tersedia.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
 
 
   daftarBab.forEach(
@@ -2145,78 +2559,6 @@ function tampilkanBabKolaborasi(
 
       container.appendChild(
         label
-      );
-
-    }
-  );
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN ORDER
-================================================== */
-
-function isiDropdownOrder(
-  data
-){
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  select.innerHTML = `
-
-    <option value="">
-      Pilih ID Order
-    </option>
-
-  `;
-
-
-  if(!Array.isArray(data)){
-    return;
-  }
-
-
-  data.forEach(
-    function(item){
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      if(
-        typeof item === "object"
-      ){
-
-        option.value =
-          item.idOrder || "";
-
-
-        option.textContent =
-          item.idOrder +
-          " — " +
-          (item.judulBuku || "");
-
-      }
-      else{
-
-        option.value =
-          item;
-
-        option.textContent =
-          item;
-
-      }
-
-
-      select.appendChild(
-        option
       );
 
     }
@@ -2509,13 +2851,32 @@ function simpanAuthor(
   const idOrder =
     document.getElementById(
       "idOrder"
-    ).value;
+    ).value.trim();
 
 
   const judulBuku =
     document.getElementById(
       "judulBukuAuthor"
     ).value;
+
+
+  /*
+   * Pastikan ID sudah berhasil dicari
+   */
+
+  if(!judulBuku){
+
+    alert(
+      "Silakan cari dan pastikan ID Order ditemukan terlebih dahulu."
+    );
+
+    document
+      .getElementById("idOrder")
+      .focus();
+
+    return;
+
+  }
 
 
   const marketing =
@@ -2696,6 +3057,19 @@ function resetFormAuthor(){
   ).value = "";
 
 
+  const status =
+    document.getElementById(
+      "orderStatus"
+    );
+
+
+  status.className =
+    "order-status";
+
+
+  status.innerHTML = "";
+
+
   const container =
     document.querySelector(
       "#authorContainer .authorBabContainer .bab-list"
@@ -2710,8 +3084,8 @@ function resetFormAuthor(){
         class="info-box"
         style="grid-column:1/-1;margin:0;">
 
-        Pilih ID Order terlebih dahulu.
-        Daftar bab akan muncul otomatis.
+        Ketik ID Order terlebih dahulu,
+        kemudian klik <strong>CARI ORDER</strong>.
 
       </div>
 
