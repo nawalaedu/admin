@@ -549,8 +549,8 @@ ID Order Olah Data yang telah dibuat.
 
 Masukkan <strong>ID Order Olah Data</strong> pada kolom
 pencarian, kemudian tekan tombol <strong>🔍 Cari Data</strong>.
-Sistem akan menampilkan <strong>Nama Pemesan</strong> dan
-<strong>Judul Penelitian</strong> secara otomatis.
+Sistem akan mengambil <strong>Nama Pemesan</strong> dan
+<strong>Judul Penelitian</strong> dari data Order secara otomatis.
 
 <br><br>
 
@@ -613,7 +613,7 @@ class="search-status">
 
 <small>
 Ketik ID Order Olah Data secara manual, kemudian klik
-<strong>🔍 Cari Data</strong>.
+<strong>🔍 Cari Data</strong> atau tekan Enter.
 </small>
 
 </div>
@@ -942,7 +942,7 @@ function cariDataOrder(){
 
 
   /* ==================================================
-     VALIDASI
+     VALIDASI ID ORDER
   ================================================== */
 
   if(!idOrder){
@@ -962,14 +962,14 @@ function cariDataOrder(){
 
 
   /* ==================================================
-     RESET DETAIL
+     KOSONGKAN DATA LAMA
   ================================================== */
 
   kosongkanDetail();
 
 
   /* ==================================================
-     LOADING
+     BUTTON LOADING
   ================================================== */
 
   btnCari.disabled =
@@ -986,7 +986,7 @@ function cariDataOrder(){
 
 
   /* ==================================================
-     AMBIL DETAIL DARI CODE.GS
+     AMBIL DATA DARI CODE.GS
   ================================================== */
 
   google.script.run
@@ -1002,7 +1002,7 @@ function cariDataOrder(){
 
 
         /* ==================================================
-           CEK DATA
+           DATA TIDAK DITEMUKAN
         ================================================== */
 
         if(!data){
@@ -1010,7 +1010,7 @@ function cariDataOrder(){
           kosongkanDetail();
 
           tampilkanStatusCari(
-            "❌ ID Order tidak ditemukan. Periksa kembali ID Order.",
+            "❌ ID Order tidak ditemukan. Periksa kembali ID Order yang diketik.",
             "error"
           );
 
@@ -1020,61 +1020,36 @@ function cariDataOrder(){
 
 
         /* ==================================================
-           DEBUG DATA
-           
-           Tidak ditampilkan kepada pengguna.
-           Membantu melihat struktur data di console
-           jika diperlukan.
-        ================================================== */
-
-        console.log(
-          "Data Order Olah Data:",
-          data
-        );
-
-
-        /* ==================================================
-           AMBIL NAMA PEMESAN
+           NAMA PEMESAN
         ================================================== */
 
         const nama =
-          ambilNilaiField(
-            data,
-            [
-              "nama",
-              "namaPemesan",
-              "nama_pemesan",
-              "Nama Pemesan",
-              "NAMA PEMESAN"
-            ]
-          );
+          data.nama ||
+          data.namaPemesan ||
+          "";
 
 
         /* ==================================================
-           AMBIL JUDUL PENELITIAN
+           JUDUL OLAH DATA
+           
+           PENTING:
+           Sumber utama menggunakan:
+           
+           data.judulOlahData
+           
+           karena field tersebut berasal dari
+           Sheet Order.
         ================================================== */
 
         const judul =
-          ambilNilaiField(
-            data,
-            [
-              "judul",
-              "judulPenelitian",
-              "judulData",
-              "judulArtikel",
-              "judulArtikelJurnal",
-              "namaPenelitian",
-              "namaJudul",
-              "title",
-              "Judul",
-              "Judul Penelitian",
-              "JUDUL PENELITIAN"
-            ]
-          );
+          data.judulOlahData ||
+          data.judul ||
+          data.judulPenelitian ||
+          "";
 
 
         /* ==================================================
-           TAMPILKAN DATA
+           TAMPILKAN DETAIL
         ================================================== */
 
         setDetail(
@@ -1084,19 +1059,26 @@ function cariDataOrder(){
 
 
         /* ==================================================
-           CEK JUDUL
+           VALIDASI DATA
         ================================================== */
+
+        if(!nama && !judul){
+
+          tampilkanStatusCari(
+            "⚠️ ID Order ditemukan, tetapi Nama Pemesan dan Judul Olah Data kosong.",
+            "error"
+          );
+
+          return;
+
+        }
+
 
         if(!judul){
 
           tampilkanStatusCari(
-            "⚠ Data order ditemukan, tetapi Judul Penelitian belum ditemukan dari data server.",
+            "⚠️ Data ditemukan, tetapi Judul Olah Data kosong pada Sheet Order.",
             "error"
-          );
-
-          console.warn(
-            "Field Judul tidak ditemukan. Struktur data:",
-            data
           );
 
           return;
@@ -1109,7 +1091,7 @@ function cariDataOrder(){
         ================================================== */
 
         tampilkanStatusCari(
-          "✓ Data order ditemukan. Nama Pemesan dan Judul Penelitian berhasil ditampilkan.",
+          "✓ Data Order ditemukan. Nama Pemesan dan Judul Penelitian berhasil ditampilkan.",
           "success"
         );
 
@@ -1153,115 +1135,6 @@ function cariDataOrder(){
     .ambilDetailOrderOlahData(
       idOrder
     );
-
-}
-
-
-/* ==================================================
-   AMBIL NILAI FIELD
-================================================== */
-
-function ambilNilaiField(
-  data,
-  fieldList
-){
-
-  /*
-    Jika data langsung memiliki field
-  */
-
-  for(
-    let i = 0;
-    i < fieldList.length;
-    i++
-  ){
-
-    const field =
-      fieldList[i];
-
-
-    if(
-      data &&
-      Object.prototype.hasOwnProperty.call(
-        data,
-        field
-      )
-    ){
-
-      const value =
-        data[field];
-
-
-      if(
-        value !== undefined &&
-        value !== null &&
-        String(value).trim() !== ""
-      ){
-
-        return String(value).trim();
-
-      }
-
-    }
-
-  }
-
-
-  /*
-    Coba cari di object nested
-    seperti:
-    
-    data.order
-    data.data
-    data.result
-    data.detail
-    data.orderData
-  */
-
-  const nestedKeys = [
-    "order",
-    "data",
-    "result",
-    "detail",
-    "orderData"
-  ];
-
-
-  for(
-    let i = 0;
-    i < nestedKeys.length;
-    i++
-  ){
-
-    const nestedKey =
-      nestedKeys[i];
-
-
-    if(
-      data &&
-      data[nestedKey] &&
-      typeof data[nestedKey] === "object"
-    ){
-
-      const hasil =
-        ambilNilaiField(
-          data[nestedKey],
-          fieldList
-        );
-
-
-      if(hasil){
-
-        return hasil;
-
-      }
-
-    }
-
-  }
-
-
-  return "";
 
 }
 
@@ -1396,6 +1269,18 @@ function simpanHasilData(
       ).value.trim(),
 
 
+    /*
+      Simpan juga judulOlahData
+      supaya konsisten dengan data
+      yang berasal dari Sheet Order.
+    */
+
+    judulOlahData:
+      document.getElementById(
+        "judul"
+      ).value.trim(),
+
+
     timPengolah:
       document.getElementById(
         "timPengolah"
@@ -1411,7 +1296,7 @@ function simpanHasilData(
 
 
   /* ==================================================
-     VALIDASI TAMBAHAN
+     VALIDASI ID ORDER
   ================================================== */
 
   if(!data.idOrder){
@@ -1429,6 +1314,10 @@ function simpanHasilData(
   }
 
 
+  /* ==================================================
+     VALIDASI NAMA
+  ================================================== */
+
   if(!data.nama){
 
     alert(
@@ -1444,10 +1333,14 @@ function simpanHasilData(
   }
 
 
-  if(!data.judul){
+  /* ==================================================
+     VALIDASI JUDUL
+  ================================================== */
+
+  if(!data.judulOlahData){
 
     alert(
-      "Judul penelitian belum ditemukan. Silakan klik 🔍 Cari Data terlebih dahulu."
+      "Judul Olah Data belum ditemukan. Silakan klik 🔍 Cari Data terlebih dahulu."
     );
 
     document.getElementById(
@@ -1458,6 +1351,10 @@ function simpanHasilData(
 
   }
 
+
+  /* ==================================================
+     VALIDASI TIM
+  ================================================== */
 
   if(!data.timPengolah){
 
@@ -1473,6 +1370,10 @@ function simpanHasilData(
 
   }
 
+
+  /* ==================================================
+     VALIDASI ARSIP
+  ================================================== */
 
   if(!data.arsip){
 
@@ -1556,7 +1457,27 @@ function simpanHasilData(
 
 
           /* ==================================================
-             RESET FORM
+             RESET TIM
+          ================================================== */
+
+          document.getElementById(
+            "timPengolah"
+          ).value =
+            "";
+
+
+          /* ==================================================
+             RESET ARSIP
+          ================================================== */
+
+          document.getElementById(
+            "arsip"
+          ).value =
+            "";
+
+
+          /* ==================================================
+             RESET ID ORDER
           ================================================== */
 
           document.getElementById(
@@ -1565,20 +1486,16 @@ function simpanHasilData(
             "";
 
 
-          document.getElementById(
-            "timPengolah"
-          ).value =
-            "";
-
-
-          document.getElementById(
-            "arsip"
-          ).value =
-            "";
-
+          /* ==================================================
+             RESET DETAIL
+          ================================================== */
 
           kosongkanDetail();
 
+
+          /* ==================================================
+             RESET STATUS
+          ================================================== */
 
           tampilkanStatusCari(
             "",
@@ -1671,7 +1588,7 @@ function tampilkanPopupBerhasil(
   document.getElementById(
     "resultJudul"
   ).textContent =
-    data.judul || "-";
+    data.judulOlahData || "-";
 
 
   document.getElementById(
