@@ -21,6 +21,11 @@ body{
   color:#183b56;
 }
 
+
+/* =========================
+   HEADER
+========================= */
+
 .header{
   background:linear-gradient(135deg,#183b56,#2f6f95);
   color:white;
@@ -28,13 +33,24 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  box-shadow:0 3px 15px rgba(0,0,0,.12);
 }
+
+
+/* =========================
+   CONTAINER
+========================= */
 
 .container{
   max-width:850px;
   margin:40px auto;
   padding:0 20px;
 }
+
+
+/* =========================
+   BACK
+========================= */
 
 .back{
   background:#718096;
@@ -44,11 +60,17 @@ body{
   border-radius:8px;
   cursor:pointer;
   margin-bottom:20px;
+  font-weight:bold;
 }
 
 .back:hover{
   background:#4a5568;
 }
+
+
+/* =========================
+   CARD
+========================= */
 
 .form-card{
   background:white;
@@ -56,6 +78,11 @@ body{
   border-radius:18px;
   box-shadow:0 8px 30px rgba(0,0,0,.08);
 }
+
+
+/* =========================
+   TITLE
+========================= */
 
 .form-title{
   margin-bottom:30px;
@@ -70,6 +97,11 @@ body{
   line-height:1.5;
 }
 
+
+/* =========================
+   FORM
+========================= */
+
 .form-group{
   margin-bottom:20px;
 }
@@ -81,20 +113,33 @@ label{
   margin-bottom:8px;
 }
 
+.required{
+  color:#e53e3e;
+}
+
 input,
-select{
+select,
+textarea{
   width:100%;
   padding:13px;
   border:1px solid #d6dee6;
   border-radius:9px;
   font-size:14px;
   font-family:Arial,sans-serif;
+  background:white;
 }
 
 input:focus,
-select:focus{
+select:focus,
+textarea:focus{
   outline:none;
   border-color:#2f6f95;
+  box-shadow:0 0 0 2px rgba(47,111,149,.08);
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
 }
 
 .readonly{
@@ -107,7 +152,13 @@ small{
   margin-top:7px;
   color:#718096;
   line-height:1.5;
+  font-size:12px;
 }
+
+
+/* =========================
+   INFO BOX
+========================= */
 
 .info-box{
   background:#f0f7fb;
@@ -119,6 +170,25 @@ small{
   line-height:1.6;
 }
 
+
+/* =========================
+   SECTION
+========================= */
+
+.section-title{
+  margin:30px 0 18px;
+  padding-bottom:10px;
+  border-bottom:1px solid #e2e8f0;
+  font-size:17px;
+  font-weight:bold;
+  color:#183b56;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
 .btn-save{
   width:100%;
   border:0;
@@ -129,6 +199,7 @@ small{
   font-weight:bold;
   cursor:pointer;
   font-size:14px;
+  margin-top:10px;
 }
 
 .btn-save:hover{
@@ -153,6 +224,7 @@ small{
   justify-content:center;
   align-items:center;
   z-index:9999;
+  padding:20px;
 }
 
 .popup-overlay.active{
@@ -214,6 +286,7 @@ small{
   display:block;
   font-size:28px;
   color:#183b56;
+  word-break:break-word;
 }
 
 .btn-popup{
@@ -266,7 +339,8 @@ small{
 
 </style>
 
-  <script src="api.js"></script>
+<script src="api.js"></script>
+
 </head>
 
 
@@ -279,13 +353,13 @@ small{
 
 <header class="header">
 
-<div>
-ADMIN MANAGEMENT
-</div>
+  <div>
+    ADMIN MANAGEMENT
+  </div>
 
-<div>
-INVOICE IJP
-</div>
+  <div>
+    INVOICE IJP
+  </div>
 
 </header>
 
@@ -316,14 +390,14 @@ onclick="kembali()">
 
 <div class="form-title">
 
-<h1>
-🧾 Form Invoice IJP
-</h1>
+  <h1>
+    🧾 Form Invoice IJP
+  </h1>
 
-<p>
-Catat invoice dan pembayaran berdasarkan
-order IJP serta penulis IJP.
-</p>
+  <p>
+    Catat invoice dan pembayaran berdasarkan
+    order IJP serta penulis IJP.
+  </p>
 
 </div>
 
@@ -334,16 +408,21 @@ order IJP serta penulis IJP.
 
 <div class="info-box">
 
-<strong>Informasi:</strong><br>
+  <strong>Informasi:</strong><br>
 
-Satu ID Order IJP dapat memiliki banyak penulis.
-Setiap penulis dapat memiliki transaksi pembayaran
-seperti DP dan pelunasan.
+  ID Order IJP, ID Author, dan Marketing
+  dimasukkan secara manual.
 
-<br><br>
+  <br><br>
 
-Kode jurnal dan bulan terbit akan otomatis
-ditampilkan berdasarkan ID Order IJP.
+  Pastikan ID Order dan ID Author yang dimasukkan
+  sudah sesuai dengan data yang terdapat pada sistem.
+
+  <br><br>
+
+  Kode jurnal, bulan terbit, judul IJP,
+  penulis ke-, dan nama penulis juga dimasukkan
+  secara manual pada form ini.
 
 </div>
 
@@ -354,28 +433,40 @@ onsubmit="simpanInvoice(event)">
 
 
 <!-- ==================================================
-     ID ORDER IJP
+     INFORMASI ORDER
+================================================== -->
+
+<div class="section-title">
+
+  1. INFORMASI ORDER IJP
+
+</div>
+
+
+<!-- ==================================================
+     ID ORDER
 ================================================== -->
 
 <div class="form-group">
 
 <label>
-ID Order IJP
+
+  ID Order IJP
+  <span class="required">*</span>
+
 </label>
 
-<select
+<input
+type="text"
 id="idOrder"
-required
-onchange="ambilDetailOrder()">
-
-<option value="">
-Pilih ID Order IJP
-</option>
-
-</select>
+placeholder="Contoh: ORD/IJP/001"
+autocomplete="off"
+required>
 
 <small>
-Pilih ID Order IJP yang sudah dibuat.
+
+  Masukkan ID Order IJP secara manual.
+
 </small>
 
 </div>
@@ -388,18 +479,23 @@ Pilih ID Order IJP yang sudah dibuat.
 <div class="form-group">
 
 <label>
-Kode Jurnal
+
+  Kode Jurnal
+  <span class="required">*</span>
+
 </label>
 
 <input
 type="text"
 id="kodeJurnal"
-class="readonly"
-placeholder="Otomatis berdasarkan ID Order"
-readonly>
+placeholder="Contoh: JURNAL-001"
+autocomplete="off"
+required>
 
 <small>
-Kode jurnal diambil otomatis dari data order IJP.
+
+  Masukkan kode jurnal sesuai data order IJP.
+
 </small>
 
 </div>
@@ -412,18 +508,23 @@ Kode jurnal diambil otomatis dari data order IJP.
 <div class="form-group">
 
 <label>
-Bulan Terbit
+
+  Bulan Terbit
+  <span class="required">*</span>
+
 </label>
 
 <input
 type="text"
 id="bulanTerbit"
-class="readonly"
-placeholder="Otomatis berdasarkan ID Order"
-readonly>
+placeholder="Contoh: Agustus 2026"
+autocomplete="off"
+required>
 
 <small>
-Bulan terbit IJP diambil otomatis dari data order.
+
+  Masukkan bulan terbit IJP.
+
 </small>
 
 </div>
@@ -436,42 +537,61 @@ Bulan terbit IJP diambil otomatis dari data order.
 <div class="form-group">
 
 <label>
-Judul IJP
+
+  Judul IJP
+  <span class="required">*</span>
+
 </label>
 
-<input
-type="text"
+<textarea
 id="judulIJP"
-class="readonly"
-placeholder="Otomatis berdasarkan ID Order"
-readonly>
+placeholder="Masukkan judul artikel / IJP"
+required></textarea>
+
+<small>
+
+  Masukkan judul IJP sesuai dengan order.
+
+</small>
 
 </div>
 
 
 <!-- ==================================================
-     PENULIS
+     INFORMASI AUTHOR
+================================================== -->
+
+<div class="section-title">
+
+  2. INFORMASI AUTHOR
+
+</div>
+
+
+<!-- ==================================================
+     ID AUTHOR
 ================================================== -->
 
 <div class="form-group">
 
 <label>
-Penulis
+
+  ID Author
+  <span class="required">*</span>
+
 </label>
 
-<select
+<input
+type="text"
 id="idPenulis"
-required
-onchange="ambilDetailPenulis()">
-
-<option value="">
-Pilih Penulis
-</option>
-
-</select>
+placeholder="Contoh: AUTH/IJP/001"
+autocomplete="off"
+required>
 
 <small>
-Penulis ditampilkan berdasarkan ID Order IJP.
+
+  Masukkan ID Author / ID Penulis secara manual.
+
 </small>
 
 </div>
@@ -484,18 +604,23 @@ Penulis ditampilkan berdasarkan ID Order IJP.
 <div class="form-group">
 
 <label>
-Penulis ke-
+
+  Penulis ke-
+  <span class="required">*</span>
+
 </label>
 
 <input
-type="text"
+type="number"
 id="penulisKe"
-class="readonly"
-placeholder="Otomatis berdasarkan penulis"
-readonly>
+min="1"
+placeholder="Contoh: 1"
+required>
 
 <small>
-Nomor urutan penulis akan ditampilkan otomatis.
+
+  Masukkan urutan penulis pada artikel.
+
 </small>
 
 </div>
@@ -508,15 +633,24 @@ Nomor urutan penulis akan ditampilkan otomatis.
 <div class="form-group">
 
 <label>
-Nama Penulis
+
+  Nama Penulis
+  <span class="required">*</span>
+
 </label>
 
 <input
 type="text"
 id="namaPenulis"
-class="readonly"
-placeholder="Otomatis berdasarkan penulis"
-readonly>
+placeholder="Masukkan nama lengkap penulis"
+autocomplete="off"
+required>
+
+<small>
+
+  Masukkan nama penulis sesuai dengan ID Author.
+
+</small>
 
 </div>
 
@@ -525,41 +659,46 @@ readonly>
      MARKETING
 ================================================== -->
 
+<div class="section-title">
+
+  3. INFORMASI MARKETING
+
+</div>
+
+
 <div class="form-group">
 
 <label>
-Marketing Input
+
+  Marketing Input
+  <span class="required">*</span>
+
 </label>
 
-<select
+<input
+type="text"
 id="marketingInput"
+placeholder="Masukkan nama marketing"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih Marketing
-</option>
-
-<option value="Marketing 1">
-Marketing 1
-</option>
-
-<option value="Marketing 2">
-Marketing 2
-</option>
-
-<option value="Marketing 3">
-Marketing 3
-</option>
-
-<option value="Marketing 4">
-Marketing 4
-</option>
-
-</select>
-
 <small>
-Pilih marketing yang melakukan input invoice IJP.
+
+  Masukkan nama marketing yang melakukan
+  input invoice IJP.
+
 </small>
+
+</div>
+
+
+<!-- ==================================================
+     PEMBAYARAN
+================================================== -->
+
+<div class="section-title">
+
+  4. INFORMASI PEMBAYARAN
 
 </div>
 
@@ -571,7 +710,10 @@ Pilih marketing yang melakukan input invoice IJP.
 <div class="form-group">
 
 <label>
-Tanggal Pembayaran
+
+  Tanggal Pembayaran
+  <span class="required">*</span>
+
 </label>
 
 <input
@@ -589,7 +731,10 @@ required>
 <div class="form-group">
 
 <label>
-Harga
+
+  Harga
+  <span class="required">*</span>
+
 </label>
 
 <input
@@ -600,8 +745,10 @@ placeholder="Masukkan harga penulis"
 required>
 
 <small>
-Masukkan total harga yang harus dibayarkan
-oleh penulis.
+
+  Masukkan total harga yang harus dibayarkan
+  oleh penulis.
+
 </small>
 
 </div>
@@ -614,7 +761,10 @@ oleh penulis.
 <div class="form-group">
 
 <label>
-Status Pembayaran
+
+  Status Pembayaran
+  <span class="required">*</span>
+
 </label>
 
 <select
@@ -650,7 +800,10 @@ Lunas
 <div class="form-group">
 
 <label id="labelNominal">
-Nominal Pembayaran
+
+  Nominal Pembayaran
+  <span class="required">*</span>
+
 </label>
 
 <input
@@ -661,7 +814,9 @@ placeholder="Masukkan nominal pembayaran"
 required>
 
 <small id="deskripsiNominal">
-Nominal pembayaran sesuai transaksi.
+
+  Nominal pembayaran sesuai transaksi.
+
 </small>
 
 </div>
@@ -676,7 +831,7 @@ type="submit"
 id="btnSimpan"
 class="btn-save">
 
-SIMPAN INVOICE IJP
+  💾 SIMPAN INVOICE IJP
 
 </button>
 
@@ -685,7 +840,7 @@ SIMPAN INVOICE IJP
 id="loading"
 class="loading">
 
-⏳ Menyimpan invoice IJP...
+  ⏳ Menyimpan invoice IJP...
 
 </div>
 
@@ -711,28 +866,28 @@ class="popup-overlay">
 
 
 <div class="popup-icon">
-✅
+  ✅
 </div>
 
 
 <h2>
-Invoice IJP Berhasil Disimpan
+  Invoice IJP Berhasil Disimpan
 </h2>
 
 
 <p>
-Data invoice IJP telah berhasil disimpan.
+  Data invoice IJP telah berhasil disimpan.
 </p>
 
 
 <div class="invoice-number">
 
 <small>
-Nomor Invoice
+  Nomor Invoice
 </small>
 
 <strong id="nomorInvoice">
-INV/IJP/001
+  INV/IJP/001
 </strong>
 
 </div>
@@ -747,7 +902,7 @@ type="button"
 class="btn-popup"
 onclick="tutupPopup()">
 
-SELESAI
+  SELESAI
 
 </button>
 
@@ -761,468 +916,26 @@ SELESAI
 
 
 /* ==================================================
-   TANGGAL OTOMATIS
+   INIT TANGGAL
 ================================================== */
 
 document.addEventListener(
-"DOMContentLoaded",
-function(){
+  "DOMContentLoaded",
+  function(){
 
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
-
-document.getElementById(
-"tanggal"
-).value =
-today;
+    const today =
+      new Date()
+        .toISOString()
+        .split("T")[0];
 
 
-/*
-==================================================
-AMBIL DAFTAR ORDER IJP
-==================================================
-*/
+    document.getElementById(
+      "tanggal"
+    ).value =
+      today;
 
-if(
-typeof google !== "undefined" &&
-google.script &&
-google.script.run
-){
-
-google.script.run
-
-.withSuccessHandler(
-isiDropdownOrder
-)
-
-.withFailureHandler(
-function(error){
-
-console.error(
-"Gagal mengambil daftar order IJP:",
-error
+  }
 );
-
-alert(
-"Gagal mengambil daftar order IJP:\n"+
-error.message
-);
-
-}
-)
-
-.ambilDaftarOrderIJP();
-
-}
-
-});
-
-
-/* ==================================================
-   ISI DROPDOWN ORDER IJP
-================================================== */
-
-function isiDropdownOrder(data){
-
-const select =
-document.getElementById(
-"idOrder"
-);
-
-select.innerHTML =
-`
-<option value="">
-Pilih ID Order IJP
-</option>
-`;
-
-
-if(!Array.isArray(data)){
-
-return;
-
-}
-
-
-data.forEach(
-function(item){
-
-const option =
-document.createElement(
-"option"
-);
-
-
-if(
-typeof item === "object"
-){
-
-option.value =
-item.idOrder || "";
-
-option.textContent =
-item.idOrder +
-" — " +
-(
-item.judulIJP ||
-item.judulArtikel ||
-item.judul ||
-""
-);
-
-}
-
-else{
-
-option.value =
-item;
-
-option.textContent =
-item;
-
-}
-
-
-select.appendChild(
-option
-);
-
-});
-
-}
-
-
-/* ==================================================
-   AMBIL DETAIL ORDER IJP
-================================================== */
-
-function ambilDetailOrder(){
-
-const idOrder =
-document.getElementById(
-"idOrder"
-).value;
-
-
-const judul =
-document.getElementById(
-"judulIJP"
-);
-
-const kodeJurnal =
-document.getElementById(
-"kodeJurnal"
-);
-
-const bulanTerbit =
-document.getElementById(
-"bulanTerbit"
-);
-
-const penulis =
-document.getElementById(
-"idPenulis"
-);
-
-const namaPenulis =
-document.getElementById(
-"namaPenulis"
-);
-
-const penulisKe =
-document.getElementById(
-"penulisKe"
-);
-
-
-judul.value = "";
-
-kodeJurnal.value = "";
-
-bulanTerbit.value = "";
-
-namaPenulis.value = "";
-
-penulisKe.value = "";
-
-
-penulis.innerHTML =
-`
-<option value="">
-Pilih Penulis
-</option>
-`;
-
-
-if(!idOrder){
-
-return;
-
-}
-
-
-/*
-==================================================
-AMBIL DATA ORDER IJP
-==================================================
-*/
-
-if(
-typeof google !== "undefined" &&
-google.script &&
-google.script.run
-){
-
-google.script.run
-
-.withSuccessHandler(
-function(data){
-
-if(!data){
-
-return;
-
-}
-
-
-/*
-JUDUL IJP
-*/
-
-judul.value =
-data.judulIJP ||
-data.judulArtikel ||
-data.judul ||
-"";
-
-
-/*
-KODE JURNAL
-*/
-
-kodeJurnal.value =
-data.kodeJurnal ||
-"";
-
-
-/*
-BULAN TERBIT
-*/
-
-bulanTerbit.value =
-data.bulanTerbit ||
-"";
-
-
-/*
-DAFTAR PENULIS
-*/
-
-if(
-Array.isArray(data.penulis)
-){
-
-data.penulis.forEach(
-function(item,index){
-
-const option =
-document.createElement(
-"option"
-);
-
-
-/*
-ID PENULIS
-*/
-
-option.value =
-item.idPenulis ||
-item.id ||
-(index + 1);
-
-
-/*
-NAMA PENULIS
-*/
-
-option.textContent =
-
-"Penulis " +
-(
-item.penulisKe ||
-item.urutan ||
-(index + 1)
-) +
-
-" — " +
-
-(
-item.namaPenulis ||
-item.nama ||
-""
-);
-
-
-/*
-DATA TAMBAHAN
-*/
-
-option.dataset.penulisKe =
-item.penulisKe ||
-item.urutan ||
-(index + 1);
-
-option.dataset.nama =
-item.namaPenulis ||
-item.nama ||
-"";
-
-
-penulis.appendChild(
-option
-);
-
-});
-
-}
-
-}
-)
-
-.withFailureHandler(
-function(error){
-
-alert(
-"Gagal mengambil data order IJP:\n"+
-error.message
-);
-
-}
-)
-
-.ambilOrderIJPUntukInvoice(
-idOrder
-);
-
-}
-
-}
-
-
-/* ==================================================
-   DETAIL PENULIS
-================================================== */
-
-function ambilDetailPenulis(){
-
-const select =
-document.getElementById(
-"idPenulis"
-);
-
-const option =
-select.options[
-select.selectedIndex
-];
-
-
-const nama =
-document.getElementById(
-"namaPenulis"
-);
-
-const penulisKe =
-document.getElementById(
-"penulisKe"
-);
-
-
-nama.value = "";
-
-penulisKe.value = "";
-
-
-if(
-!option ||
-!option.value
-){
-
-return;
-
-}
-
-
-/*
-AMBIL DATA DARI OPTION
-*/
-
-penulisKe.value =
-option.dataset.penulisKe ||
-"";
-
-
-nama.value =
-option.dataset.nama ||
-"";
-
-
-/*
-==================================================
-JIKA DATA BELUM ADA DI OPTION,
-AMBIL DARI CODE.GS
-==================================================
-*/
-
-if(
-typeof google !== "undefined" &&
-google.script &&
-google.script.run
-){
-
-google.script.run
-
-.withSuccessHandler(
-function(data){
-
-if(!data){
-
-return;
-
-}
-
-nama.value =
-data.namaPenulis ||
-data.nama ||
-nama.value;
-
-penulisKe.value =
-data.penulisKe ||
-data.urutan ||
-penulisKe.value;
-
-}
-)
-
-.withFailureHandler(
-function(error){
-
-console.error(
-"Gagal mengambil detail penulis IJP:",
-error
-);
-
-}
-)
-
-.ambilDetailPenulisIJP(
-option.value
-);
-
-}
-
-}
 
 
 /* ==================================================
@@ -1231,63 +944,69 @@ option.value
 
 function ubahStatusPembayaran(){
 
-const status =
-document.getElementById(
-"statusPembayaran"
-).value;
+  const status =
+    document.getElementById(
+      "statusPembayaran"
+    ).value;
 
 
-const label =
-document.getElementById(
-"labelNominal"
-);
+  const label =
+    document.getElementById(
+      "labelNominal"
+    );
 
 
-const deskripsi =
-document.getElementById(
-"deskripsiNominal"
-);
+  const deskripsi =
+    document.getElementById(
+      "deskripsiNominal"
+    );
 
 
-if(status === "DP"){
+  if(
+    status === "DP"
+  ){
 
-label.textContent =
-"Nominal DP";
+    label.innerHTML =
+      'Nominal DP <span class="required">*</span>';
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran DP.";
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran DP.";
 
-}
+  }
 
-else if(status === "Pelunasan"){
+  else if(
+    status === "Pelunasan"
+  ){
 
-label.textContent =
-"Nominal Pelunasan";
+    label.innerHTML =
+      'Nominal Pelunasan <span class="required">*</span>';
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran pelunasan.";
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran pelunasan.";
 
-}
+  }
 
-else if(status === "Lunas"){
+  else if(
+    status === "Lunas"
+  ){
 
-label.textContent =
-"Nominal Lunas";
+    label.innerHTML =
+      'Nominal Lunas <span class="required">*</span>';
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran lunas.";
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran lunas.";
 
-}
+  }
 
-else{
+  else{
 
-label.textContent =
-"Nominal Pembayaran";
+    label.innerHTML =
+      'Nominal Pembayaran <span class="required">*</span>';
 
-deskripsi.textContent =
-"Nominal pembayaran sesuai transaksi.";
+    deskripsi.textContent =
+      "Nominal pembayaran sesuai transaksi.";
 
-}
+  }
 
 }
 
@@ -1298,408 +1017,624 @@ deskripsi.textContent =
 
 function simpanInvoice(event){
 
-event.preventDefault();
+  event.preventDefault();
 
 
-const form =
-document.getElementById(
-"invoiceForm"
-);
+  const form =
+    document.getElementById(
+      "invoiceForm"
+    );
 
 
-if(!form.checkValidity()){
+  if(
+    !form.checkValidity()
+  ){
 
-form.reportValidity();
+    form.reportValidity();
 
-return;
+    return;
 
-}
+  }
 
 
-const btn =
-document.getElementById(
-"btnSimpan"
-);
+  /* ==================================================
+     AMBIL DATA
+  ================================================== */
 
+  const data = {
 
-const loading =
-document.getElementById(
-"loading"
-);
+    idOrder:
+      document.getElementById(
+        "idOrder"
+      ).value.trim(),
 
 
-/*
-==================================================
-DATA
-==================================================
-*/
+    kodeJurnal:
+      document.getElementById(
+        "kodeJurnal"
+      ).value.trim(),
 
-const data = {
 
-idOrder:
+    bulanTerbit:
+      document.getElementById(
+        "bulanTerbit"
+      ).value.trim(),
 
-document.getElementById(
-"idOrder"
-).value,
 
+    judulIJP:
+      document.getElementById(
+        "judulIJP"
+      ).value.trim(),
 
-kodeJurnal:
 
-document.getElementById(
-"kodeJurnal"
-).value,
+    idPenulis:
+      document.getElementById(
+        "idPenulis"
+      ).value.trim(),
 
 
-bulanTerbit:
+    penulisKe:
+      document.getElementById(
+        "penulisKe"
+      ).value.trim(),
 
-document.getElementById(
-"bulanTerbit"
-).value,
 
+    namaPenulis:
+      document.getElementById(
+        "namaPenulis"
+      ).value.trim(),
 
-judulIJP:
 
-document.getElementById(
-"judulIJP"
-).value,
+    marketingInput:
+      document.getElementById(
+        "marketingInput"
+      ).value.trim(),
 
 
-idPenulis:
+    tanggal:
+      document.getElementById(
+        "tanggal"
+      ).value,
 
-document.getElementById(
-"idPenulis"
-).value,
 
+    harga:
+      document.getElementById(
+        "harga"
+      ).value,
 
-penulisKe:
 
-document.getElementById(
-"penulisKe"
-).value,
+    statusPembayaran:
+      document.getElementById(
+        "statusPembayaran"
+      ).value,
 
 
-namaPenulis:
+    nominal:
+      document.getElementById(
+        "nominal"
+      ).value
 
-document.getElementById(
-"namaPenulis"
-).value,
+  };
 
 
-marketingInput:
+  /* ==================================================
+     VALIDASI DATA
+  ================================================== */
 
-document.getElementById(
-"marketingInput"
-).value,
+  if(
+    !data.idOrder
+  ){
 
+    alert(
+      "Silakan masukkan ID Order IJP."
+    );
 
-tanggal:
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
-document.getElementById(
-"tanggal"
-).value,
+    return;
 
+  }
 
-harga:
 
-document.getElementById(
-"harga"
-).value,
+  if(
+    !data.kodeJurnal
+  ){
 
+    alert(
+      "Silakan masukkan Kode Jurnal."
+    );
 
-statusPembayaran:
+    document.getElementById(
+      "kodeJurnal"
+    ).focus();
 
-document.getElementById(
-"statusPembayaran"
-).value,
+    return;
 
+  }
 
-nominal:
 
-document.getElementById(
-"nominal"
-).value
+  if(
+    !data.bulanTerbit
+  ){
 
-};
+    alert(
+      "Silakan masukkan Bulan Terbit."
+    );
 
+    document.getElementById(
+      "bulanTerbit"
+    ).focus();
 
-/*
-==================================================
-VALIDASI
-==================================================
-*/
+    return;
 
-if(!data.idOrder){
+  }
 
-alert(
-"Silakan pilih ID Order IJP."
-);
 
-return;
+  if(
+    !data.judulIJP
+  ){
 
-}
+    alert(
+      "Silakan masukkan Judul IJP."
+    );
 
+    document.getElementById(
+      "judulIJP"
+    ).focus();
 
-if(!data.kodeJurnal){
+    return;
 
-alert(
-"Kode Jurnal belum tersedia."
-);
+  }
 
-return;
 
-}
+  if(
+    !data.idPenulis
+  ){
 
+    alert(
+      "Silakan masukkan ID Author."
+    );
 
-if(!data.bulanTerbit){
+    document.getElementById(
+      "idPenulis"
+    ).focus();
 
-alert(
-"Bulan Terbit belum tersedia."
-);
+    return;
 
-return;
+  }
 
-}
 
+  if(
+    !data.penulisKe ||
+    Number(data.penulisKe) < 1
+  ){
 
-if(!data.idPenulis){
+    alert(
+      "Nomor Penulis ke- belum diisi dengan benar."
+    );
 
-alert(
-"Silakan pilih Penulis."
-);
+    document.getElementById(
+      "penulisKe"
+    ).focus();
 
-return;
+    return;
 
-}
+  }
 
 
-if(!data.marketingInput){
+  if(
+    !data.namaPenulis
+  ){
 
-alert(
-"Silakan pilih Marketing Input."
-);
+    alert(
+      "Silakan masukkan Nama Penulis."
+    );
 
-return;
+    document.getElementById(
+      "namaPenulis"
+    ).focus();
 
-}
+    return;
 
+  }
 
-if(!data.statusPembayaran){
 
-alert(
-"Silakan pilih Status Pembayaran."
-);
+  if(
+    !data.marketingInput
+  ){
 
-return;
+    alert(
+      "Silakan masukkan nama Marketing."
+    );
 
-}
+    document.getElementById(
+      "marketingInput"
+    ).focus();
 
+    return;
 
-if(
-!data.harga ||
-Number(data.harga) < 0
-){
+  }
 
-alert(
-"Harga belum diisi dengan benar."
-);
 
-return;
+  if(
+    !data.statusPembayaran
+  ){
 
-}
+    alert(
+      "Silakan pilih Status Pembayaran."
+    );
 
+    return;
 
-if(
-!data.nominal ||
-Number(data.nominal) < 0
-){
+  }
 
-alert(
-"Nominal pembayaran belum diisi dengan benar."
-);
 
-return;
+  if(
+    data.harga === "" ||
+    Number(data.harga) < 0
+  ){
 
-}
+    alert(
+      "Harga belum diisi dengan benar."
+    );
 
+    document.getElementById(
+      "harga"
+    ).focus();
 
-/*
-==================================================
-LOADING
-==================================================
-*/
+    return;
 
-btn.disabled = true;
+  }
 
-btn.textContent =
-"MENYIMPAN...";
 
-loading.classList.add(
-"active"
-);
+  if(
+    data.nominal === "" ||
+    Number(data.nominal) < 0
+  ){
 
+    alert(
+      "Nominal pembayaran belum diisi dengan benar."
+    );
 
-/*
-==================================================
-KIRIM KE CODE.GS
-==================================================
-*/
+    document.getElementById(
+      "nominal"
+    ).focus();
 
-google.script.run
+    return;
 
-.withSuccessHandler(
-function(result){
+  }
 
-btn.disabled = false;
 
-btn.textContent =
-"SIMPAN INVOICE IJP";
+  /* ==================================================
+     ELEMENT BUTTON
+  ================================================== */
 
-loading.classList.remove(
-"active"
-);
+  const btn =
+    document.getElementById(
+      "btnSimpan"
+    );
 
 
-if(
-result &&
-result.success
-){
+  const loading =
+    document.getElementById(
+      "loading"
+    );
 
-document.getElementById(
-"nomorInvoice"
-).textContent =
-result.idInvoice;
 
+  /* ==================================================
+     LOADING
+  ================================================== */
 
-document.getElementById(
-"detailInvoice"
-).innerHTML =
+  btn.disabled = true;
 
-"ID Order: <strong>" +
-escapeHtml(data.idOrder) +
-"</strong><br>" +
+  btn.textContent =
+    "⏳ MENYIMPAN...";
 
-"Kode Jurnal: <strong>" +
-escapeHtml(data.kodeJurnal) +
-"</strong><br>" +
+  loading.classList.add(
+    "active"
+  );
 
-"Bulan Terbit: <strong>" +
-escapeHtml(data.bulanTerbit) +
-"</strong><br>" +
 
-"Judul IJP: <strong>" +
-escapeHtml(data.judulIJP) +
-"</strong><br>" +
+  /* ==================================================
+     GOOGLE APPS SCRIPT
+  ================================================== */
 
-"Penulis ke-" +
-escapeHtml(data.penulisKe) +
-": <strong>" +
-escapeHtml(data.namaPenulis) +
-"</strong><br>" +
+  if(
+    typeof google !== "undefined" &&
+    google.script &&
+    google.script.run
+  ){
 
-"Status: <strong>" +
-escapeHtml(data.statusPembayaran) +
-"</strong><br>" +
+    google.script.run
 
-"Nominal: <strong>Rp " +
-formatRupiah(data.nominal) +
-"</strong>";
+      .withSuccessHandler(
+        function(result){
 
+          btn.disabled = false;
 
-document.getElementById(
-"popupBerhasil"
-).classList.add(
-"active"
-);
+          btn.textContent =
+            "💾 SIMPAN INVOICE IJP";
 
+          loading.classList.remove(
+            "active"
+          );
 
-/*
-RESET
-*/
 
-document.getElementById(
-"invoiceForm"
-).reset();
+          if(
+            result &&
+            result.success
+          ){
 
+            /* =========================
+               NOMOR INVOICE
+            ========================= */
 
-/*
-KEMBALIKAN TANGGAL
-*/
+            document.getElementById(
+              "nomorInvoice"
+            ).textContent =
+              result.idInvoice ||
+              "INV/IJP/001";
 
-document.getElementById(
-"tanggal"
-).value =
-new Date()
-.toISOString()
-.split("T")[0];
 
+            /* =========================
+               DETAIL POPUP
+            ========================= */
 
-/*
-RESET FIELD OTOMATIS
-*/
+            document.getElementById(
+              "detailInvoice"
+            ).innerHTML =
 
-document.getElementById(
-"kodeJurnal"
-).value = "";
+              "ID Order: <strong>" +
+              escapeHtml(
+                data.idOrder
+              ) +
+              "</strong><br>" +
 
-document.getElementById(
-"bulanTerbit"
-).value = "";
+              "ID Author: <strong>" +
+              escapeHtml(
+                data.idPenulis
+              ) +
+              "</strong><br>" +
 
-document.getElementById(
-"judulIJP"
-).value = "";
+              "Kode Jurnal: <strong>" +
+              escapeHtml(
+                data.kodeJurnal
+              ) +
+              "</strong><br>" +
 
-document.getElementById(
-"penulisKe"
-).value = "";
+              "Bulan Terbit: <strong>" +
+              escapeHtml(
+                data.bulanTerbit
+              ) +
+              "</strong><br>" +
 
-document.getElementById(
-"namaPenulis"
-).value = "";
+              "Judul IJP: <strong>" +
+              escapeHtml(
+                data.judulIJP
+              ) +
+              "</strong><br>" +
 
-document.getElementById(
-"idPenulis"
-).innerHTML =
-`
-<option value="">
-Pilih Penulis
-</option>
-`;
+              "Penulis ke-" +
+              escapeHtml(
+                data.penulisKe
+              ) +
+              ": <strong>" +
+              escapeHtml(
+                data.namaPenulis
+              ) +
+              "</strong><br>" +
 
-}
+              "Marketing: <strong>" +
+              escapeHtml(
+                data.marketingInput
+              ) +
+              "</strong><br>" +
 
-else{
+              "Status: <strong>" +
+              escapeHtml(
+                data.statusPembayaran
+              ) +
+              "</strong><br>" +
 
-alert(
-"Gagal menyimpan invoice IJP."
-);
+              "Nominal: <strong>Rp " +
+              formatRupiah(
+                data.nominal
+              ) +
+              "</strong>";
 
-}
 
-}
-)
+            /* =========================
+               TAMPILKAN POPUP
+            ========================= */
 
-.withFailureHandler(
-function(error){
+            document.getElementById(
+              "popupBerhasil"
+            ).classList.add(
+              "active"
+            );
 
-btn.disabled = false;
 
-btn.textContent =
-"SIMPAN INVOICE IJP";
+            /* =========================
+               RESET FORM
+            ========================= */
 
-loading.classList.remove(
-"active"
-);
+            document.getElementById(
+              "invoiceForm"
+            ).reset();
 
-alert(
-"Gagal menyimpan invoice IJP:\n" +
-error.message
-);
 
-}
-)
+            /* =========================
+               KEMBALIKAN TANGGAL
+            ========================= */
 
-.simpanInvoiceIJP(data);
+            document.getElementById(
+              "tanggal"
+            ).value =
+              new Date()
+                .toISOString()
+                .split("T")[0];
+
+
+            /* =========================
+               RESET LABEL NOMINAL
+            ========================= */
+
+            document.getElementById(
+              "labelNominal"
+            ).innerHTML =
+              'Nominal Pembayaran <span class="required">*</span>';
+
+
+            document.getElementById(
+              "deskripsiNominal"
+            ).textContent =
+              "Nominal pembayaran sesuai transaksi.";
+
+          }
+
+          else{
+
+            alert(
+              "Gagal menyimpan invoice IJP."
+            );
+
+          }
+
+        }
+      )
+
+      .withFailureHandler(
+        function(error){
+
+          btn.disabled = false;
+
+          btn.textContent =
+            "💾 SIMPAN INVOICE IJP";
+
+          loading.classList.remove(
+            "active"
+          );
+
+
+          alert(
+            "Gagal menyimpan invoice IJP:\n" +
+            (
+              error &&
+              error.message
+              ?
+              error.message
+              :
+              error
+            )
+          );
+
+        }
+      )
+
+      .simpanInvoiceIJP(data);
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     PREVIEW MODE
+     JIKA TIDAK DI GOOGLE APPS SCRIPT
+  ================================================== */
+
+  console.log(
+    "DATA INVOICE IJP:",
+    data
+  );
+
+
+  btn.disabled = false;
+
+  btn.textContent =
+    "💾 SIMPAN INVOICE IJP";
+
+  loading.classList.remove(
+    "active"
+  );
+
+
+  document.getElementById(
+    "nomorInvoice"
+  ).textContent =
+    "INV/IJP/001";
+
+
+  document.getElementById(
+    "detailInvoice"
+  ).innerHTML =
+
+    "ID Order: <strong>" +
+    escapeHtml(
+      data.idOrder
+    ) +
+    "</strong><br>" +
+
+    "ID Author: <strong>" +
+    escapeHtml(
+      data.idPenulis
+    ) +
+    "</strong><br>" +
+
+    "Kode Jurnal: <strong>" +
+    escapeHtml(
+      data.kodeJurnal
+    ) +
+    "</strong><br>" +
+
+    "Bulan Terbit: <strong>" +
+    escapeHtml(
+      data.bulanTerbit
+    ) +
+    "</strong><br>" +
+
+    "Judul IJP: <strong>" +
+    escapeHtml(
+      data.judulIJP
+    ) +
+    "</strong><br>" +
+
+    "Penulis ke-" +
+    escapeHtml(
+      data.penulisKe
+    ) +
+    ": <strong>" +
+    escapeHtml(
+      data.namaPenulis
+    ) +
+    "</strong><br>" +
+
+    "Marketing: <strong>" +
+    escapeHtml(
+      data.marketingInput
+    ) +
+    "</strong><br>" +
+
+    "Status: <strong>" +
+    escapeHtml(
+      data.statusPembayaran
+    ) +
+    "</strong><br>" +
+
+    "Nominal: <strong>Rp " +
+    formatRupiah(
+      data.nominal
+    ) +
+    "</strong>";
+
+
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.add(
+    "active"
+  );
 
 }
 
@@ -1708,13 +1643,15 @@ error.message
    FORMAT RUPIAH
 ================================================== */
 
-function formatRupiah(angka){
+function formatRupiah(
+  angka
+){
 
-return new Intl.NumberFormat(
-"id-ID"
-).format(
-Number(angka) || 0
-);
+  return new Intl.NumberFormat(
+    "id-ID"
+  ).format(
+    Number(angka) || 0
+  );
 
 }
 
@@ -1723,34 +1660,38 @@ Number(angka) || 0
    ESCAPE HTML
 ================================================== */
 
-function escapeHtml(text){
+function escapeHtml(
+  text
+){
 
-return String(text)
+  return String(
+    text
+  )
 
-.replace(
-/&/g,
-"&amp;"
-)
+  .replace(
+    /&/g,
+    "&amp;"
+  )
 
-.replace(
-/</g,
-"&lt;"
-)
+  .replace(
+    /</g,
+    "&lt;"
+  )
 
-.replace(
-/>/g,
-"&gt;"
-)
+  .replace(
+    />/g,
+    "&gt;"
+  )
 
-.replace(
-/"/g,
-"&quot;"
-)
+  .replace(
+    /"/g,
+    "&quot;"
+  )
 
-.replace(
-/'/g,
-"&#039;"
-);
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
@@ -1761,11 +1702,11 @@ return String(text)
 
 function tutupPopup(){
 
-document.getElementById(
-"popupBerhasil"
-).classList.remove(
-"active"
-);
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.remove(
+    "active"
+  );
 
 }
 
@@ -1776,8 +1717,8 @@ document.getElementById(
 
 function kembali(){
 
-window.location.href =
-"ijp.html";
+  window.location.href =
+    "ijp.html";
 
 }
 
