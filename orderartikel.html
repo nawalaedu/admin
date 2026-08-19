@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Order Artikel</title>
+<title>Order Buku</title>
 
 <style>
 
@@ -190,7 +190,7 @@ small{
 }
 
 /* =========================
-   AUTHOR
+   AUTHOR CARD
 ========================= */
 
 .author-card{
@@ -220,7 +220,40 @@ small{
 }
 
 /* =========================
-   BAB
+   MODE BAB
+========================= */
+
+.author-mode-box{
+  display:flex;
+  gap:12px;
+  margin-top:10px;
+  margin-bottom:15px;
+}
+
+.radio-option{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:white;
+  border:1px solid #d6dee6;
+  padding:12px;
+  border-radius:9px;
+  cursor:pointer;
+  font-weight:normal;
+}
+
+.radio-option:hover{
+  background:#f0f7fb;
+}
+
+.radio-option input{
+  width:auto;
+  margin:0;
+}
+
+/* =========================
+   BAB CONTAINER
 ========================= */
 
 .bab-container{
@@ -229,6 +262,11 @@ small{
   border-radius:12px;
   padding:20px;
   margin-bottom:20px;
+}
+
+.bab-title{
+  font-weight:bold;
+  margin-bottom:15px;
 }
 
 .bab-list{
@@ -259,25 +297,31 @@ small{
   margin:0;
 }
 
+.bab-author-container{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
+}
+
+/* =========================
+   AUTO BAB
+========================= */
+
+.auto-bab{
+  background:#edf7fb;
+  border:1px solid #c9e2ee;
+  padding:15px;
+  border-radius:9px;
+  color:#183b56;
+  font-size:14px;
+  line-height:1.6;
+}
+
 /* =========================
    BUTTON
 ========================= */
-
-.btn-search{
-  width:100%;
-  padding:13px;
-  border:0;
-  background:#2f6f95;
-  color:white;
-  border-radius:9px;
-  cursor:pointer;
-  font-weight:bold;
-  margin-top:5px;
-}
-
-.btn-search:hover{
-  background:#183b56;
-}
 
 .btn-add{
   width:100%;
@@ -324,33 +368,55 @@ small{
   background:#2f6f95;
 }
 
+.btn-load{
+  width:100%;
+  border:0;
+  padding:13px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.btn-load:hover{
+  background:#183b56;
+}
+
+.btn-load:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
 /* =========================
-   STATUS
+   STATUS ORDER
 ========================= */
 
-.status-box{
+.order-status{
   display:none;
-  margin-top:15px;
-  padding:13px;
+  margin-top:10px;
+  padding:12px 15px;
   border-radius:8px;
   font-size:14px;
-  line-height:1.5;
 }
 
-.status-box.show{
+.order-status.loading{
   display:block;
+  background:#fef3c7;
+  color:#92400e;
 }
 
-.status-success{
-  background:#edf7ed;
-  border-left:4px solid #38a169;
-  color:#276749;
+.order-status.success{
+  display:block;
+  background:#ecfdf5;
+  color:#166534;
 }
 
-.status-error{
-  background:#fff5f5;
-  border-left:4px solid #e53e3e;
-  color:#c53030;
+.order-status.error{
+  display:block;
+  background:#fef2f2;
+  color:#991b1b;
 }
 
 /* =========================
@@ -483,6 +549,10 @@ small{
     grid-template-columns:1fr;
   }
 
+  .author-mode-box{
+    flex-direction:column;
+  }
+
   .modal-buttons{
     flex-direction:column;
   }
@@ -494,6 +564,7 @@ small{
 <script src="api.js"></script>
 
 </head>
+
 
 <body>
 
@@ -509,7 +580,7 @@ small{
   </div>
 
   <div>
-    MANAJEMEN ARTIKEL
+    MANAJEMEN BUKU
   </div>
 
 </header>
@@ -525,9 +596,9 @@ small{
 <button
 type="button"
 class="back"
-onclick="kembaliKeArtikel()">
+onclick="kembali()">
 
-← Kembali ke Artikel
+← Kembali ke Buku
 
 </button>
 
@@ -542,12 +613,12 @@ onclick="kembaliKeArtikel()">
 <div class="form-title">
 
 <h1>
-📝 Order Artikel
+📚 Order Buku
 </h1>
 
 <p>
-Kelola order artikel dan penambahan author
-artikel dalam satu form.
+Kelola order buku dan penambahan author kolaborasi
+dalam satu form.
 </p>
 
 </div>
@@ -576,25 +647,25 @@ Pilih jenis input
 </option>
 
 <option value="order">
-Order Artikel
+Order Buku
 </option>
 
 <option value="tambahAuthor">
-Tambah Author Artikel
+Tambah Author (Kolaborasi)
 </option>
 
 </select>
 
 <small>
 
-<strong>Order Artikel</strong>
-digunakan untuk membuat order artikel baru.
+<strong>Order Buku</strong> digunakan untuk membuat
+order buku baru.
 
 <br>
 
-<strong>Tambah Author Artikel</strong>
-digunakan untuk menambahkan author pada
-order artikel yang sudah ada.
+<strong>Tambah Author (Kolaborasi)</strong> digunakan
+untuk menambahkan <strong>1 author</strong> pada order buku
+yang sudah ada.
 
 </small>
 
@@ -604,7 +675,7 @@ order artikel yang sudah ada.
 
 
 <!-- ==================================================
-     FORM ORDER ARTIKEL
+     FORM ORDER BUKU
 ================================================== -->
 
 <div
@@ -614,19 +685,23 @@ class="section">
 
 <div class="info-box">
 
-<strong>📝 Order Artikel Baru</strong>
+<strong>📖 Order Buku Baru</strong><br>
 
-<br>
+ID Order akan dibuat otomatis setelah data berhasil
+disimpan.
 
-ID Order Artikel akan dibuat otomatis setelah
-data berhasil disimpan.
+<br><br>
+
+<strong>K</strong> = Kolaborasi,
+<strong>M</strong> = Mandiri,
+<strong>T</strong> = Tunggal.
 
 </div>
 
 
 <form
 id="orderForm"
-onsubmit="simpanOrderArtikel(event)">
+onsubmit="simpanOrder(event)">
 
 
 <!-- TANGGAL -->
@@ -661,6 +736,10 @@ name="marketing"
 placeholder="Masukkan nama marketing"
 required>
 
+<small>
+Isi nama marketing secara manual.
+</small>
+
 </div>
 
 
@@ -669,32 +748,83 @@ required>
 <div class="form-group">
 
 <label>
-Judul Artikel
+Judul Buku
 </label>
 
 <input
 type="text"
-id="judulArtikel"
-name="judulArtikel"
-placeholder="Masukkan judul artikel"
+id="judulBuku"
+name="judulBuku"
+placeholder="Masukkan judul buku"
 required>
 
 </div>
 
 
-<!-- TOPIK -->
+<!-- RINCIAN BAB -->
 
 <div class="form-group">
 
 <label>
-Topik Artikel
+Rincian Bab
 </label>
 
 <textarea
-id="topikArtikel"
-name="topikArtikel"
-placeholder="Jelaskan topik atau pembahasan artikel"
+id="rincianBab"
+name="rincianBab"
+placeholder="Contoh:
+
+Bab 1: Pendahuluan
+Bab 2: Landasan Teori
+Bab 3: Metodologi
+Bab 4: Hasil Penelitian
+Bab 5: Pembahasan
+Bab 6: Kesimpulan
+Bab 7: Saran
+Bab 8: Daftar Pustaka"
 required></textarea>
+
+<small>
+
+Daftar bab digunakan sebagai dasar pembagian bab
+untuk author Mandiri dan author Kolaborasi.
+
+</small>
+
+</div>
+
+
+<!-- K M T -->
+
+<div class="form-group">
+
+<label>
+K / M / T
+</label>
+
+<select
+id="kmt"
+name="kmt"
+onchange="ubahKMT()"
+required>
+
+<option value="">
+Pilih
+</option>
+
+<option value="K">
+K - Kolaborasi
+</option>
+
+<option value="M">
+M - Mandiri
+</option>
+
+<option value="T">
+T - Tunggal
+</option>
+
+</select>
 
 </div>
 
@@ -729,96 +859,39 @@ Naskah Mandiri
 </div>
 
 
-<!-- AUTHOR -->
+<!-- AUTHOR M / T -->
 
-<div class="form-group">
+<div
+id="authorMTSection"
+style="display:none;">
 
-<label>
-Author Artikel
-</label>
-
-<div id="authorContainer">
-
-<div class="author-card">
-
-<div class="author-header">
-
-<div class="author-number">
-Author 1
+<div
+id="infoAuthorMT"
+class="info-box">
 </div>
 
-</div>
-
-<div class="author-grid">
-
-<div>
-
-<label>
-Nama Author
-</label>
-
-<input
-type="text"
-name="authorNama[]"
-placeholder="Nama lengkap author"
-required>
-
-</div>
-
-
-<div>
-
-<label>
-Email Author
-</label>
-
-<input
-type="email"
-name="authorEmail[]"
-placeholder="Email author"
-required>
-
-</div>
-
-
-<div>
-
-<label>
-No. Telp Author
-</label>
-
-<input
-type="text"
-name="authorTelp[]"
-placeholder="Nomor telepon author"
-required>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<div id="authorMTContainer"></div>
 
 <button
 type="button"
 class="btn-add"
-onclick="tambahAuthorArtikel()">
+id="btnTambahAuthorMT"
+onclick="tambahAuthorMT()">
 
 ＋ TAMBAH AUTHOR
 
 </button>
 
+</div>
+
+
+<!-- SIMPAN -->
 
 <button
 type="submit"
 class="btn-save">
 
-SIMPAN ORDER ARTIKEL
+SIMPAN ORDER BUKU
 
 </button>
 
@@ -829,7 +902,7 @@ SIMPAN ORDER ARTIKEL
 
 
 <!-- ==================================================
-     FORM TAMBAH AUTHOR ARTIKEL
+     FORM TAMBAH AUTHOR KOLABORASI
 ================================================== -->
 
 <div
@@ -839,20 +912,30 @@ class="section">
 
 <div class="info-box">
 
-<strong>🤝 Tambah Author Artikel</strong>
+<strong>🤝 Tambah Author (Kolaborasi)</strong><br>
 
-<br>
+Digunakan untuk menambahkan <strong>1 author</strong>
+pada buku yang sudah memiliki ID Order.
 
-Ketik ID Order Artikel yang sudah ada.
-Sistem hanya akan mencari ID tersebut,
-bukan mengambil seluruh daftar order.
+<br><br>
+
+Ketik <strong>ID Order</strong> secara manual.
+Setelah ID Order dimasukkan, klik tombol
+<strong>AMBIL DATA ORDER</strong> untuk mengambil
+judul dan daftar bab.
+
+<br><br>
+
+Jika ingin menambahkan author kedua, ketiga, dan
+seterusnya, lakukan input kembali menggunakan
+<strong>ID Order yang sama</strong>.
 
 </div>
 
 
 <form
 id="authorForm"
-onsubmit="simpanAuthorArtikel(event)">
+onsubmit="simpanAuthor(event)">
 
 
 <!-- ==================================================
@@ -862,61 +945,62 @@ onsubmit="simpanAuthorArtikel(event)">
 <div class="form-group">
 
 <label>
-ID Order Artikel
+ID Order Buku
 </label>
 
 <input
 type="text"
 id="idOrder"
 name="idOrder"
-placeholder="Contoh: ART-2026-0001"
+placeholder="Contoh: ORD/BUK/001"
 autocomplete="off"
 required>
 
 <small>
-
-Ketik ID Order Artikel secara manual.
-
+Ketik ID Order buku yang sudah ada.
 </small>
-
-</div>
-
 
 <button
 type="button"
-class="btn-search"
-onclick="cariOrderArtikel()">
+id="btnAmbilOrder"
+class="btn-load"
+onclick="ambilDetailOrder()">
 
-🔎 CARI ID ORDER ARTIKEL
+🔍 AMBIL DATA ORDER
 
 </button>
 
-
 <div
-id="statusOrder"
-class="status-box">
+id="orderStatus"
+class="order-status">
+</div>
+
 </div>
 
 
-<!-- JUDUL -->
+<!-- ==================================================
+     JUDUL
+================================================== -->
 
 <div class="form-group">
 
 <label>
-Judul Artikel
+Judul Buku
 </label>
 
 <input
 type="text"
-id="judulArtikelAuthor"
+id="judulBukuAuthor"
 class="readonly"
-placeholder="Otomatis setelah ID Order ditemukan"
+placeholder="Akan muncul setelah ID Order ditemukan"
 readonly>
 
 </div>
 
 
-<!-- MARKETING -->
+<!-- ==================================================
+     MARKETING INPUT
+================================================== -->
 
 <div class="form-group">
 
@@ -930,6 +1014,10 @@ id="marketingAuthor"
 name="marketingAuthor"
 placeholder="Masukkan nama marketing"
 required>
+
+<small>
+Isi nama marketing yang melakukan input author kolaborasi.
+</small>
 
 </div>
 
@@ -951,15 +1039,36 @@ required>
 </div>
 
 
-<!-- AUTHOR -->
+<!-- ==================================================
+     SATU AUTHOR
+================================================== -->
 
 <div class="form-group">
 
 <label>
-Author Baru
+Author Kolaborasi
 </label>
 
+<small style="margin-bottom:15px;">
+
+Form ini hanya menerima <strong>1 author</strong>
+dalam satu kali input.
+
+</small>
+
+
+<div id="authorContainer">
+
 <div class="author-card">
+
+<div class="author-header">
+
+<div class="author-number">
+Author
+</div>
+
+</div>
+
 
 <div class="author-grid">
 
@@ -1009,6 +1118,31 @@ required>
 
 </div>
 
+
+<div
+class="authorBabContainer"
+style="margin-top:20px;">
+
+<label>
+Bab yang Ditulis
+</label>
+
+<div class="bab-list">
+
+<div
+class="info-box"
+style="grid-column:1/-1;margin:0;">
+
+Ketik ID Order kemudian klik
+<strong>AMBIL DATA ORDER</strong>.
+Daftar bab akan muncul otomatis.
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -1018,7 +1152,7 @@ required>
 type="submit"
 class="btn-save">
 
-SIMPAN AUTHOR ARTIKEL
+SIMPAN AUTHOR KOLABORASI
 
 </button>
 
@@ -1033,7 +1167,7 @@ SIMPAN AUTHOR ARTIKEL
 
 
 <!-- ==================================================
-     MODAL
+     MODAL ID ORDER
 ================================================== -->
 
 <div
@@ -1047,12 +1181,18 @@ class="modal">
 </div>
 
 <h2>
-Order Artikel Berhasil
+Order Buku Berhasil
 </h2>
 
 <p>
-Order artikel berhasil dicatat.
+
+Order telah berhasil dicatat.
+
+Simpan ID Order berikut untuk proses
+Tambah Author, Invoice, ISBN, dan HKI.
+
 </p>
+
 
 <div class="order-result">
 
@@ -1065,7 +1205,9 @@ ID ORDER
 <div
 id="resultIdOrder"
 class="result-value id-order">
+
 -
+
 </div>
 
 </div>
@@ -1074,13 +1216,15 @@ class="result-value id-order">
 <div class="result-row">
 
 <div class="result-label">
-JUDUL ARTIKEL
+JUDUL BUKU
 </div>
 
 <div
 id="resultJudul"
 class="result-value">
+
 -
+
 </div>
 
 </div>
@@ -1098,6 +1242,7 @@ onclick="salinIdOrder()">
 📋 SALIN ID
 
 </button>
+
 
 <button
 type="button"
@@ -1121,8 +1266,12 @@ TUTUP
    INIT
 ================================================== */
 
-let jumlahAuthorArtikel = 1;
+let jumlahAuthorMT = 0;
 
+
+/* ==================================================
+   DOM READY
+================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -1142,6 +1291,40 @@ document.addEventListener(
     document.getElementById(
       "tanggalTambah"
     ).value = today;
+
+
+    document.getElementById(
+      "rincianBab"
+    ).addEventListener(
+      "input",
+      function(){
+
+        refreshSemuaBabAuthorMT();
+
+      }
+    );
+
+
+    /*
+    ENTER PADA ID ORDER
+    */
+
+    document.getElementById(
+      "idOrder"
+    ).addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          ambilDetailOrder();
+
+        }
+
+      }
+    );
 
   }
 );
@@ -1184,23 +1367,177 @@ function ubahJenisInput(){
       .getElementById("formTambahAuthor")
       .classList.add("active");
 
+
+    /*
+    TIDAK ADA LAGI DROPDOWN ORDER.
+
+    ID ORDER DIKETIK MANUAL.
+    */
+
+    setTimeout(
+      function(){
+
+        document
+          .getElementById("idOrder")
+          .focus();
+
+      },
+      100
+    );
+
   }
 
 }
 
 
 /* ==================================================
-   TAMBAH AUTHOR ARTIKEL
+   K / M / T
 ================================================== */
 
-function tambahAuthorArtikel(){
+function ubahKMT(){
 
-  jumlahAuthorArtikel++;
+  const kmt =
+    document.getElementById(
+      "kmt"
+    ).value;
+
+
+  const section =
+    document.getElementById(
+      "authorMTSection"
+    );
 
 
   const container =
     document.getElementById(
-      "authorContainer"
+      "authorMTContainer"
+    );
+
+
+  const btnTambah =
+    document.getElementById(
+      "btnTambahAuthorMT"
+    );
+
+
+  const info =
+    document.getElementById(
+      "infoAuthorMT"
+    );
+
+
+  container.innerHTML = "";
+
+  jumlahAuthorMT = 0;
+
+
+  if(kmt === "K"){
+
+    section.style.display = "none";
+
+    return;
+
+  }
+
+
+  if(kmt === "M"){
+
+    section.style.display = "block";
+
+    btnTambah.style.display = "block";
+
+    info.innerHTML = `
+
+      <strong>👤 M - Mandiri</strong><br>
+
+      Anda dapat memasukkan beberapa author.
+
+      <br><br>
+
+      Contoh pembagian:
+
+      <br>
+      • Author 1 → Bab 1–5
+      <br>
+      • Author 2 → Bab 6–8
+
+      <br><br>
+
+      Atau masing-masing author dapat memilih
+      <strong>Semua Bab</strong>.
+
+    `;
+
+    tambahAuthorMT();
+
+    return;
+
+  }
+
+
+  if(kmt === "T"){
+
+    section.style.display = "block";
+
+    btnTambah.style.display = "none";
+
+    info.innerHTML = `
+
+      <strong>👤 T - Tunggal</strong><br>
+
+      Hanya satu author.
+
+      <br><br>
+
+      Author otomatis mengerjakan
+      <strong>SEMUA BAB</strong>.
+
+      <br><br>
+
+      Tidak perlu memilih atau mencentang bab.
+
+    `;
+
+    tambahAuthorMT();
+
+    return;
+
+  }
+
+
+  section.style.display = "none";
+
+}
+
+
+/* ==================================================
+   TAMBAH AUTHOR M / T
+================================================== */
+
+function tambahAuthorMT(){
+
+  const kmt =
+    document.getElementById(
+      "kmt"
+    ).value;
+
+
+  if(
+    kmt === "T" &&
+    jumlahAuthorMT >= 1
+  ){
+
+    return;
+
+  }
+
+
+  jumlahAuthorMT++;
+
+
+  const container =
+    document.getElementById(
+      "authorMTContainer"
     );
 
 
@@ -1214,22 +1551,143 @@ function tambahAuthorArtikel(){
     "author-card";
 
 
+  card.setAttribute(
+    "data-author-index",
+    jumlahAuthorMT
+  );
+
+
+  let bagianBab = "";
+
+
+  if(kmt === "T"){
+
+    bagianBab = `
+
+      <div
+        class="authorBabContainer"
+        style="margin-top:20px;">
+
+        <label>
+          Bab yang Dikerjakan
+        </label>
+
+        <div class="auto-bab">
+
+          📚 <strong>SEMUA BAB</strong>
+
+          <br>
+
+          Author ini otomatis mengerjakan
+          seluruh bab yang tercantum pada
+          Rincian Bab.
+
+        </div>
+
+        <input
+          type="hidden"
+          name="mtBab[]"
+          value="SEMUA BAB">
+
+      </div>
+
+    `;
+
+  }
+
+
+  if(kmt === "M"){
+
+    bagianBab = `
+
+      <div
+        class="authorBabContainer"
+        style="margin-top:20px;">
+
+        <label>
+          Bab yang Dikerjakan
+        </label>
+
+        <div class="author-mode-box">
+
+          <label class="radio-option">
+
+            <input
+              type="radio"
+              name="modeBab_${jumlahAuthorMT}"
+              value="semua"
+              onchange="ubahModeBab(this)"
+              required>
+
+            <span>
+              📚 Semua Bab
+            </span>
+
+          </label>
+
+
+          <label class="radio-option">
+
+            <input
+              type="radio"
+              name="modeBab_${jumlahAuthorMT}"
+              value="pilih"
+              onchange="ubahModeBab(this)">
+
+            <span>
+              ☑️ Pilih Bab
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <div
+          class="bab-author-container"
+          style="display:none;">
+
+          <div class="bab-list"></div>
+
+        </div>
+
+
+        <input
+          type="hidden"
+          name="mtBab[]"
+          value="">
+
+      </div>
+
+    `;
+
+  }
+
+
   card.innerHTML = `
 
     <div class="author-header">
 
       <div class="author-number">
-        Author ${jumlahAuthorArtikel}
+        Author ${jumlahAuthorMT}
       </div>
 
-      <button
-        type="button"
-        class="btn-remove"
-        onclick="hapusAuthorArtikel(this)">
+      ${
+        kmt === "M" && jumlahAuthorMT > 1
+        ?
+        `
+        <button
+          type="button"
+          class="btn-remove"
+          onclick="hapusAuthorMT(this)">
 
-        Hapus
+          Hapus
 
-      </button>
+        </button>
+        `
+        :
+        ""
+      }
 
     </div>
 
@@ -1239,12 +1697,12 @@ function tambahAuthorArtikel(){
       <div>
 
         <label>
-        Nama Author
+          Nama Author
         </label>
 
         <input
           type="text"
-          name="authorNama[]"
+          name="mtNama[]"
           placeholder="Nama lengkap author"
           required>
 
@@ -1254,12 +1712,12 @@ function tambahAuthorArtikel(){
       <div>
 
         <label>
-        Email Author
+          Email Author
         </label>
 
         <input
           type="email"
-          name="authorEmail[]"
+          name="mtEmail[]"
           placeholder="Email author"
           required>
 
@@ -1269,12 +1727,12 @@ function tambahAuthorArtikel(){
       <div>
 
         <label>
-        No. Telp Author
+          No. Telp Author
         </label>
 
         <input
           type="text"
-          name="authorTelp[]"
+          name="mtTelp[]"
           placeholder="Nomor telepon author"
           required>
 
@@ -1282,19 +1740,275 @@ function tambahAuthorArtikel(){
 
     </div>
 
+
+    ${bagianBab}
+
   `;
 
 
-  container.appendChild(card);
+  container.appendChild(
+    card
+  );
+
+
+  if(kmt === "M"){
+
+    isiBabUntukAuthorMT(
+      card
+    );
+
+  }
 
 }
 
 
 /* ==================================================
-   HAPUS AUTHOR
+   ISI BAB AUTHOR M
 ================================================== */
 
-function hapusAuthorArtikel(button){
+function isiBabUntukAuthorMT(card){
+
+  const rincian =
+    document.getElementById(
+      "rincianBab"
+    ).value;
+
+
+  const container =
+    card.querySelector(
+      ".bab-author-container .bab-list"
+    );
+
+
+  if(!container){
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  if(!rincian){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Silakan isi Rincian Bab terlebih dahulu.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const daftarBab =
+    rincian
+      .split(/\n/)
+      .map(
+        x => x.trim()
+      )
+      .filter(
+        x => x
+      );
+
+
+  daftarBab.forEach(
+    function(bab){
+
+      const label =
+        document.createElement(
+          "label"
+        );
+
+
+      label.className =
+        "bab-item";
+
+
+      label.innerHTML = `
+
+        <input
+          type="checkbox"
+          class="checkbox-bab-mt"
+          value="${escapeHtml(bab)}"
+          onchange="updateBabAuthorMT(this)">
+
+        <span>
+          ${escapeHtml(bab)}
+        </span>
+
+      `;
+
+
+      container.appendChild(
+        label
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   REFRESH BAB
+================================================== */
+
+function refreshSemuaBabAuthorMT(){
+
+  const cards =
+    document.querySelectorAll(
+      "#authorMTContainer .author-card"
+    );
+
+
+  cards.forEach(
+    function(card){
+
+      const checkboxContainer =
+        card.querySelector(
+          ".bab-author-container .bab-list"
+        );
+
+
+      if(checkboxContainer){
+
+        isiBabUntukAuthorMT(
+          card
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   MODE BAB MANDIRI
+================================================== */
+
+function ubahModeBab(radio){
+
+  const card =
+    radio.closest(
+      ".author-card"
+    );
+
+
+  const mode =
+    radio.value;
+
+
+  const checkboxBox =
+    card.querySelector(
+      ".bab-author-container .bab-list"
+    );
+
+
+  const hiddenBab =
+    card.querySelector(
+      'input[name="mtBab[]"]'
+    );
+
+
+  if(mode === "semua"){
+
+    checkboxBox.style.display =
+      "none";
+
+
+    hiddenBab.value =
+      "SEMUA BAB";
+
+
+    card.querySelectorAll(
+      ".checkbox-bab-mt"
+    ).forEach(
+      function(cb){
+
+        cb.checked = false;
+
+      }
+    );
+
+  }
+
+
+  if(mode === "pilih"){
+
+    checkboxBox.style.display =
+      "grid";
+
+
+    hiddenBab.value =
+      "";
+
+  }
+
+}
+
+
+/* ==================================================
+   UPDATE BAB AUTHOR M
+================================================== */
+
+function updateBabAuthorMT(
+  checkbox
+){
+
+  const card =
+    checkbox.closest(
+      ".author-card"
+    );
+
+
+  const hiddenBab =
+    card.querySelector(
+      'input[name="mtBab[]"]'
+    );
+
+
+  const checked =
+    card.querySelectorAll(
+      ".checkbox-bab-mt:checked"
+    );
+
+
+  const daftar = [];
+
+
+  checked.forEach(
+    function(cb){
+
+      daftar.push(
+        cb.value
+      );
+
+    }
+  );
+
+
+  hiddenBab.value =
+    daftar.join(" | ");
+
+}
+
+
+/* ==================================================
+   HAPUS AUTHOR M
+================================================== */
+
+function hapusAuthorMT(
+  button
+){
 
   const card =
     button.closest(
@@ -1309,20 +2023,20 @@ function hapusAuthorArtikel(button){
   }
 
 
-  perbaruiNomorAuthorArtikel();
+  perbaruiNomorAuthorMT();
 
 }
 
 
 /* ==================================================
-   NOMOR AUTHOR
+   NOMOR AUTHOR M
 ================================================== */
 
-function perbaruiNomorAuthorArtikel(){
+function perbaruiNomorAuthorMT(){
 
   const cards =
     document.querySelectorAll(
-      "#authorContainer .author-card"
+      "#authorMTContainer .author-card"
     );
 
 
@@ -1338,17 +2052,18 @@ function perbaruiNomorAuthorArtikel(){
   );
 
 
-  jumlahAuthorArtikel =
+  jumlahAuthorMT =
     cards.length;
 
 }
 
 
 /* ==================================================
-   CARI ID ORDER ARTIKEL
+   DETAIL ORDER TAMBAH AUTHOR
+   ID ORDER DIKETIK MANUAL
 ================================================== */
 
-function cariOrderArtikel(){
+function ambilDetailOrder(){
 
   const input =
     document.getElementById(
@@ -1360,24 +2075,73 @@ function cariOrderArtikel(){
     input.value.trim();
 
 
-  const status =
-    document.getElementById(
-      "statusOrder"
-    );
-
-
   const judul =
     document.getElementById(
-      "judulArtikelAuthor"
+      "judulBukuAuthor"
     );
 
+
+  const status =
+    document.getElementById(
+      "orderStatus"
+    );
+
+
+  const button =
+    document.getElementById(
+      "btnAmbilOrder"
+    );
+
+
+  const container =
+    document.querySelector(
+      "#authorContainer .authorBabContainer .bab-list"
+    );
+
+
+  /*
+  RESET
+  */
+
+  judul.value = "";
+
+
+  if(container){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Menunggu data order.
+
+      </div>
+
+    `;
+
+  }
+
+
+  status.className =
+    "order-status";
+
+
+  status.textContent =
+    "";
+
+
+  /*
+  VALIDASI ID ORDER
+  */
 
   if(!idOrder){
 
-    tampilkanStatusOrder(
-      "error",
-      "Silakan ketik ID Order Artikel terlebih dahulu."
-    );
+    status.className =
+      "order-status error";
+
+    status.textContent =
+      "Silakan ketik ID Order terlebih dahulu.";
 
     input.focus();
 
@@ -1386,15 +2150,9 @@ function cariOrderArtikel(){
   }
 
 
-  status.className =
-    "status-box show status-success";
-
-  status.innerHTML =
-    "🔎 Sedang mencari ID Order Artikel...";
-
-
-  judul.value = "";
-
+  /*
+  CEK GOOGLE SCRIPT
+  */
 
   if(
     typeof google === "undefined" ||
@@ -1402,45 +2160,111 @@ function cariOrderArtikel(){
     !google.script.run
   ){
 
-    tampilkanStatusOrder(
-      "error",
-      "Google Apps Script tidak tersedia."
-    );
+    status.className =
+      "order-status error";
+
+    status.textContent =
+      "Google Apps Script tidak tersedia.";
 
     return;
 
   }
 
 
+  /*
+  LOADING
+  */
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ MENGAMBIL DATA...";
+
+
+  status.className =
+    "order-status loading";
+
+  status.textContent =
+    "Sedang mencari ID Order: " + idOrder;
+
+
+  /*
+  AMBIL DETAIL ORDER
+  */
+
   google.script.run
 
     .withSuccessHandler(
       function(data){
 
+        button.disabled =
+          false;
+
+        button.textContent =
+          "🔍 AMBIL DATA ORDER";
+
+
         if(!data){
 
-          tampilkanStatusOrder(
-            "error",
-            "ID Order Artikel tidak ditemukan: " +
-            idOrder
-          );
+          status.className =
+            "order-status error";
 
-          judul.value = "";
+          status.textContent =
+            "ID Order tidak ditemukan.";
+
+          judul.value =
+            "";
+
+          if(container){
+
+            container.innerHTML = `
+
+              <div
+                class="info-box"
+                style="grid-column:1/-1;margin:0;">
+
+                ID Order tidak ditemukan.
+                Pastikan ID Order sudah benar.
+
+              </div>
+
+            `;
+
+          }
 
           return;
 
         }
 
 
+        /*
+        JUDUL BUKU
+        */
+
         judul.value =
-          data.judulArtikel ||
+          data.judulBuku ||
           data.judul ||
           "";
 
 
-        tampilkanStatusOrder(
-          "success",
-          "✓ ID Order Artikel ditemukan."
+        /*
+        STATUS BERHASIL
+        */
+
+        status.className =
+          "order-status success";
+
+        status.textContent =
+          "✓ ID Order ditemukan. Data order berhasil dimuat.";
+
+
+        /*
+        TAMPILKAN BAB
+        */
+
+        tampilkanBabKolaborasi(
+          data.rincianBab || ""
         );
 
       }
@@ -1449,22 +2273,59 @@ function cariOrderArtikel(){
     .withFailureHandler(
       function(error){
 
-        tampilkanStatusOrder(
-          "error",
-          "Gagal mencari ID Order Artikel: " +
-          (error.message || error)
+        button.disabled =
+          false;
+
+        button.textContent =
+          "🔍 AMBIL DATA ORDER";
+
+
+        status.className =
+          "order-status error";
+
+        status.textContent =
+          "Gagal mengambil data order.";
+
+
+        if(container){
+
+          container.innerHTML = `
+
+            <div
+              class="info-box"
+              style="grid-column:1/-1;margin:0;">
+
+              Gagal mengambil data order.
+              Silakan periksa ID Order atau hubungi administrator.
+
+            </div>
+
+          `;
+
+        }
+
+
+        console.error(
+          "Gagal mengambil detail order:",
+          error
+        );
+
+
+        alert(
+          "Gagal mengambil detail order:\n" +
+          (
+            error && error.message
+            ?
+            error.message
+            :
+            error
+          )
         );
 
       }
     )
 
-    /*
-     * PENTING:
-     * Backend hanya menerima SATU ID ORDER.
-     * Tidak ada ambilDaftarOrder().
-     */
-
-    .ambilDetailOrderArtikel(
+    .ambilDetailOrder(
       idOrder
     );
 
@@ -1472,42 +2333,122 @@ function cariOrderArtikel(){
 
 
 /* ==================================================
-   STATUS ORDER
+   TAMPILKAN BAB KOLABORASI
 ================================================== */
 
-function tampilkanStatusOrder(
-  tipe,
-  pesan
+function tampilkanBabKolaborasi(
+  rincianBab
 ){
 
-  const status =
-    document.getElementById(
-      "statusOrder"
+  const container =
+    document.querySelector(
+      "#authorContainer .authorBabContainer .bab-list"
     );
 
 
-  status.className =
-    "status-box show " +
-    (
-      tipe === "success"
-      ?
-      "status-success"
-      :
-      "status-error"
-    );
+  if(!container){
+    return;
+  }
 
 
-  status.textContent =
-    pesan;
+  container.innerHTML = "";
+
+
+  if(!rincianBab){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Rincian bab belum tersedia
+        untuk ID Order ini.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const daftarBab =
+    rincianBab
+      .split(/\n/)
+      .map(
+        x => x.trim()
+      )
+      .filter(
+        x => x
+      );
+
+
+  if(
+    daftarBab.length === 0
+  ){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Rincian bab belum tersedia
+        untuk ID Order ini.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  daftarBab.forEach(
+    function(bab){
+
+      const label =
+        document.createElement(
+          "label"
+        );
+
+
+      label.className =
+        "bab-item";
+
+
+      label.innerHTML = `
+
+        <input
+          type="checkbox"
+          name="authorBab"
+          value="${escapeHtml(bab)}">
+
+        <span>
+          ${escapeHtml(bab)}
+        </span>
+
+      `;
+
+
+      container.appendChild(
+        label
+      );
+
+    }
+  );
 
 }
 
 
 /* ==================================================
-   SIMPAN ORDER ARTIKEL
+   SIMPAN ORDER
 ================================================== */
 
-function simpanOrderArtikel(
+function simpanOrder(
   event
 ){
 
@@ -1529,37 +2470,63 @@ function simpanOrderArtikel(
   }
 
 
-  const authors = [];
+  const kmt =
+    document.getElementById(
+      "kmt"
+    ).value;
 
 
-  document
-    .querySelectorAll(
-      "#authorContainer .author-card"
-    )
-    .forEach(
-      function(card){
+  const authors =
+    ambilAuthorMT();
 
-        authors.push({
 
-          nama:
-            card.querySelector(
-              '[name="authorNama[]"]'
-            ).value.trim(),
+  if(
+    kmt === "T" &&
+    authors.length !== 1
+  ){
 
-          email:
-            card.querySelector(
-              '[name="authorEmail[]"]'
-            ).value.trim(),
-
-          telp:
-            card.querySelector(
-              '[name="authorTelp[]"]'
-            ).value.trim()
-
-        });
-
-      }
+    alert(
+      "Jenis T (Tunggal) harus memiliki tepat 1 author."
     );
+
+    return;
+
+  }
+
+
+  if(
+    kmt === "M" &&
+    authors.length < 1
+  ){
+
+    alert(
+      "Jenis M (Mandiri) minimal harus memiliki 1 author."
+    );
+
+    return;
+
+  }
+
+
+  for(
+    let i = 0;
+    i < authors.length;
+    i++
+  ){
+
+    if(!authors[i].bab){
+
+      alert(
+        "Bab untuk Author " +
+        (i + 1) +
+        " belum ditentukan."
+      );
+
+      return;
+
+    }
+
+  }
 
 
   const data = {
@@ -1574,15 +2541,18 @@ function simpanOrderArtikel(
         "marketing"
       ).value.trim(),
 
-    judulArtikel:
+    judulBuku:
       document.getElementById(
-        "judulArtikel"
+        "judulBuku"
       ).value.trim(),
 
-    topikArtikel:
+    rincianBab:
       document.getElementById(
-        "topikArtikel"
-      ).value.trim(),
+        "rincianBab"
+      ).value,
+
+    kmt:
+      kmt,
 
     jenisPenulisan:
       document.getElementById(
@@ -1613,15 +2583,15 @@ function simpanOrderArtikel(
 
             tampilkanPopupOrder(
               result.idOrder,
-              result.judulArtikel ||
-              data.judulArtikel
+              result.judulBuku ||
+              data.judulBuku
             );
 
           }
           else{
 
             alert(
-              "Order Artikel berhasil disimpan."
+              "Order berhasil disimpan."
             );
 
           }
@@ -1633,16 +2603,14 @@ function simpanOrderArtikel(
         function(error){
 
           alert(
-            "Gagal menyimpan Order Artikel: " +
-            (error.message || error)
+            "Gagal menyimpan order: " +
+            error.message
           );
 
         }
       )
 
-      .simpanOrderArtikel(
-        data
-      );
+      .simpanOrder(data);
 
 
     return;
@@ -1651,24 +2619,91 @@ function simpanOrderArtikel(
 
 
   console.log(
-    "DATA ORDER ARTIKEL:",
+    "DATA ORDER:",
     data
   );
 
 
   tampilkanPopupOrder(
-    "ART-2026-0001",
-    data.judulArtikel
+    "ORD/BUK/001",
+    data.judulBuku
   );
 
 }
 
 
 /* ==================================================
-   SIMPAN AUTHOR ARTIKEL
+   AMBIL AUTHOR M / T
 ================================================== */
 
-function simpanAuthorArtikel(
+function ambilAuthorMT(){
+
+  const result = [];
+
+
+  const cards =
+    document.querySelectorAll(
+      "#authorMTContainer .author-card"
+    );
+
+
+  cards.forEach(
+    function(card){
+
+      const nama =
+        card.querySelector(
+          '[name="mtNama[]"]'
+        ).value.trim();
+
+
+      const email =
+        card.querySelector(
+          '[name="mtEmail[]"]'
+        ).value.trim();
+
+
+      const telp =
+        card.querySelector(
+          '[name="mtTelp[]"]'
+        ).value.trim();
+
+
+      const bab =
+        card.querySelector(
+          '[name="mtBab[]"]'
+        ).value.trim();
+
+
+      result.push({
+
+        nama:
+          nama,
+
+        email:
+          email,
+
+        telp:
+          telp,
+
+        bab:
+          bab
+
+      });
+
+    }
+  );
+
+
+  return result;
+
+}
+
+
+/* ==================================================
+   SIMPAN AUTHOR KOLABORASI
+================================================== */
+
+function simpanAuthor(
   event
 ){
 
@@ -1690,23 +2725,50 @@ function simpanAuthorArtikel(
   }
 
 
+  /*
+  ID ORDER MANUAL
+  */
+
   const idOrder =
     document.getElementById(
       "idOrder"
     ).value.trim();
 
 
-  const judulArtikel =
+  if(!idOrder){
+
+    alert(
+      "ID Order wajib diisi."
+    );
+
+    document
+      .getElementById("idOrder")
+      .focus();
+
+    return;
+
+  }
+
+
+  /*
+  PASTIKAN DATA ORDER SUDAH DIMUAT
+  */
+
+  const judulBuku =
     document.getElementById(
-      "judulArtikelAuthor"
+      "judulBukuAuthor"
     ).value.trim();
 
 
-  if(!judulArtikel){
+  if(!judulBuku){
 
     alert(
-      "Cari dan pastikan ID Order Artikel ditemukan terlebih dahulu."
+      "Silakan klik AMBIL DATA ORDER terlebih dahulu."
     );
+
+    document
+      .getElementById("idOrder")
+      .focus();
 
     return;
 
@@ -1727,7 +2789,7 @@ function simpanAuthorArtikel(
 
   const card =
     document.querySelector(
-      "#formTambahAuthor .author-card"
+      "#authorContainer .author-card"
     );
 
 
@@ -1741,6 +2803,43 @@ function simpanAuthorArtikel(
 
   }
 
+
+  /*
+  AMBIL BAB
+  */
+
+  const babDipilih = [];
+
+
+  card.querySelectorAll(
+    'input[name="authorBab"]:checked'
+  ).forEach(
+    function(cb){
+
+      babDipilih.push(
+        cb.value
+      );
+
+    }
+  );
+
+
+  if(
+    babDipilih.length === 0
+  ){
+
+    alert(
+      "Pilih minimal satu bab untuk author."
+    );
+
+    return;
+
+  }
+
+
+  /*
+  DATA AUTHOR
+  */
 
   const author = {
 
@@ -1757,18 +2856,25 @@ function simpanAuthorArtikel(
     telp:
       card.querySelector(
         '[name="authorTelp"]'
-      ).value.trim()
+      ).value.trim(),
+
+    bab:
+      babDipilih
 
   };
 
+
+  /*
+  DATA UTAMA
+  */
 
   const data = {
 
     idOrder:
       idOrder,
 
-    judulArtikel:
-      judulArtikel,
+    judulBuku:
+      judulBuku,
 
     marketingInput:
       marketing,
@@ -1782,6 +2888,10 @@ function simpanAuthorArtikel(
   };
 
 
+  /*
+  SIMPAN KE GOOGLE APPS SCRIPT
+  */
+
   if(
     typeof google !== "undefined" &&
     google.script &&
@@ -1791,14 +2901,14 @@ function simpanAuthorArtikel(
     google.script.run
 
       .withSuccessHandler(
-        function(){
+        function(result){
 
           alert(
-            "Author Artikel berhasil disimpan."
+            "Author kolaborasi berhasil disimpan."
           );
 
 
-          resetFormAuthorArtikel();
+          resetFormAuthor();
 
         }
       )
@@ -1807,16 +2917,20 @@ function simpanAuthorArtikel(
         function(error){
 
           alert(
-            "Gagal menyimpan Author Artikel: " +
-            (error.message || error)
+            "Gagal menyimpan author: " +
+            (
+              error && error.message
+              ?
+              error.message
+              :
+              error
+            )
           );
 
         }
       )
 
-      .simpanAuthorArtikel(
-        data
-      );
+      .simpanAuthor(data);
 
 
     return;
@@ -1824,45 +2938,81 @@ function simpanAuthorArtikel(
   }
 
 
+  /*
+  MODE TEST
+  */
+
   console.log(
-    "DATA AUTHOR ARTIKEL:",
+    "DATA AUTHOR KOLABORASI:",
     data
   );
 
 
   alert(
-    "Data Author Artikel siap disimpan."
+    "Data Author Kolaborasi siap disimpan.\n\n" +
+    "ID Order: " +
+    data.idOrder +
+    "\nJudul: " +
+    data.judulBuku +
+    "\nAuthor: " +
+    data.author.nama +
+    "\nJumlah Bab: " +
+    data.author.bab.length
   );
 
 }
 
 
 /* ==================================================
-   RESET AUTHOR
+   RESET FORM AUTHOR
 ================================================== */
 
-function resetFormAuthorArtikel(){
+function resetFormAuthor(){
 
-  document
-    .getElementById(
-      "authorForm"
-    )
-    .reset();
+  document.getElementById(
+    "authorForm"
+  ).reset();
 
 
-  document
-    .getElementById(
-      "judulArtikelAuthor"
-    )
-    .value = "";
+  document.getElementById(
+    "judulBukuAuthor"
+  ).value = "";
 
 
-  document
-    .getElementById(
-      "statusOrder"
-    )
-    .className =
-      "status-box";
+  document.getElementById(
+    "orderStatus"
+  ).className =
+    "order-status";
+
+
+  document.getElementById(
+    "orderStatus"
+  ).textContent =
+    "";
+
+
+  const container =
+    document.querySelector(
+      "#authorContainer .authorBabContainer .bab-list"
+    );
+
+
+  if(container){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Ketik ID Order kemudian klik
+        <strong>AMBIL DATA ORDER</strong>.
+
+      </div>
+
+    `;
+
+  }
 
 
   const today =
@@ -1871,17 +3021,24 @@ function resetFormAuthorArtikel(){
       .split("T")[0];
 
 
+  document.getElementById(
+    "tanggalTambah"
+  ).value = today;
+
+
+  /*
+  FOKUS KEMBALI KE ID ORDER
+  */
+
   document
-    .getElementById(
-      "tanggalTambah"
-    )
-    .value = today;
+    .getElementById("idOrder")
+    .focus();
 
 }
 
 
 /* ==================================================
-   POPUP
+   POPUP ORDER
 ================================================== */
 
 function tampilkanPopupOrder(
@@ -1901,12 +3058,11 @@ function tampilkanPopupOrder(
     judul;
 
 
-  document
-    .getElementById(
-      "orderModal"
-    )
-    .classList
-    .add("show");
+  document.getElementById(
+    "orderModal"
+  ).classList.add(
+    "show"
+  );
 
 }
 
@@ -1952,28 +3108,67 @@ function salinIdOrder(){
 
 function tutupModal(){
 
-  document
-    .getElementById(
-      "orderModal"
-    )
-    .classList
-    .remove("show");
+  document.getElementById(
+    "orderModal"
+  ).classList.remove(
+    "show"
+  );
 
 }
 
 
 /* ==================================================
-   KEMBALI KE ARTIKEL
+   ESCAPE HTML
 ================================================== */
 
-function kembaliKeArtikel(){
+function escapeHtml(
+  text
+){
+
+  return String(text)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ==================================================
+   KEMBALI
+================================================== */
+
+function kembali(){
 
   window.location.href =
-    "artikel.html";
+    "buku.html";
 
 }
 
 </script>
 
+
 </body>
+
 </html>
