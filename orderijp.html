@@ -270,6 +270,26 @@ small{
 }
 
 /* =========================
+   BUTTON AMBIL DETAIL
+========================= */
+
+.btn-detail{
+  width:100%;
+  border:0;
+  padding:13px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.btn-detail:hover{
+  background:#183b56;
+}
+
+/* =========================
    MODAL
 ========================= */
 
@@ -569,7 +589,6 @@ required>
 
 <!-- ==================================================
      MARKETING
-     SEKARANG INPUT TEXT
 ================================================== -->
 
 <div class="form-group">
@@ -636,53 +655,18 @@ required>
 Pilih Bulan Terbit
 </option>
 
-<option value="Januari">
-Januari
-</option>
-
-<option value="Februari">
-Februari
-</option>
-
-<option value="Maret">
-Maret
-</option>
-
-<option value="April">
-April
-</option>
-
-<option value="Mei">
-Mei
-</option>
-
-<option value="Juni">
-Juni
-</option>
-
-<option value="Juli">
-Juli
-</option>
-
-<option value="Agustus">
-Agustus
-</option>
-
-<option value="September">
-September
-</option>
-
-<option value="Oktober">
-Oktober
-</option>
-
-<option value="November">
-November
-</option>
-
-<option value="Desember">
-Desember
-</option>
+<option value="Januari">Januari</option>
+<option value="Februari">Februari</option>
+<option value="Maret">Maret</option>
+<option value="April">April</option>
+<option value="Mei">Mei</option>
+<option value="Juni">Juni</option>
+<option value="Juli">Juli</option>
+<option value="Agustus">Agustus</option>
+<option value="September">September</option>
+<option value="Oktober">Oktober</option>
+<option value="November">November</option>
+<option value="Desember">Desember</option>
 
 </select>
 
@@ -847,6 +831,12 @@ yang sudah memiliki ID Order.
 
 <br><br>
 
+Masukkan <strong>ID Order</strong> secara manual,
+kemudian klik <strong>Ambil Detail Order</strong>
+untuk mengambil data IJP.
+
+<br><br>
+
 Jika ingin menambahkan author berikutnya,
 lakukan input kembali menggunakan
 <strong>ID Order yang sama</strong>.
@@ -860,7 +850,7 @@ onsubmit="simpanAuthorIJP(event)">
 
 
 <!-- ==================================================
-     ID ORDER
+     ID ORDER - INPUT MANUAL
 ================================================== -->
 
 <div class="form-group">
@@ -869,20 +859,26 @@ onsubmit="simpanAuthorIJP(event)">
 ID Order IJP
 </label>
 
-<select
+<input
+type="text"
 id="idOrder"
 name="idOrder"
-onchange="ambilDetailOrderIJP()"
+placeholder="Ketik ID Order IJP"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih ID Order
-</option>
+<button
+type="button"
+class="btn-detail"
+onclick="ambilDetailOrderIJP()">
 
-</select>
+🔍 AMBIL DETAIL ORDER
+
+</button>
 
 <small>
-ID Order menjadi identitas utama IJP.
+Ketik ID Order IJP secara manual, kemudian klik
+<strong>Ambil Detail Order</strong>.
 </small>
 
 </div>
@@ -950,7 +946,6 @@ readonly>
 
 <!-- ==================================================
      MARKETING INPUT
-     SEKARANG INPUT TEXT
 ================================================== -->
 
 <div class="form-group">
@@ -1013,45 +1008,16 @@ required>
 Pilih urutan penulis
 </option>
 
-<option value="1">
-Penulis ke-1
-</option>
-
-<option value="2">
-Penulis ke-2
-</option>
-
-<option value="3">
-Penulis ke-3
-</option>
-
-<option value="4">
-Penulis ke-4
-</option>
-
-<option value="5">
-Penulis ke-5
-</option>
-
-<option value="6">
-Penulis ke-6
-</option>
-
-<option value="7">
-Penulis ke-7
-</option>
-
-<option value="8">
-Penulis ke-8
-</option>
-
-<option value="9">
-Penulis ke-9
-</option>
-
-<option value="10">
-Penulis ke-10
-</option>
+<option value="1">Penulis ke-1</option>
+<option value="2">Penulis ke-2</option>
+<option value="3">Penulis ke-3</option>
+<option value="4">Penulis ke-4</option>
+<option value="5">Penulis ke-5</option>
+<option value="6">Penulis ke-6</option>
+<option value="7">Penulis ke-7</option>
+<option value="8">Penulis ke-8</option>
+<option value="9">Penulis ke-9</option>
+<option value="10">Penulis ke-10</option>
 
 </select>
 
@@ -1353,36 +1319,6 @@ function ubahJenisInput(){
     document
       .getElementById("formTambahAuthor")
       .classList.add("active");
-
-
-    /* Ambil daftar ID Order */
-
-    if(
-      typeof google !== "undefined" &&
-      google.script &&
-      google.script.run
-    ){
-
-      google.script.run
-
-        .withSuccessHandler(
-          isiDropdownOrder
-        )
-
-        .withFailureHandler(
-          function(error){
-
-            console.error(
-              "Gagal mengambil daftar order:",
-              error
-            );
-
-          }
-        )
-
-        .ambilDaftarOrderIJP();
-
-    }
 
   }
 
@@ -1799,175 +1735,178 @@ function perbaruiNomorAuthorMT(){
 
 /* ==================================================
    DETAIL ORDER IJP
+   ID ORDER DIKETIK MANUAL
 ================================================== */
 
 function ambilDetailOrderIJP(){
 
-  const idOrder =
-    document.getElementById(
-      "idOrder"
-    ).value;
-
-
-  if(!idOrder){
-
-    document.getElementById(
-      "judulIJPAuthor"
-    ).value = "";
-
-    document.getElementById(
-      "kodeJurnalAuthor"
-    ).value = "";
-
-    document.getElementById(
-      "bulanTerbitAuthor"
-    ).value = "";
-
-    return;
-
-  }
-
-
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
-
-    google.script.run
-
-      .withSuccessHandler(
-        function(data){
-
-          if(!data){
-
-            return;
-
-          }
-
-
-          document.getElementById(
-            "judulIJPAuthor"
-          ).value =
-            data.judulIJP ||
-            data.judulArtikel ||
-            "";
-
-
-          document.getElementById(
-            "kodeJurnalAuthor"
-          ).value =
-            data.kodeJurnal ||
-            "";
-
-
-          document.getElementById(
-            "bulanTerbitAuthor"
-          ).value =
-            data.bulanTerbit ||
-            "";
-
-        }
-      )
-
-
-      .withFailureHandler(
-        function(error){
-
-          alert(
-            "Gagal mengambil detail order IJP: " +
-            error.message
-          );
-
-        }
-      )
-
-
-      .ambilDetailOrderIJP(
-        idOrder
-      );
-
-  }
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN ORDER IJP
-================================================== */
-
-function isiDropdownOrder(
-  data
-){
-
-  const select =
+  const input =
     document.getElementById(
       "idOrder"
     );
 
 
-  select.innerHTML = `
-
-    <option value="">
-      Pilih ID Order IJP
-    </option>
-
-  `;
+  const idOrder =
+    input.value.trim();
 
 
-  if(!Array.isArray(data)){
+  /* ==================================================
+     VALIDASI ID ORDER
+  ================================================== */
+
+  if(!idOrder){
+
+    alert(
+      "Silakan ketik ID Order IJP terlebih dahulu."
+    );
+
+    input.focus();
 
     return;
 
   }
 
 
-  data.forEach(
-    function(item){
+  /* ==================================================
+     KOSONGKAN DETAIL LAMA
+  ================================================== */
 
-      const option =
-        document.createElement(
-          "option"
-        );
+  document.getElementById(
+    "judulIJPAuthor"
+  ).value = "";
+
+  document.getElementById(
+    "kodeJurnalAuthor"
+  ).value = "";
+
+  document.getElementById(
+    "bulanTerbitAuthor"
+  ).value = "";
 
 
-      if(
-        typeof item === "object"
-      ){
+  /* ==================================================
+     CEK GOOGLE APPS SCRIPT
+  ================================================== */
 
-        option.value =
-          item.idOrder || "";
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    alert(
+      "Google Apps Script tidak tersedia."
+    );
+
+    return;
+
+  }
 
 
-        option.textContent =
-          item.idOrder +
-          " — " +
-          (
-            item.judulIJP ||
-            item.judulArtikel ||
-            ""
+  /* ==================================================
+     AMBIL DATA ORDER
+  ================================================== */
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(data){
+
+        if(!data){
+
+          alert(
+            "ID Order IJP tidak ditemukan."
           );
 
+          return;
+
+        }
+
+
+        /* =========================
+           JUDUL
+        ========================= */
+
+        document.getElementById(
+          "judulIJPAuthor"
+        ).value =
+          data.judulIJP ||
+          data.judulArtikel ||
+          "";
+
+
+        /* =========================
+           KODE JURNAL
+        ========================= */
+
+        document.getElementById(
+          "kodeJurnalAuthor"
+        ).value =
+          data.kodeJurnal ||
+          "";
+
+
+        /* =========================
+           BULAN TERBIT
+        ========================= */
+
+        document.getElementById(
+          "bulanTerbitAuthor"
+        ).value =
+          data.bulanTerbit ||
+          "";
+
+
+        /* =========================
+           VALIDASI HASIL
+        ========================= */
+
+        if(
+          !data.judulIJP &&
+          !data.judulArtikel &&
+          !data.kodeJurnal &&
+          !data.bulanTerbit
+        ){
+
+          alert(
+            "ID Order ditemukan, tetapi detail order kosong."
+          );
+
+          return;
+
+        }
+
+
+        alert(
+          "Detail Order IJP berhasil ditemukan."
+        );
+
       }
-
-      else{
-
-        option.value =
-          item;
+    )
 
 
-        option.textContent =
-          item;
+    .withFailureHandler(
+      function(error){
+
+        alert(
+          "Gagal mengambil detail order IJP: " +
+          (
+            error &&
+            error.message
+            ?
+            error.message
+            :
+            error
+          )
+        );
 
       }
+    )
 
 
-      select.appendChild(
-        option
-      );
-
-    }
-  );
+    .ambilDetailOrderIJP(
+      idOrder
+    );
 
 }
 
@@ -2331,7 +2270,26 @@ function simpanAuthorIJP(
   const idOrder =
     document.getElementById(
       "idOrder"
-    ).value;
+    ).value.trim();
+
+
+  /* ==================================================
+     VALIDASI ID ORDER
+  ================================================== */
+
+  if(!idOrder){
+
+    alert(
+      "ID Order IJP wajib diisi."
+    );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
+
+    return;
+
+  }
 
 
   const judulIJP =
@@ -2368,6 +2326,25 @@ function simpanAuthorIJP(
     document.getElementById(
       "urutanPenulis"
     ).value;
+
+
+  /* ==================================================
+     VALIDASI DETAIL ORDER
+  ================================================== */
+
+  if(!judulIJP){
+
+    alert(
+      "Detail Order belum diambil. Klik tombol AMBIL DETAIL ORDER terlebih dahulu."
+    );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
+
+    return;
+
+  }
 
 
   /* ==================================================
@@ -2668,9 +2645,6 @@ function salinIdOrder(){
   }
 
   else{
-
-    /* Fallback untuk browser yang tidak
-       mendukung navigator.clipboard */
 
     const textarea =
       document.createElement(
