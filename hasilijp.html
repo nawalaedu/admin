@@ -159,6 +159,47 @@ select:focus{
 
 
 /* =========================
+   SEARCH ID ORDER
+========================= */
+
+.search-row{
+  display:flex;
+  gap:10px;
+  align-items:stretch;
+}
+
+.search-row input{
+  flex:1;
+  min-width:0;
+}
+
+.btn-search{
+  flex:0 0 130px;
+  border:0;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.btn-search:hover{
+  background:#183b56;
+}
+
+.btn-search:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+.search-icon{
+  margin-right:5px;
+}
+
+
+/* =========================
    READONLY
 ========================= */
 
@@ -386,11 +427,22 @@ small{
     font-size:24px;
   }
 
+  .search-row{
+    flex-direction:column;
+  }
+
+  .btn-search{
+    width:100%;
+    flex:none;
+    padding:13px;
+  }
+
 }
 
 </style>
 
-  <script src="api.js"></script>
+<script src="api.js"></script>
+
 </head>
 
 
@@ -464,16 +516,18 @@ yang telah dibuat.
 
 <strong>Informasi:</strong><br>
 
-Pilih <strong>ID Order IJP</strong> terlebih dahulu.
-Setelah ID Order dipilih, informasi
+Ketik <strong>ID Order IJP</strong> terlebih dahulu,
+kemudian tekan tombol <strong>🔍 Cari Data</strong>.
+Sistem akan mengambil informasi
 <strong>Judul IJP, Kode Jurnal, dan Bulan Terbit</strong>
-akan ditampilkan otomatis.
+secara otomatis.
 
 <br><br>
 
 Setelah proses IJP selesai, masukkan
+<strong>Nama Tim Riset</strong> dan
 <strong>link Google Drive hasil IJP</strong>
-pada bagian Arsip Hasil IJP.
+pada bagian yang tersedia.
 
 </div>
 
@@ -497,19 +551,32 @@ onsubmit="simpanIJP(event)">
 ID Order IJP
 </label>
 
-<select
+<div class="search-row">
+
+<input
+type="text"
 id="idOrder"
+placeholder="Ketik ID Order IJP"
 required
-onchange="ambilDetailOrder()">
+autocomplete="off"
+onkeydown="tekanEnterCari(event)">
 
-<option value="">
-Pilih ID Order IJP
-</option>
+<button
+type="button"
+id="btnCari"
+class="btn-search"
+onclick="cariOrderIJP()">
 
-</select>
+<span class="search-icon">🔍</span>
+Cari Data
+
+</button>
+
+</div>
 
 <small>
-Pilih ID Order IJP yang sudah dibuat.
+Ketik ID Order IJP yang sudah dibuat,
+kemudian tekan tombol Cari Data.
 </small>
 
 </div>
@@ -548,7 +615,7 @@ Judul IJP
 type="text"
 id="judulIJP"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order dicari"
 readonly>
 
 </div>
@@ -568,7 +635,7 @@ Kode Jurnal
 type="text"
 id="kodeJurnal"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order dicari"
 readonly>
 
 </div>
@@ -588,7 +655,7 @@ Bulan Terbit
 type="text"
 id="bulanTerbit"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order dicari"
 readonly>
 
 </div>
@@ -600,43 +667,24 @@ readonly>
 
 
 <!-- ==================================================
-     TIM IJP
+     NAMA TIM RISET
 ================================================== -->
 
 <div class="form-group">
 
 <label>
-Nama Tim IJP
+Nama Tim Riset
 </label>
 
-<select
+<input
+type="text"
 id="timIJP"
-required>
-
-<option value="">
-Pilih Tim IJP
-</option>
-
-<option value="Tim IJP 1">
-Tim IJP 1
-</option>
-
-<option value="Tim IJP 2">
-Tim IJP 2
-</option>
-
-<option value="Tim IJP 3">
-Tim IJP 3
-</option>
-
-<option value="Tim IJP 4">
-Tim IJP 4
-</option>
-
-</select>
+placeholder="Ketik nama tim riset"
+required
+autocomplete="off">
 
 <small>
-Pilih tim IJP yang mengerjakan IJP tersebut.
+Ketik nama tim riset yang mengerjakan IJP tersebut.
 </small>
 
 </div>
@@ -660,7 +708,7 @@ required>
 
 <small>
 Masukkan link Google Drive yang berisi hasil IJP
-yang sudah dibuat oleh tim IJP.
+yang sudah dibuat oleh tim riset.
 </small>
 
 </div>
@@ -798,7 +846,7 @@ class="result-value">
 <div class="result-row">
 
 <div class="result-label">
-TIM IJP
+NAMA TIM RISET
 </div>
 
 <div
@@ -841,188 +889,59 @@ document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-  muatDaftarOrderIJP();
+  /*
+    Tidak lagi memuat dropdown ID Order.
+    ID Order sekarang diketik manual.
+  */
+
+  kosongkanDetailIJP();
 
 });
 
 
 /* ==================================================
-   MUAT DAFTAR ID ORDER IJP
+   TEKAN ENTER PADA ID ORDER
 ================================================== */
 
-function muatDaftarOrderIJP(){
+function tekanEnterCari(event){
 
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
+  if(event.key === "Enter"){
 
+    event.preventDefault();
 
-  select.innerHTML = `
-
-    <option value="">
-      Memuat ID Order IJP...
-    </option>
-
-  `;
-
-
-  google.script.run
-
-    .withSuccessHandler(
-      isiDropdownOrder
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        select.innerHTML = `
-
-          <option value="">
-            Gagal memuat ID Order IJP
-          </option>
-
-        `;
-
-        alert(
-          "Gagal mengambil daftar ID Order IJP:\n" +
-          error.message
-        );
-
-      }
-    )
-
-    .ambilDaftarOrderIJP();
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN
-================================================== */
-
-function isiDropdownOrder(
-  data
-){
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  select.innerHTML = `
-
-    <option value="">
-      Pilih ID Order IJP
-    </option>
-
-  `;
-
-
-  if(
-    !Array.isArray(data) ||
-    data.length === 0
-  ){
-
-    select.innerHTML = `
-
-      <option value="">
-        Belum ada Order IJP
-      </option>
-
-    `;
-
-    return;
+    cariOrderIJP();
 
   }
 
-
-  data.forEach(
-    function(item){
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      /*
-        Jika Apps Script mengirim object
-      */
-
-      if(
-        typeof item === "object" &&
-        item !== null
-      ){
-
-        option.value =
-          item.idOrder || "";
-
-
-        option.textContent =
-          item.idOrder +
-          " — " +
-          (
-            item.judulIJP ||
-            item.judul ||
-            ""
-          );
-
-      }
-
-      else{
-
-        option.value =
-          item;
-
-        option.textContent =
-          item;
-
-      }
-
-
-      select.appendChild(
-        option
-      );
-
-    }
-  );
-
 }
 
 
 /* ==================================================
-   AMBIL DETAIL ORDER IJP
+   CARI ORDER IJP
 ================================================== */
 
-function ambilDetailOrder(){
+function cariOrderIJP(){
 
-  const idOrder =
+  const input =
     document.getElementById(
       "idOrder"
-    ).value;
+    );
+
+  const idOrder =
+    input.value.trim();
 
 
   /*
-    Jika belum dipilih
+    Validasi ID Order
   */
 
   if(!idOrder){
 
-    document.getElementById(
-      "judulIJP"
-    ).value = "";
+    alert(
+      "Silakan ketik ID Order IJP terlebih dahulu."
+    );
 
-
-    document.getElementById(
-      "kodeJurnal"
-    ).value = "";
-
-
-    document.getElementById(
-      "bulanTerbit"
-    ).value = "";
+    input.focus();
 
     return;
 
@@ -1030,29 +949,61 @@ function ambilDetailOrder(){
 
 
   /*
-    Loading
+    Ambil elemen
   */
 
-  document.getElementById(
-    "judulIJP"
-  ).value =
+  const btnCari =
+    document.getElementById(
+      "btnCari"
+    );
+
+
+  const judul =
+    document.getElementById(
+      "judulIJP"
+    );
+
+
+  const kode =
+    document.getElementById(
+      "kodeJurnal"
+    );
+
+
+  const bulan =
+    document.getElementById(
+      "bulanTerbit"
+    );
+
+
+  /*
+    Tombol loading
+  */
+
+  btnCari.disabled =
+    true;
+
+
+  btnCari.innerHTML =
+    "⏳ Mencari...";
+
+
+  /*
+    Tampilkan loading
+  */
+
+  judul.value =
     "Memuat...";
 
-
-  document.getElementById(
-    "kodeJurnal"
-  ).value =
+  kode.value =
     "Memuat...";
 
-
-  document.getElementById(
-    "bulanTerbit"
-  ).value =
+  bulan.value =
     "Memuat...";
 
 
   /*
-    Ambil detail dari Code.gs
+    Panggil Code.gs
   */
 
   google.script.run
@@ -1060,26 +1011,33 @@ function ambilDetailOrder(){
     .withSuccessHandler(
       function(data){
 
+        /*
+          Aktifkan kembali tombol
+        */
+
+        btnCari.disabled =
+          false;
+
+        btnCari.innerHTML =
+          '<span class="search-icon">🔍</span> Cari Data';
+
+
+        /*
+          Data tidak ditemukan
+        */
+
         if(!data){
 
-          document.getElementById(
-            "judulIJP"
-          ).value = "";
-
-
-          document.getElementById(
-            "kodeJurnal"
-          ).value = "";
-
-
-          document.getElementById(
-            "bulanTerbit"
-          ).value = "";
+          kosongkanDetailIJP();
 
 
           alert(
-            "Data ID Order IJP tidak ditemukan."
+            "ID Order IJP tidak ditemukan.\n\n" +
+            "Pastikan ID Order yang diketik sudah benar."
           );
+
+
+          input.focus();
 
           return;
 
@@ -1090,9 +1048,7 @@ function ambilDetailOrder(){
           JUDUL IJP
         */
 
-        document.getElementById(
-          "judulIJP"
-        ).value =
+        judul.value =
           data.judulIJP ||
           data.judulArtikel ||
           data.judul ||
@@ -1103,9 +1059,7 @@ function ambilDetailOrder(){
           KODE JURNAL
         */
 
-        document.getElementById(
-          "kodeJurnal"
-        ).value =
+        kode.value =
           data.kodeJurnal ||
           "";
 
@@ -1114,11 +1068,28 @@ function ambilDetailOrder(){
           BULAN TERBIT
         */
 
-        document.getElementById(
-          "bulanTerbit"
-        ).value =
+        bulan.value =
           data.bulanTerbit ||
           "";
+
+
+        /*
+          Validasi hasil pencarian
+        */
+
+        if(
+          !judul.value &&
+          !kode.value &&
+          !bulan.value
+        ){
+
+          alert(
+            "Data ID Order ditemukan, tetapi detail IJP belum tersedia."
+          );
+
+          return;
+
+        }
 
       }
     )
@@ -1126,25 +1097,41 @@ function ambilDetailOrder(){
     .withFailureHandler(
       function(error){
 
-        document.getElementById(
-          "judulIJP"
-        ).value = "";
+        /*
+          Aktifkan kembali tombol
+        */
+
+        btnCari.disabled =
+          false;
+
+        btnCari.innerHTML =
+          '<span class="search-icon">🔍</span> Cari Data';
 
 
-        document.getElementById(
-          "kodeJurnal"
-        ).value = "";
+        /*
+          Kosongkan detail
+        */
+
+        kosongkanDetailIJP();
 
 
-        document.getElementById(
-          "bulanTerbit"
-        ).value = "";
-
+        /*
+          Tampilkan error
+        */
 
         alert(
           "Gagal mengambil detail order IJP:\n" +
-          error.message
+          (
+            error && error.message
+            ?
+            error.message
+            :
+            "Terjadi kesalahan."
+          )
         );
+
+
+        input.focus();
 
       }
     )
@@ -1152,6 +1139,29 @@ function ambilDetailOrder(){
     .ambilDetailOrderIJP(
       idOrder
     );
+
+}
+
+
+/* ==================================================
+   KOSONGKAN DETAIL IJP
+================================================== */
+
+function kosongkanDetailIJP(){
+
+  document.getElementById(
+    "judulIJP"
+  ).value = "";
+
+
+  document.getElementById(
+    "kodeJurnal"
+  ).value = "";
+
+
+  document.getElementById(
+    "bulanTerbit"
+  ).value = "";
 
 }
 
@@ -1195,32 +1205,32 @@ function simpanIJP(
     idOrder:
       document.getElementById(
         "idOrder"
-      ).value,
+      ).value.trim(),
 
     kodeJurnal:
       document.getElementById(
         "kodeJurnal"
-      ).value,
+      ).value.trim(),
 
     judulIJP:
       document.getElementById(
         "judulIJP"
-      ).value,
+      ).value.trim(),
 
     bulanTerbit:
       document.getElementById(
         "bulanTerbit"
-      ).value,
+      ).value.trim(),
 
     timIJP:
       document.getElementById(
         "timIJP"
-      ).value,
+      ).value.trim(),
 
     arsip:
       document.getElementById(
         "arsip"
-      ).value
+      ).value.trim()
 
   };
 
@@ -1232,8 +1242,12 @@ function simpanIJP(
   if(!data.idOrder){
 
     alert(
-      "Silakan pilih ID Order IJP."
+      "Silakan ketik ID Order IJP."
     );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
     return;
 
@@ -1243,7 +1257,8 @@ function simpanIJP(
   if(!data.judulIJP){
 
     alert(
-      "Judul IJP belum ditemukan."
+      "Judul IJP belum ditemukan.\n\n" +
+      "Silakan cari ID Order terlebih dahulu."
     );
 
     return;
@@ -1254,7 +1269,8 @@ function simpanIJP(
   if(!data.kodeJurnal){
 
     alert(
-      "Kode jurnal belum ditemukan."
+      "Kode jurnal belum ditemukan.\n\n" +
+      "Silakan cari ID Order terlebih dahulu."
     );
 
     return;
@@ -1265,7 +1281,8 @@ function simpanIJP(
   if(!data.bulanTerbit){
 
     alert(
-      "Bulan terbit belum ditemukan."
+      "Bulan terbit belum ditemukan.\n\n" +
+      "Silakan cari ID Order terlebih dahulu."
     );
 
     return;
@@ -1276,8 +1293,12 @@ function simpanIJP(
   if(!data.timIJP){
 
     alert(
-      "Silakan pilih Nama Tim IJP."
+      "Silakan ketik Nama Tim Riset."
     );
+
+    document.getElementById(
+      "timIJP"
+    ).focus();
 
     return;
 
@@ -1289,6 +1310,10 @@ function simpanIJP(
     alert(
       "Masukkan link Google Drive hasil IJP."
     );
+
+    document.getElementById(
+      "arsip"
+    ).focus();
 
     return;
 
@@ -1374,26 +1399,7 @@ function simpanIJP(
             Kosongkan informasi otomatis
           */
 
-          document.getElementById(
-            "judulIJP"
-          ).value = "";
-
-
-          document.getElementById(
-            "kodeJurnal"
-          ).value = "";
-
-
-          document.getElementById(
-            "bulanTerbit"
-          ).value = "";
-
-
-          /*
-            Muat kembali daftar order
-          */
-
-          muatDaftarOrderIJP();
+          kosongkanDetailIJP();
 
         }
 
@@ -1431,7 +1437,13 @@ function simpanIJP(
 
         alert(
           "Gagal menyimpan hasil IJP:\n" +
-          error.message
+          (
+            error && error.message
+            ?
+            error.message
+            :
+            "Terjadi kesalahan."
+          )
         );
 
       }
