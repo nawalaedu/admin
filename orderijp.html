@@ -138,6 +138,7 @@ select:focus,
 textarea:focus{
   outline:none;
   border-color:#2f6f95;
+  box-shadow:0 0 0 3px rgba(47,111,149,.08);
 }
 
 textarea{
@@ -384,6 +385,9 @@ small{
 
   .header{
     padding:20px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
   }
 
   .form-card{
@@ -402,7 +406,8 @@ small{
 
 </style>
 
-  <script src="api.js"></script>
+<script src="api.js"></script>
+
 </head>
 
 
@@ -543,7 +548,9 @@ id="orderForm"
 onsubmit="simpanOrderIJP(event)">
 
 
-<!-- TANGGAL -->
+<!-- ==================================================
+     TANGGAL
+================================================== -->
 
 <div class="form-group">
 
@@ -560,7 +567,10 @@ required>
 </div>
 
 
-<!-- MARKETING -->
+<!-- ==================================================
+     MARKETING
+     SEKARANG INPUT TEXT
+================================================== -->
 
 <div class="form-group">
 
@@ -568,37 +578,24 @@ required>
 Marketing
 </label>
 
-<select
+<input
+type="text"
 id="marketing"
 name="marketing"
+placeholder="Ketik nama marketing"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih Marketing
-</option>
-
-<option value="Marketing 1">
-Marketing 1
-</option>
-
-<option value="Marketing 2">
-Marketing 2
-</option>
-
-<option value="Marketing 3">
-Marketing 3
-</option>
-
-<option value="Marketing 4">
-Marketing 4
-</option>
-
-</select>
+<small>
+Masukkan nama marketing yang melakukan input order.
+</small>
 
 </div>
 
 
-<!-- KODE JURNAL -->
+<!-- ==================================================
+     KODE JURNAL
+================================================== -->
 
 <div class="form-group">
 
@@ -620,7 +617,9 @@ Masukkan kode jurnal tempat IJP akan diterbitkan.
 </div>
 
 
-<!-- BULAN TERBIT -->
+<!-- ==================================================
+     BULAN TERBIT
+================================================== -->
 
 <div class="form-group">
 
@@ -690,7 +689,9 @@ Desember
 </div>
 
 
-<!-- JUDUL -->
+<!-- ==================================================
+     JUDUL
+================================================== -->
 
 <div class="form-group">
 
@@ -708,7 +709,9 @@ required>
 </div>
 
 
-<!-- K M T -->
+<!-- ==================================================
+     K / M / T
+================================================== -->
 
 <div class="form-group">
 
@@ -743,7 +746,9 @@ T - Tunggal
 </div>
 
 
-<!-- JENIS PENULISAN -->
+<!-- ==================================================
+     JENIS PENULISAN
+================================================== -->
 
 <div class="form-group">
 
@@ -806,7 +811,9 @@ onclick="tambahAuthorMT()">
 </div>
 
 
-<!-- SIMPAN -->
+<!-- ==================================================
+     SIMPAN
+================================================== -->
 
 <button
 type="submit"
@@ -852,7 +859,9 @@ id="authorForm"
 onsubmit="simpanAuthorIJP(event)">
 
 
-<!-- ID ORDER -->
+<!-- ==================================================
+     ID ORDER
+================================================== -->
 
 <div class="form-group">
 
@@ -879,7 +888,9 @@ ID Order menjadi identitas utama IJP.
 </div>
 
 
-<!-- JUDUL -->
+<!-- ==================================================
+     JUDUL
+================================================== -->
 
 <div class="form-group">
 
@@ -897,7 +908,9 @@ readonly>
 </div>
 
 
-<!-- KODE JURNAL -->
+<!-- ==================================================
+     KODE JURNAL
+================================================== -->
 
 <div class="form-group">
 
@@ -915,7 +928,9 @@ readonly>
 </div>
 
 
-<!-- BULAN TERBIT -->
+<!-- ==================================================
+     BULAN TERBIT
+================================================== -->
 
 <div class="form-group">
 
@@ -933,7 +948,10 @@ readonly>
 </div>
 
 
-<!-- MARKETING -->
+<!-- ==================================================
+     MARKETING INPUT
+     SEKARANG INPUT TEXT
+================================================== -->
 
 <div class="form-group">
 
@@ -941,42 +959,25 @@ readonly>
 Marketing Input
 </label>
 
-<select
+<input
+type="text"
 id="marketingAuthor"
 name="marketingAuthor"
+placeholder="Ketik nama marketing"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih Marketing
-</option>
-
-<option value="Marketing 1">
-Marketing 1
-</option>
-
-<option value="Marketing 2">
-Marketing 2
-</option>
-
-<option value="Marketing 3">
-Marketing 3
-</option>
-
-<option value="Marketing 4">
-Marketing 4
-</option>
-
-</select>
-
 <small>
-Marketing yang melakukan input author kolaborasi
-dipilih di sini.
+Ketik nama marketing yang melakukan input author
+kolaborasi.
 </small>
 
 </div>
 
 
-<!-- TANGGAL -->
+<!-- ==================================================
+     TANGGAL
+================================================== -->
 
 <div class="form-group">
 
@@ -993,7 +994,9 @@ required>
 </div>
 
 
-<!-- PENULIS KE BERAPA -->
+<!-- ==================================================
+     PENULIS KE BERAPA
+================================================== -->
 
 <div class="form-group">
 
@@ -1059,7 +1062,9 @@ Tentukan posisi author dalam daftar penulis IJP.
 </div>
 
 
-<!-- SATU AUTHOR -->
+<!-- ==================================================
+     SATU AUTHOR
+================================================== -->
 
 <div class="form-group">
 
@@ -1163,6 +1168,10 @@ Masukkan institusi/afiliasi author.
 
 </div>
 
+
+<!-- ==================================================
+     SIMPAN AUTHOR
+================================================== -->
 
 <button
 type="submit"
@@ -1329,6 +1338,7 @@ function ubahJenisInput(){
     .getElementById("formTambahAuthor")
     .classList.remove("active");
 
+
   if(jenis === "order"){
 
     document
@@ -1337,11 +1347,15 @@ function ubahJenisInput(){
 
   }
 
+
   if(jenis === "tambahAuthor"){
 
     document
       .getElementById("formTambahAuthor")
       .classList.add("active");
+
+
+    /* Ambil daftar ID Order */
 
     if(
       typeof google !== "undefined" &&
@@ -1350,16 +1364,22 @@ function ubahJenisInput(){
     ){
 
       google.script.run
+
         .withSuccessHandler(
           isiDropdownOrder
         )
+
         .withFailureHandler(
           function(error){
 
-            console.error(error);
+            console.error(
+              "Gagal mengambil daftar order:",
+              error
+            );
 
           }
         )
+
         .ambilDaftarOrderIJP();
 
     }
@@ -1400,12 +1420,15 @@ function ubahKMT(){
       "infoAuthorMT"
     );
 
+
   container.innerHTML = "";
 
   jumlahAuthorMT = 0;
 
 
-  /* K = KOLABORASI */
+  /* ==================================================
+     K = KOLABORASI
+  ================================================== */
 
   if(kmt === "K"){
 
@@ -1416,7 +1439,9 @@ function ubahKMT(){
   }
 
 
-  /* M = MANDIRI */
+  /* ==================================================
+     M = MANDIRI
+  ================================================== */
 
   if(kmt === "M"){
 
@@ -1460,7 +1485,9 @@ function ubahKMT(){
   }
 
 
-  /* T = TUNGGAL */
+  /* ==================================================
+     T = TUNGGAL
+  ================================================== */
 
   if(kmt === "T"){
 
@@ -1502,6 +1529,7 @@ function ubahKMT(){
 
   }
 
+
   section.style.display = "none";
 
 }
@@ -1518,6 +1546,7 @@ function tambahAuthorMT(){
       "kmt"
     ).value;
 
+
   if(
     kmt === "T" &&
     jumlahAuthorMT >= 1
@@ -1527,25 +1556,31 @@ function tambahAuthorMT(){
 
   }
 
+
   jumlahAuthorMT++;
+
 
   const container =
     document.getElementById(
       "authorMTContainer"
     );
 
+
   const card =
     document.createElement(
       "div"
     );
 
+
   card.className =
     "author-card";
+
 
   card.setAttribute(
     "data-author-index",
     jumlahAuthorMT
   );
+
 
   card.innerHTML = `
 
@@ -1667,6 +1702,7 @@ function tambahAuthorMT(){
 
   `;
 
+
   container.appendChild(
     card
   );
@@ -1681,6 +1717,7 @@ function tambahAuthorMT(){
 function buatOptionPenulis(){
 
   let html = "";
+
 
   for(
     let i = 1;
@@ -1697,6 +1734,7 @@ function buatOptionPenulis(){
     `;
 
   }
+
 
   return html;
 
@@ -1716,11 +1754,13 @@ function hapusAuthorMT(
       ".author-card"
     );
 
+
   if(card){
 
     card.remove();
 
   }
+
 
   perbaruiNomorAuthorMT();
 
@@ -1738,6 +1778,7 @@ function perbaruiNomorAuthorMT(){
       "#authorMTContainer .author-card"
     );
 
+
   cards.forEach(
     function(card,index){
 
@@ -1748,6 +1789,7 @@ function perbaruiNomorAuthorMT(){
 
     }
   );
+
 
   jumlahAuthorMT =
     cards.length;
@@ -1765,6 +1807,7 @@ function ambilDetailOrderIJP(){
     document.getElementById(
       "idOrder"
     ).value;
+
 
   if(!idOrder){
 
@@ -1797,8 +1840,11 @@ function ambilDetailOrderIJP(){
         function(data){
 
           if(!data){
+
             return;
+
           }
+
 
           document.getElementById(
             "judulIJPAuthor"
@@ -1807,11 +1853,13 @@ function ambilDetailOrderIJP(){
             data.judulArtikel ||
             "";
 
+
           document.getElementById(
             "kodeJurnalAuthor"
           ).value =
             data.kodeJurnal ||
             "";
+
 
           document.getElementById(
             "bulanTerbitAuthor"
@@ -1821,6 +1869,7 @@ function ambilDetailOrderIJP(){
 
         }
       )
+
 
       .withFailureHandler(
         function(error){
@@ -1833,7 +1882,10 @@ function ambilDetailOrderIJP(){
         }
       )
 
-      .ambilDetailOrderIJP(idOrder);
+
+      .ambilDetailOrderIJP(
+        idOrder
+      );
 
   }
 
@@ -1853,6 +1905,7 @@ function isiDropdownOrder(
       "idOrder"
     );
 
+
   select.innerHTML = `
 
     <option value="">
@@ -1863,7 +1916,9 @@ function isiDropdownOrder(
 
 
   if(!Array.isArray(data)){
+
     return;
+
   }
 
 
@@ -1875,12 +1930,14 @@ function isiDropdownOrder(
           "option"
         );
 
+
       if(
         typeof item === "object"
       ){
 
         option.value =
           item.idOrder || "";
+
 
         option.textContent =
           item.idOrder +
@@ -1892,15 +1949,18 @@ function isiDropdownOrder(
           );
 
       }
+
       else{
 
         option.value =
           item;
 
+
         option.textContent =
           item;
 
       }
+
 
       select.appendChild(
         option
@@ -1922,10 +1982,12 @@ function simpanOrderIJP(
 
   event.preventDefault();
 
+
   const form =
     document.getElementById(
       "orderForm"
     );
+
 
   if(!form.checkValidity()){
 
@@ -1946,7 +2008,9 @@ function simpanOrderIJP(
     ambilAuthorMT();
 
 
-  /* T = TEPAT SATU AUTHOR */
+  /* ==================================================
+     T = TEPAT SATU AUTHOR
+  ================================================== */
 
   if(
     kmt === "T" &&
@@ -1962,7 +2026,9 @@ function simpanOrderIJP(
   }
 
 
-  /* M = MINIMAL SATU AUTHOR */
+  /* ==================================================
+     M = MINIMAL SATU AUTHOR
+  ================================================== */
 
   if(
     kmt === "M" &&
@@ -1978,7 +2044,9 @@ function simpanOrderIJP(
   }
 
 
-  /* VALIDASI URUTAN */
+  /* ==================================================
+     VALIDASI AUTHOR
+  ================================================== */
 
   for(
     let i = 0;
@@ -2014,6 +2082,10 @@ function simpanOrderIJP(
   }
 
 
+  /* ==================================================
+     DATA ORDER
+  ================================================== */
+
   const data = {
 
     tanggal:
@@ -2024,7 +2096,7 @@ function simpanOrderIJP(
     marketing:
       document.getElementById(
         "marketing"
-      ).value,
+      ).value.trim(),
 
     kodeJurnal:
       document.getElementById(
@@ -2055,9 +2127,28 @@ function simpanOrderIJP(
   };
 
 
-  /* =========================
+  /* ==================================================
+     VALIDASI MARKETING
+  ================================================== */
+
+  if(!data.marketing){
+
+    alert(
+      "Nama marketing wajib diisi."
+    );
+
+    document.getElementById(
+      "marketing"
+    ).focus();
+
+    return;
+
+  }
+
+
+  /* ==================================================
      KIRIM KE CODE.GS
-  ========================= */
+  ================================================== */
 
   if(
     typeof google !== "undefined" &&
@@ -2082,6 +2173,7 @@ function simpanOrderIJP(
             );
 
           }
+
           else{
 
             alert(
@@ -2092,6 +2184,7 @@ function simpanOrderIJP(
 
         }
       )
+
 
       .withFailureHandler(
         function(error){
@@ -2104,14 +2197,20 @@ function simpanOrderIJP(
         }
       )
 
-      .simpanOrderIJP(data);
+
+      .simpanOrderIJP(
+        data
+      );
+
 
     return;
 
   }
 
 
-  /* PREVIEW */
+  /* ==================================================
+     PREVIEW
+  ================================================== */
 
   console.log(
     "DATA ORDER IJP:",
@@ -2256,7 +2355,7 @@ function simpanAuthorIJP(
   const marketing =
     document.getElementById(
       "marketingAuthor"
-    ).value;
+    ).value.trim();
 
 
   const tanggal =
@@ -2271,7 +2370,28 @@ function simpanAuthorIJP(
     ).value;
 
 
-  /* AUTHOR */
+  /* ==================================================
+     VALIDASI MARKETING
+  ================================================== */
+
+  if(!marketing){
+
+    alert(
+      "Nama marketing wajib diisi."
+    );
+
+    document.getElementById(
+      "marketingAuthor"
+    ).focus();
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     AUTHOR
+  ================================================== */
 
   const card =
     document.querySelector(
@@ -2318,7 +2438,9 @@ function simpanAuthorIJP(
   };
 
 
-  /* VALIDASI AFILIASI */
+  /* ==================================================
+     VALIDASI AFILIASI
+  ================================================== */
 
   if(!author.afiliasi){
 
@@ -2330,6 +2452,10 @@ function simpanAuthorIJP(
 
   }
 
+
+  /* ==================================================
+     DATA AUTHOR
+  ================================================== */
 
   const data = {
 
@@ -2360,7 +2486,9 @@ function simpanAuthorIJP(
   };
 
 
-  /* KIRIM KE CODE.GS */
+  /* ==================================================
+     KIRIM KE CODE.GS
+  ================================================== */
 
   if(
     typeof google !== "undefined" &&
@@ -2382,6 +2510,7 @@ function simpanAuthorIJP(
         }
       )
 
+
       .withFailureHandler(
         function(error){
 
@@ -2393,14 +2522,20 @@ function simpanAuthorIJP(
         }
       )
 
-      .simpanAuthorIJP(data);
+
+      .simpanAuthorIJP(
+        data
+      );
+
 
     return;
 
   }
 
 
-  /* PREVIEW */
+  /* ==================================================
+     PREVIEW
+  ================================================== */
 
   console.log(
     "DATA AUTHOR KOLABORASI IJP:",
@@ -2418,6 +2553,8 @@ function simpanAuthorIJP(
     data.kodeJurnal +
     "\nBulan Terbit: " +
     data.bulanTerbit +
+    "\nMarketing: " +
+    marketing +
     "\nPenulis ke-" +
     data.urutanPenulis +
     "\nAuthor: " +
@@ -2527,6 +2664,52 @@ function salinIdOrder(){
 
         }
       );
+
+  }
+
+  else{
+
+    /* Fallback untuk browser yang tidak
+       mendukung navigator.clipboard */
+
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
+
+    textarea.value = id;
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.select();
+
+    try{
+
+      document.execCommand(
+        "copy"
+      );
+
+      alert(
+        "ID Order IJP berhasil disalin: " +
+        id
+      );
+
+    }
+
+    catch(error){
+
+      alert(
+        "ID Order: " +
+        id
+      );
+
+    }
+
+    document.body.removeChild(
+      textarea
+    );
 
   }
 
