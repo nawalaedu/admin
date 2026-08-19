@@ -119,6 +119,80 @@ small{
   line-height:1.6;
 }
 
+
+/* =========================
+   INPUT MANUAL
+========================= */
+
+.input-action{
+  display:flex;
+  gap:10px;
+}
+
+.input-action input{
+  flex:1;
+}
+
+.btn-load{
+  border:0;
+  padding:13px 18px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.btn-load:hover{
+  background:#183b56;
+}
+
+.btn-load:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+
+/* =========================
+   STATUS DATA
+========================= */
+
+.data-status{
+  display:none;
+  margin-top:8px;
+  padding:9px 12px;
+  border-radius:7px;
+  font-size:13px;
+}
+
+.data-status.active{
+  display:block;
+}
+
+.data-status.success{
+  background:#ecfdf5;
+  color:#047857;
+  border:1px solid #a7f3d0;
+}
+
+.data-status.error{
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+}
+
+.data-status.loading{
+  background:#eff6ff;
+  color:#1d4ed8;
+  border:1px solid #bfdbfe;
+}
+
+
+/* =========================
+   BUTTON SIMPAN
+========================= */
+
 .btn-save{
   width:100%;
   border:0;
@@ -262,6 +336,14 @@ small{
     padding:25px 20px;
   }
 
+  .input-action{
+    flex-direction:column;
+  }
+
+  .btn-load{
+    width:100%;
+  }
+
 }
 
 </style>
@@ -321,15 +403,26 @@ small{
 
   <strong>Informasi:</strong><br>
 
-  Satu ID Order Artikel dapat memiliki banyak author.
-  Setiap author dapat memiliki beberapa transaksi
-  invoice seperti DP dan pelunasan.
+  ID Order Artikel dan ID Author sekarang
+  dapat diketik langsung oleh admin.
 
   <br><br>
 
-  ID Author, nama author, dan nomor urutan author
-  akan mengikuti data author berdasarkan
-  ID Order Artikel yang dipilih.
+  Setelah ID Order Artikel dimasukkan,
+  klik <strong>Ambil Data Order</strong>
+  untuk mengambil data artikel.
+
+  <br><br>
+
+  Setelah ID Author dimasukkan,
+  klik <strong>Ambil Data Author</strong>
+  untuk mengambil nama author dan nomor urutan author.
+
+  <br><br>
+
+  Satu ID Order Artikel dapat memiliki banyak author.
+  Setiap author dapat memiliki beberapa transaksi
+  invoice seperti DP dan pelunasan.
 
   <br><br>
 
@@ -345,7 +438,7 @@ small{
 
 
 <!-- ==================================================
-     ID ORDER
+     ID ORDER ARTIKEL
 ================================================== -->
 
 <div class="form-group">
@@ -354,20 +447,36 @@ small{
     ID Order Artikel
   </label>
 
-  <select
-    id="idOrder"
-    required
-    onchange="ambilDetailOrder()">
+  <div class="input-action">
 
-    <option value="">
-      Memuat ID Order Artikel...
-    </option>
+    <input
+      type="text"
+      id="idOrder"
+      placeholder="Ketik ID Order Artikel"
+      autocomplete="off"
+      required>
 
-  </select>
+    <button
+      type="button"
+      id="btnAmbilOrder"
+      class="btn-load"
+      onclick="ambilDetailOrder()">
+
+      Ambil Data Order
+
+    </button>
+
+  </div>
 
   <small>
-    Pilih ID Order Artikel yang sudah dibuat.
+    Ketik ID Order Artikel secara manual.
+    Tekan Enter atau klik tombol Ambil Data Order.
   </small>
+
+  <div
+    id="statusOrder"
+    class="data-status">
+  </div>
 
 </div>
 
@@ -452,21 +561,36 @@ small{
     ID Author
   </label>
 
-  <select
-    id="idAuthor"
-    required
-    onchange="ambilDetailAuthor()">
+  <div class="input-action">
 
-    <option value="">
-      Pilih ID Author
-    </option>
+    <input
+      type="text"
+      id="idAuthor"
+      placeholder="Ketik ID Author"
+      autocomplete="off"
+      required>
 
-  </select>
+    <button
+      type="button"
+      id="btnAmbilAuthor"
+      class="btn-load"
+      onclick="ambilDetailAuthor()">
+
+      Ambil Data Author
+
+    </button>
+
+  </div>
 
   <small>
-    ID Author ditampilkan berdasarkan ID Order Artikel
-    yang dipilih.
+    Ketik ID Author secara manual.
+    Pastikan ID Author berasal dari ID Order Artikel yang dipilih.
   </small>
+
+  <div
+    id="statusAuthor"
+    class="data-status">
+  </div>
 
 </div>
 
@@ -759,194 +883,154 @@ document.addEventListener(
     ).value = today;
 
 
-    ambilDaftarOrderArtikel();
+    /*
+     * ENTER PADA ID ORDER
+     */
+
+    document.getElementById(
+      "idOrder"
+    ).addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          ambilDetailOrder();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * ENTER PADA ID AUTHOR
+     */
+
+    document.getElementById(
+      "idAuthor"
+    ).addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          ambilDetailAuthor();
+
+        }
+
+      }
+    );
 
   }
 );
 
 
 /* ==================================================
-   AMBIL DAFTAR ORDER ARTIKEL
+   STATUS ORDER
 ================================================== */
 
-function ambilDaftarOrderArtikel(){
+function setStatusOrder(
+  message,
+  type
+){
 
-  const select =
+  const status =
     document.getElementById(
-      "idOrder"
+      "statusOrder"
     );
 
 
-  select.innerHTML =
-    '<option value="">Memuat ID Order Artikel...</option>';
+  status.textContent =
+    message;
 
 
-  if(
-    typeof google === "undefined" ||
-    !google.script ||
-    !google.script.run
-  ){
-
-    console.error(
-      "google.script.run tidak tersedia."
+  status.className =
+    "data-status active " +
+    (
+      type || ""
     );
 
-    select.innerHTML =
-      '<option value="">Google Apps Script tidak tersedia</option>';
-
-    return;
-
-  }
+}
 
 
-  google.script.run
+/* ==================================================
+   STATUS AUTHOR
+================================================== */
 
-    .withSuccessHandler(
-      function(result){
+function setStatusAuthor(
+  message,
+  type
+){
 
-        console.log(
-          "DAFTAR ORDER ARTIKEL:",
-          result
-        );
-
-
-        select.innerHTML =
-          '<option value="">Pilih ID Order Artikel</option>';
-
-
-        let orders = result;
+  const status =
+    document.getElementById(
+      "statusAuthor"
+    );
 
 
-        if(
-          result &&
-          !Array.isArray(result) &&
-          Array.isArray(result.data)
-        ){
-
-          orders =
-            result.data;
-
-        }
+  status.textContent =
+    message;
 
 
-        if(!Array.isArray(orders)){
+  status.className =
+    "data-status active " +
+    (
+      type || ""
+    );
 
-          console.error(
-            "Format daftar order artikel tidak valid:",
-            result
-          );
-
-          select.innerHTML =
-            '<option value="">Data ID Order tidak valid</option>';
-
-          return;
-
-        }
+}
 
 
-        if(orders.length === 0){
+/* ==================================================
+   RESET DETAIL ORDER
+================================================== */
 
-          select.innerHTML =
-            '<option value="">Belum ada ID Order Artikel</option>';
+function resetDetailOrder(){
 
-          return;
-
-        }
-
-
-        orders.forEach(
-          function(item){
-
-            if(!item){
-              return;
-            }
+  document.getElementById(
+    "kodeJurnal"
+  ).value = "";
 
 
-            const idOrder =
-              item.idOrder ||
-              item.orderId ||
-              item.ID_Order ||
-              item.IDOrder ||
-              item["ID Order"] ||
-              "";
+  document.getElementById(
+    "bulanTerbit"
+  ).value = "";
 
 
-            const judulArtikel =
-              item.judulArtikel ||
-              item.judul ||
-              item["Judul Artikel"] ||
-              "";
+  document.getElementById(
+    "judulArtikel"
+  ).value = "";
 
 
-            if(!idOrder){
-              return;
-            }
+  resetDetailAuthor();
+
+}
 
 
-            const option =
-              document.createElement(
-                "option"
-              );
+/* ==================================================
+   RESET DETAIL AUTHOR
+================================================== */
+
+function resetDetailAuthor(){
+
+  document.getElementById(
+    "namaPenulis"
+  ).value = "";
 
 
-            option.value =
-              idOrder;
+  document.getElementById(
+    "penulisKe"
+  ).value = "";
 
 
-            option.textContent =
-              idOrder +
-              (
-                judulArtikel
-                  ? " — " + judulArtikel
-                  : ""
-              );
-
-
-            select.appendChild(
-              option
-            );
-
-          }
-        );
-
-
-        if(select.options.length === 1){
-
-          select.innerHTML =
-            '<option value="">ID Order Artikel tidak ditemukan</option>';
-
-        }
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        console.error(
-          "ERROR DAFTAR ORDER ARTIKEL:",
-          error
-        );
-
-
-        select.innerHTML =
-          '<option value="">Gagal memuat ID Order Artikel</option>';
-
-
-        alert(
-          "Gagal mengambil ID Order Artikel:\n" +
-          (
-            error &&
-            error.message
-              ? error.message
-              : error
-          )
-        );
-
-      }
-    )
-
-    .ambilDaftarOrderArtikel();
+  document.getElementById(
+    "idPenulis"
+  ).value = "";
 
 }
 
@@ -960,48 +1044,12 @@ function ambilDetailOrder(){
   const idOrder =
     document.getElementById(
       "idOrder"
-    ).value;
+    ).value.trim();
 
 
-  const judul =
+  const btn =
     document.getElementById(
-      "judulArtikel"
-    );
-
-
-  const kodeJurnal =
-    document.getElementById(
-      "kodeJurnal"
-    );
-
-
-  const bulanTerbit =
-    document.getElementById(
-      "bulanTerbit"
-    );
-
-
-  const author =
-    document.getElementById(
-      "idAuthor"
-    );
-
-
-  const idPenulis =
-    document.getElementById(
-      "idPenulis"
-    );
-
-
-  const namaPenulis =
-    document.getElementById(
-      "namaPenulis"
-    );
-
-
-  const penulisKe =
-    document.getElementById(
-      "penulisKe"
+      "btnAmbilOrder"
     );
 
 
@@ -1009,29 +1057,34 @@ function ambilDetailOrder(){
    * RESET
    */
 
-  judul.value = "";
-
-  kodeJurnal.value = "";
-
-  bulanTerbit.value = "";
-
-  namaPenulis.value = "";
-
-  penulisKe.value = "";
-
-  idPenulis.value = "";
+  resetDetailOrder();
 
 
-  author.innerHTML =
-    '<option value="">Pilih ID Author</option>';
+  setStatusOrder(
+    "",
+    ""
+  );
 
 
   if(!idOrder){
+
+    setStatusOrder(
+      "Silakan ketik ID Order Artikel.",
+      "error"
+    );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
     return;
 
   }
 
+
+  /*
+   * CEK GOOGLE APPS SCRIPT
+   */
 
   if(
     typeof google === "undefined" ||
@@ -1039,8 +1092,9 @@ function ambilDetailOrder(){
     !google.script.run
   ){
 
-    alert(
-      "Google Apps Script tidak tersedia."
+    setStatusOrder(
+      "Google Apps Script tidak tersedia.",
+      "error"
     );
 
     return;
@@ -1048,11 +1102,31 @@ function ambilDetailOrder(){
   }
 
 
+  /*
+   * LOADING
+   */
+
+  btn.disabled = true;
+
+  btn.textContent =
+    "Memuat...";
+
+
+  setStatusOrder(
+    "⏳ Mengambil data Order Artikel...",
+    "loading"
+  );
+
+
   console.log(
     "AMBIL DETAIL ORDER ARTIKEL:",
     idOrder
   );
 
+
+  /*
+   * PANGGIL BACKEND
+   */
 
   google.script.run
 
@@ -1065,10 +1139,17 @@ function ambilDetailOrder(){
         );
 
 
+        btn.disabled = false;
+
+        btn.textContent =
+          "Ambil Data Order";
+
+
         if(!result){
 
-          alert(
-            "Data Order Artikel tidak ditemukan."
+          setStatusOrder(
+            "Data Order Artikel tidak ditemukan.",
+            "error"
           );
 
           return;
@@ -1080,9 +1161,10 @@ function ambilDetailOrder(){
           result.success === false
         ){
 
-          alert(
+          setStatusOrder(
             result.message ||
-            "Gagal mengambil detail Order Artikel."
+            "Gagal mengambil detail Order Artikel.",
+            "error"
           );
 
           return;
@@ -1091,271 +1173,126 @@ function ambilDetailOrder(){
 
 
         /*
-         * ========================================
-         * JUDUL
-         * ========================================
+         * DATA UTAMA
          */
 
-        judul.value =
-          result.judulArtikel ||
-          result.judul ||
-          result["Judul Artikel"] ||
-          "";
+        let data =
+          result;
 
-
-        /*
-         * ========================================
-         * KODE JURNAL
-         * ========================================
-         */
-
-        kodeJurnal.value =
-          result.kodeJurnal ||
-          result.kode_jurnal ||
-          result["Kode Jurnal"] ||
-          "";
-
-
-        /*
-         * ========================================
-         * BULAN TERBIT
-         * ========================================
-         */
-
-        bulanTerbit.value =
-          result.bulanTerbit ||
-          result.bulan_terbit ||
-          result["Bulan Terbit"] ||
-          "";
-
-
-        /*
-         * ========================================
-         * AMBIL DAFTAR AUTHOR
-         * ========================================
-         */
-
-        let authors =
-          result.authors ||
-          result.author ||
-          result.penulis ||
-          result.penulisList ||
-          result.authorList ||
-          [];
-
-
-        /*
-         * Jika data dibungkus di dalam result.data
-         */
 
         if(
           result.data &&
-          typeof result.data === "object"
+          typeof result.data === "object" &&
+          !Array.isArray(result.data)
         ){
 
-          const data =
+          data =
             result.data;
 
-
-          authors =
-            data.authors ||
-            data.author ||
-            data.penulis ||
-            data.penulisList ||
-            data.authorList ||
-            authors;
-
         }
 
 
-        if(!Array.isArray(authors)){
+        /*
+         * JUDUL
+         */
 
-          authors = [];
+        document.getElementById(
+          "judulArtikel"
+        ).value =
 
-        }
+          data.judulArtikel ||
+          data.judul ||
+          data["Judul Artikel"] ||
+          "";
 
 
-        console.log(
-          "AUTHOR LIST:",
-          authors
-        );
+        /*
+         * KODE JURNAL
+         */
+
+        document.getElementById(
+          "kodeJurnal"
+        ).value =
+
+          data.kodeJurnal ||
+          data.kode_jurnal ||
+          data["Kode Jurnal"] ||
+          "";
 
 
-        if(authors.length === 0){
+        /*
+         * BULAN TERBIT
+         */
 
-          author.innerHTML =
-            '<option value="">ID Author tidak ditemukan</option>';
+        document.getElementById(
+          "bulanTerbit"
+        ).value =
+
+          data.bulanTerbit ||
+          data.bulan_terbit ||
+          data["Bulan Terbit"] ||
+          "";
+
+
+        /*
+         * CEK DATA PENTING
+         */
+
+        const kode =
+          document.getElementById(
+            "kodeJurnal"
+          ).value;
+
+
+        const bulan =
+          document.getElementById(
+            "bulanTerbit"
+          ).value;
+
+
+        const judul =
+          document.getElementById(
+            "judulArtikel"
+          ).value;
+
+
+        if(
+          !kode &&
+          !bulan &&
+          !judul
+        ){
+
+          setStatusOrder(
+            "ID Order ditemukan, tetapi detail artikel tidak tersedia.",
+            "error"
+          );
 
           return;
 
         }
 
 
-        author.innerHTML =
-          '<option value="">Pilih ID Author</option>';
+        /*
+         * AUTHOR TIDAK LAGI DITAMPILKAN
+         * SEBAGAI DROPDOWN.
+         *
+         * Kita hanya memastikan bahwa
+         * ID Order valid.
+         */
 
-
-        authors.forEach(
-          function(item,index){
-
-            if(!item){
-              return;
-            }
-
-
-            /*
-             * ==================================
-             * ID AUTHOR
-             *
-             * Prioritas utama:
-             * idAuthor
-             * authorId
-             * ID Author
-             * ==================================
-             */
-
-            const idAuthor =
-              item.idAuthor ||
-              item.authorId ||
-              item.authorID ||
-              item.ID_Author ||
-              item.IDAuthor ||
-              item["ID Author"] ||
-              item.idPenulis ||
-              item.penulisId ||
-              item.penulisID ||
-              item.ID_Penulis ||
-              item["ID Penulis"] ||
-              item.id ||
-              "";
-
-
-            /*
-             * ==================================
-             * NAMA AUTHOR
-             * ==================================
-             */
-
-            const nama =
-              item.namaAuthor ||
-              item.nama_author ||
-              item.authorName ||
-              item.namaPenulis ||
-              item.nama ||
-              item.name ||
-              item["Nama Author"] ||
-              item["Nama Penulis"] ||
-              "";
-
-
-            /*
-             * ==================================
-             * URUTAN AUTHOR
-             * ==================================
-             */
-
-            const urutan =
-              item.authorKe ||
-              item.author_ke ||
-              item.urutanAuthor ||
-              item.penulisKe ||
-              item.penulis_ke ||
-              item.urutan ||
-              item["Author Ke"] ||
-              item["Penulis Ke"] ||
-              item["Penulis ke-"] ||
-              (index + 1);
-
-
-            if(!idAuthor){
-
-              console.warn(
-                "Author tidak memiliki ID:",
-                item
-              );
-
-              return;
-
-            }
-
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-
-            /*
-             * VALUE DROPDOWN = ID AUTHOR
-             */
-
-            option.value =
-              idAuthor;
-
-
-            /*
-             * TAMPILAN DROPDOWN
-             */
-
-            option.textContent =
-              idAuthor +
-              (
-                nama
-                  ? " — " + nama
-                  : ""
-              );
-
-
-            /*
-             * SIMPAN DATA AUTHOR
-             */
-
-            option.dataset.idAuthor =
-              idAuthor;
-
-
-            option.dataset.penulisKe =
-              urutan;
-
-
-            option.dataset.nama =
-              nama;
-
-
-            /*
-             * Simpan juga ID Penulis
-             * apabila backend lama masih
-             * menggunakan nama tersebut.
-             */
-
-            option.dataset.idPenulis =
-              item.idPenulis ||
-              item.penulisId ||
-              item.penulisID ||
-              item.ID_Penulis ||
-              item["ID Penulis"] ||
-              idAuthor;
-
-
-            author.appendChild(
-              option
-            );
-
-          }
+        setStatusOrder(
+          "✓ Data Order Artikel berhasil ditemukan.",
+          "success"
         );
 
 
-        if(author.options.length === 1){
+        /*
+         * FOCUS KE ID AUTHOR
+         */
 
-          author.innerHTML =
-            '<option value="">ID Author tidak ditemukan pada data Order</option>';
-
-          console.warn(
-            "Data author ditemukan tetapi tidak mempunyai ID Author.",
-            authors
-          );
-
-        }
+        document.getElementById(
+          "idAuthor"
+        ).focus();
 
       }
     )
@@ -1369,14 +1306,21 @@ function ambilDetailOrder(){
         );
 
 
-        alert(
-          "Gagal mengambil detail Order Artikel:\n" +
+        btn.disabled = false;
+
+        btn.textContent =
+          "Ambil Data Order";
+
+
+        setStatusOrder(
+          "Gagal mengambil data Order Artikel: " +
           (
             error &&
             error.message
               ? error.message
               : error
-          )
+          ),
+          "error"
         );
 
       }
@@ -1395,52 +1339,51 @@ function ambilDetailOrder(){
 
 function ambilDetailAuthor(){
 
-  const select =
+  const idOrder =
     document.getElementById(
-      "idAuthor"
-    );
-
-
-  const option =
-    select.options[
-      select.selectedIndex
-    ];
+      "idOrder"
+    ).value.trim();
 
 
   const idAuthor =
-    select.value;
-
-
-  const idPenulis =
     document.getElementById(
-      "idPenulis"
-    );
+      "idAuthor"
+    ).value.trim();
 
 
-  const nama =
+  const btn =
     document.getElementById(
-      "namaPenulis"
-    );
-
-
-  const penulisKe =
-    document.getElementById(
-      "penulisKe"
+      "btnAmbilAuthor"
     );
 
 
   /*
-   * RESET
+   * RESET DETAIL AUTHOR
    */
 
-  nama.value = "";
-
-  penulisKe.value = "";
-
-  idPenulis.value = "";
+  resetDetailAuthor();
 
 
-  if(!idAuthor){
+  setStatusAuthor(
+    "",
+    ""
+  );
+
+
+  /*
+   * VALIDASI ID ORDER
+   */
+
+  if(!idOrder){
+
+    setStatusAuthor(
+      "Silakan masukkan ID Order Artikel terlebih dahulu.",
+      "error"
+    );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
     return;
 
@@ -1448,34 +1391,27 @@ function ambilDetailAuthor(){
 
 
   /*
-   * ========================================
-   * AMBIL DATA DARI OPTION
-   * ========================================
+   * VALIDASI ID AUTHOR
    */
 
-  if(option){
+  if(!idAuthor){
 
-    nama.value =
-      option.dataset.nama ||
-      "";
+    setStatusAuthor(
+      "Silakan ketik ID Author.",
+      "error"
+    );
 
+    document.getElementById(
+      "idAuthor"
+    ).focus();
 
-    penulisKe.value =
-      option.dataset.penulisKe ||
-      "";
-
-
-    idPenulis.value =
-      option.dataset.idPenulis ||
-      idAuthor;
+    return;
 
   }
 
 
   /*
-   * ========================================
-   * GOOGLE APPS SCRIPT
-   * ========================================
+   * CEK GOOGLE APPS SCRIPT
    */
 
   if(
@@ -1484,9 +1420,30 @@ function ambilDetailAuthor(){
     !google.script.run
   ){
 
+    setStatusAuthor(
+      "Google Apps Script tidak tersedia.",
+      "error"
+    );
+
     return;
 
   }
+
+
+  /*
+   * LOADING
+   */
+
+  btn.disabled = true;
+
+  btn.textContent =
+    "Memuat...";
+
+
+  setStatusAuthor(
+    "⏳ Mengambil data Author...",
+    "loading"
+  );
 
 
   console.log(
@@ -1496,15 +1453,7 @@ function ambilDetailAuthor(){
 
 
   /*
-   * ========================================
    * PANGGIL BACKEND
-   *
-   * Kita kirim ID Author.
-   *
-   * Kalau backend lama menggunakan
-   * ambilDetailPenulisArtikel(),
-   * ID Author dikirim sebagai parameter.
-   * ========================================
    */
 
   google.script.run
@@ -1518,7 +1467,18 @@ function ambilDetailAuthor(){
         );
 
 
+        btn.disabled = false;
+
+        btn.textContent =
+          "Ambil Data Author";
+
+
         if(!result){
+
+          setStatusAuthor(
+            "Data Author tidak ditemukan.",
+            "error"
+          );
 
           return;
 
@@ -1529,9 +1489,10 @@ function ambilDetailAuthor(){
           result.success === false
         ){
 
-          console.warn(
+          setStatusAuthor(
             result.message ||
-            "Detail author tidak ditemukan."
+            "Author tidak ditemukan.",
+            "error"
           );
 
           return;
@@ -1539,13 +1500,18 @@ function ambilDetailAuthor(){
         }
 
 
+        /*
+         * AMBIL DATA
+         */
+
         let data =
           result;
 
 
         if(
           result.data &&
-          typeof result.data === "object"
+          typeof result.data === "object" &&
+          !Array.isArray(result.data)
         ){
 
           data =
@@ -1555,9 +1521,7 @@ function ambilDetailAuthor(){
 
 
         /*
-         * ====================================
          * ID AUTHOR
-         * ====================================
          */
 
         const returnedIdAuthor =
@@ -1571,9 +1535,7 @@ function ambilDetailAuthor(){
 
 
         /*
-         * ====================================
          * ID PENULIS
-         * ====================================
          */
 
         const returnedIdPenulis =
@@ -1586,12 +1548,10 @@ function ambilDetailAuthor(){
 
 
         /*
-         * ====================================
-         * NAMA
-         * ====================================
+         * NAMA AUTHOR
          */
 
-        nama.value =
+        const nama =
           data.namaAuthor ||
           data.nama_author ||
           data.authorName ||
@@ -1600,17 +1560,14 @@ function ambilDetailAuthor(){
           data.name ||
           data["Nama Author"] ||
           data["Nama Penulis"] ||
-          nama.value ||
           "";
 
 
         /*
-         * ====================================
-         * URUTAN
-         * ====================================
+         * URUTAN AUTHOR
          */
 
-        penulisKe.value =
+        const penulisKe =
           data.authorKe ||
           data.author_ke ||
           data.urutanAuthor ||
@@ -1620,41 +1577,55 @@ function ambilDetailAuthor(){
           data["Author Ke"] ||
           data["Penulis Ke"] ||
           data["Penulis ke-"] ||
-          penulisKe.value ||
           "";
 
 
         /*
-         * Simpan ID yang dikembalikan backend.
+         * ISI FIELD
          */
 
-        idPenulis.value =
+        document.getElementById(
+          "namaPenulis"
+        ).value =
+          nama;
+
+
+        document.getElementById(
+          "penulisKe"
+        ).value =
+          penulisKe;
+
+
+        document.getElementById(
+          "idPenulis"
+        ).value =
           returnedIdPenulis;
 
 
         /*
-         * Update option supaya data tetap
-         * tersedia apabila dipilih kembali.
+         * VALIDASI DATA
          */
 
-        if(option){
+        if(!nama){
 
-          option.dataset.idAuthor =
-            returnedIdAuthor;
+          setStatusAuthor(
+            "ID Author ditemukan, tetapi Nama Author tidak tersedia.",
+            "error"
+          );
 
-
-          option.dataset.idPenulis =
-            returnedIdPenulis;
-
-
-          option.dataset.nama =
-            nama.value;
-
-
-          option.dataset.penulisKe =
-            penulisKe.value;
+          return;
 
         }
+
+
+        /*
+         * SUKSES
+         */
+
+        setStatusAuthor(
+          "✓ Data Author berhasil ditemukan.",
+          "success"
+        );
 
       }
     )
@@ -1665,6 +1636,24 @@ function ambilDetailAuthor(){
         console.error(
           "ERROR DETAIL AUTHOR:",
           error
+        );
+
+
+        btn.disabled = false;
+
+        btn.textContent =
+          "Ambil Data Author";
+
+
+        setStatusAuthor(
+          "Gagal mengambil data Author: " +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          ),
+          "error"
         );
 
       }
@@ -1795,35 +1784,35 @@ function simpanInvoice(event){
     idOrder:
       document.getElementById(
         "idOrder"
-      ).value,
+      ).value.trim(),
 
 
     kodeJurnal:
       document.getElementById(
         "kodeJurnal"
-      ).value,
+      ).value.trim(),
 
 
     bulanTerbit:
       document.getElementById(
         "bulanTerbit"
-      ).value,
+      ).value.trim(),
 
 
     judulArtikel:
       document.getElementById(
         "judulArtikel"
-      ).value,
+      ).value.trim(),
 
 
     /*
-     * ID AUTHOR UTAMA
+     * ID AUTHOR MANUAL
      */
 
     idAuthor:
       document.getElementById(
         "idAuthor"
-      ).value,
+      ).value.trim(),
 
 
     /*
@@ -1833,23 +1822,23 @@ function simpanInvoice(event){
     idPenulis:
       document.getElementById(
         "idPenulis"
-      ).value,
+      ).value.trim(),
 
 
     penulisKe:
       document.getElementById(
         "penulisKe"
-      ).value,
+      ).value.trim(),
 
 
     namaPenulis:
       document.getElementById(
         "namaPenulis"
-      ).value,
+      ).value.trim(),
 
 
     /*
-     * MARKETING SEKARANG TEXT INPUT
+     * MARKETING
      */
 
     marketingInput:
@@ -1858,11 +1847,19 @@ function simpanInvoice(event){
       ).value.trim(),
 
 
+    /*
+     * TANGGAL
+     */
+
     tanggal:
       document.getElementById(
         "tanggal"
       ).value,
 
+
+    /*
+     * HARGA
+     */
 
     harga:
       document.getElementById(
@@ -1870,11 +1867,19 @@ function simpanInvoice(event){
       ).value,
 
 
+    /*
+     * STATUS
+     */
+
     statusPembayaran:
       document.getElementById(
         "statusPembayaran"
       ).value,
 
+
+    /*
+     * NOMINAL
+     */
 
     nominal:
       document.getElementById(
@@ -1893,8 +1898,12 @@ function simpanInvoice(event){
   if(!data.idOrder){
 
     alert(
-      "Silakan pilih ID Order Artikel."
+      "Silakan masukkan ID Order Artikel."
     );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
     return;
 
@@ -1904,7 +1913,7 @@ function simpanInvoice(event){
   if(!data.kodeJurnal){
 
     alert(
-      "Kode Jurnal belum tersedia."
+      "Kode Jurnal belum tersedia. Silakan klik Ambil Data Order."
     );
 
     return;
@@ -1915,7 +1924,18 @@ function simpanInvoice(event){
   if(!data.bulanTerbit){
 
     alert(
-      "Bulan Terbit belum tersedia."
+      "Bulan Terbit belum tersedia. Silakan klik Ambil Data Order."
+    );
+
+    return;
+
+  }
+
+
+  if(!data.judulArtikel){
+
+    alert(
+      "Judul Artikel belum tersedia. Silakan klik Ambil Data Order."
     );
 
     return;
@@ -1926,8 +1946,12 @@ function simpanInvoice(event){
   if(!data.idAuthor){
 
     alert(
-      "ID Author belum tersedia. Silakan pilih Author."
+      "Silakan masukkan ID Author."
     );
+
+    document.getElementById(
+      "idAuthor"
+    ).focus();
 
     return;
 
@@ -1937,7 +1961,7 @@ function simpanInvoice(event){
   if(!data.namaPenulis){
 
     alert(
-      "Nama Author belum tersedia berdasarkan ID Author."
+      "Nama Author belum tersedia. Silakan klik Ambil Data Author."
     );
 
     return;
@@ -1950,6 +1974,10 @@ function simpanInvoice(event){
     alert(
       "Silakan tulis nama Marketing Input."
     );
+
+    document.getElementById(
+      "marketingInput"
+    ).focus();
 
     return;
 
@@ -2010,6 +2038,38 @@ function simpanInvoice(event){
   loading.classList.add(
     "active"
   );
+
+
+  /*
+   * ========================================
+   * CEK GOOGLE APPS SCRIPT
+   * ========================================
+   */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    btn.disabled = false;
+
+    btn.textContent =
+      "SIMPAN INVOICE ARTIKEL";
+
+
+    loading.classList.remove(
+      "active"
+    );
+
+
+    alert(
+      "Google Apps Script tidak tersedia."
+    );
+
+    return;
+
+  }
 
 
   /*
@@ -2096,6 +2156,10 @@ function simpanInvoice(event){
             escapeHtml(data.statusPembayaran) +
             "</strong><br>" +
 
+            "Harga: <strong>Rp " +
+            formatRupiah(data.harga) +
+            "</strong><br>" +
+
             "Nominal: <strong>Rp " +
             formatRupiah(data.nominal) +
             "</strong>";
@@ -2137,40 +2201,23 @@ function simpanInvoice(event){
            * RESET FIELD OTOMATIS
            */
 
-          document.getElementById(
-            "kodeJurnal"
-          ).value = "";
+          resetDetailOrder();
 
 
-          document.getElementById(
-            "bulanTerbit"
-          ).value = "";
+          /*
+           * RESET STATUS
+           */
+
+          setStatusOrder(
+            "",
+            ""
+          );
 
 
-          document.getElementById(
-            "judulArtikel"
-          ).value = "";
-
-
-          document.getElementById(
-            "penulisKe"
-          ).value = "";
-
-
-          document.getElementById(
-            "namaPenulis"
-          ).value = "";
-
-
-          document.getElementById(
-            "idPenulis"
-          ).value = "";
-
-
-          document.getElementById(
-            "idAuthor"
-          ).innerHTML =
-            '<option value="">Pilih ID Author</option>';
+          setStatusAuthor(
+            "",
+            ""
+          );
 
         }
 
