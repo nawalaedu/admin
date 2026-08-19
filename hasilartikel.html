@@ -139,6 +139,10 @@ label{
   margin-bottom:8px;
 }
 
+.required{
+  color:#e53e3e;
+}
+
 input,
 select{
   width:100%;
@@ -183,6 +187,49 @@ small{
 
 
 /* =========================
+   ID ORDER + CARI
+========================= */
+
+.order-search{
+  display:flex;
+  gap:10px;
+  align-items:stretch;
+}
+
+.order-search input{
+  flex:1;
+  min-width:0;
+}
+
+.btn-cari{
+  border:0;
+  padding:0 20px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+  white-space:nowrap;
+  transition:.2s;
+}
+
+.btn-cari:hover{
+  background:#183b56;
+}
+
+.btn-cari:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+.btn-cari .icon{
+  font-size:17px;
+  margin-right:5px;
+}
+
+
+/* =========================
    DETAIL ORDER
 ========================= */
 
@@ -192,11 +239,6 @@ small{
   border-radius:12px;
   padding:20px;
   margin-bottom:25px;
-
-  /*
-    SELALU TAMPIL
-    Tidak lagi menggunakan display:none
-  */
 }
 
 .detail-title{
@@ -214,7 +256,43 @@ small{
 
 
 /* =========================
-   BUTTON
+   STATUS CARI
+========================= */
+
+.search-status{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.search-status.active{
+  display:block;
+}
+
+.search-status.loading{
+  background:#f0f7fb;
+  border:1px solid #d6e7f0;
+  color:#2f6f95;
+}
+
+.search-status.success{
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+  color:#065f46;
+}
+
+.search-status.error{
+  background:#fef2f2;
+  border:1px solid #fecaca;
+  color:#991b1b;
+}
+
+
+/* =========================
+   BUTTON SAVE
 ========================= */
 
 .btn-save{
@@ -391,11 +469,46 @@ small{
     font-size:24px;
   }
 
+  .order-search{
+    gap:8px;
+  }
+
+  .btn-cari{
+    padding:0 14px;
+  }
+
+  .btn-cari .text{
+    display:none;
+  }
+
+}
+
+
+/* =========================
+   MOBILE KECIL
+========================= */
+
+@media(max-width:400px){
+
+  .order-search{
+    flex-direction:column;
+  }
+
+  .btn-cari{
+    padding:12px;
+    width:100%;
+  }
+
+  .btn-cari .text{
+    display:inline;
+  }
+
 }
 
 </style>
 
-  <script src="api.js"></script>
+<script src="api.js"></script>
+
 </head>
 
 
@@ -469,8 +582,9 @@ yang telah dibuat.
 
 <strong>Informasi:</strong><br>
 
-Pilih <strong>ID Order Artikel</strong> terlebih dahulu.
-Setelah ID Order dipilih, informasi
+Ketik <strong>ID Order Artikel</strong> kemudian tekan
+tombol <strong>🔍 Cari Data</strong>.
+Setelah data ditemukan, informasi
 <strong>Judul Artikel Jurnal, Kode Jurnal, dan Bulan Terbit</strong>
 akan ditampilkan otomatis.
 
@@ -499,30 +613,52 @@ onsubmit="simpanRiset(event)">
 <div class="form-group">
 
 <label>
-ID Order Artikel
+ID Order Artikel <span class="required">*</span>
 </label>
 
-<select
+
+<div class="order-search">
+
+<input
+type="text"
 id="idOrder"
+placeholder="Ketik ID Order Artikel"
+autocomplete="off"
 required
-onchange="ambilDetailOrder()">
+onkeydown="enterCariOrder(event)">
 
-<option value="">
-Pilih ID Order Artikel
-</option>
 
-</select>
+<button
+type="button"
+id="btnCari"
+class="btn-cari"
+onclick="cariDataOrder()">
+
+<span class="icon">🔍</span>
+<span class="text">Cari Data</span>
+
+</button>
+
+</div>
+
 
 <small>
-Pilih ID Order artikel yang sudah dibuat.
+Ketik ID Order Artikel yang sudah dibuat,
+kemudian klik tombol Cari Data.
 </small>
+
+
+<div
+id="searchStatus"
+class="search-status">
+
+</div>
 
 </div>
 
 
 <!-- ==================================================
      DETAIL ARTIKEL
-     SELALU TAMPIL
 ================================================== -->
 
 <div
@@ -554,7 +690,7 @@ Judul Artikel Jurnal
 type="text"
 id="judulArtikel"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order dicari"
 readonly>
 
 </div>
@@ -574,7 +710,7 @@ Kode Jurnal
 type="text"
 id="kodeJurnal"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order dicari"
 readonly>
 
 </div>
@@ -594,7 +730,7 @@ Bulan Terbit
 type="text"
 id="bulanTerbit"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order dicari"
 readonly>
 
 </div>
@@ -613,37 +749,18 @@ readonly>
 <div class="form-group">
 
 <label>
-Nama Tim Riset
+Nama Tim Riset <span class="required">*</span>
 </label>
 
-<select
+<input
+type="text"
 id="timRiset"
+placeholder="Ketik nama tim riset"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih Tim Riset
-</option>
-
-<option value="Tim Riset 1">
-Tim Riset 1
-</option>
-
-<option value="Tim Riset 2">
-Tim Riset 2
-</option>
-
-<option value="Tim Riset 3">
-Tim Riset 3
-</option>
-
-<option value="Tim Riset 4">
-Tim Riset 4
-</option>
-
-</select>
-
 <small>
-Pilih tim riset yang mengerjakan artikel tersebut.
+Ketik nama tim riset yang mengerjakan artikel tersebut.
 </small>
 
 </div>
@@ -656,7 +773,7 @@ Pilih tim riset yang mengerjakan artikel tersebut.
 <div class="form-group">
 
 <label>
-Arsip Hasil Artikel
+Arsip Hasil Artikel <span class="required">*</span>
 </label>
 
 <input
@@ -734,6 +851,8 @@ Data hasil riset artikel telah berhasil dicatat.
 <div class="result-box">
 
 
+<!-- ID ORDER -->
+
 <div class="result-row">
 
 <div class="result-label">
@@ -750,6 +869,8 @@ class="result-value">
 
 </div>
 
+
+<!-- KODE JURNAL -->
 
 <div class="result-row">
 
@@ -768,6 +889,8 @@ class="result-value">
 </div>
 
 
+<!-- JUDUL ARTIKEL -->
+
 <div class="result-row">
 
 <div class="result-label">
@@ -785,6 +908,8 @@ class="result-value">
 </div>
 
 
+<!-- BULAN TERBIT -->
+
 <div class="result-row">
 
 <div class="result-label">
@@ -801,6 +926,8 @@ class="result-value">
 
 </div>
 
+
+<!-- TIM RISET -->
 
 <div class="result-row">
 
@@ -848,199 +975,76 @@ document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-  /*
-    Saat halaman dibuka,
-    otomatis mengambil daftar ID Order Artikel.
-  */
-
-  muatDaftarOrderArtikel();
+  console.log(
+    "Halaman Riset Artikel aktif."
+  );
 
 });
 
 
 /* ==================================================
-   MUAT DAFTAR ID ORDER ARTIKEL
+   ENTER PADA ID ORDER
 ================================================== */
 
-function muatDaftarOrderArtikel(){
+function enterCariOrder(event){
 
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
+  /*
+   * Jika user menekan ENTER
+   * pada kolom ID Order,
+   * langsung jalankan pencarian.
+   */
 
+  if(event.key === "Enter"){
 
-  select.innerHTML = `
+    event.preventDefault();
 
-    <option value="">
-      Memuat ID Order Artikel...
-    </option>
-
-  `;
-
-
-  google.script.run
-
-    .withSuccessHandler(
-      isiDropdownOrder
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        select.innerHTML = `
-
-          <option value="">
-            Gagal memuat ID Order
-          </option>
-
-        `;
-
-        alert(
-          "Gagal mengambil daftar ID Order Artikel:\n" +
-          error.message
-        );
-
-      }
-    )
-
-    .ambilDaftarOrderArtikel();
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN
-================================================== */
-
-function isiDropdownOrder(
-  data
-){
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  select.innerHTML = `
-
-    <option value="">
-      Pilih ID Order Artikel
-    </option>
-
-  `;
-
-
-  if(
-    !Array.isArray(data) ||
-    data.length === 0
-  ){
-
-    select.innerHTML = `
-
-      <option value="">
-        Belum ada Order Artikel
-      </option>
-
-    `;
-
-    return;
+    cariDataOrder();
 
   }
 
-
-  data.forEach(
-    function(item){
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      /*
-        Jika Apps Script mengirim object:
-        
-        {
-          idOrder:"",
-          judulArtikel:""
-        }
-      */
-
-      if(
-        typeof item === "object" &&
-        item !== null
-      ){
-
-        option.value =
-          item.idOrder || "";
-
-
-        option.textContent =
-          item.idOrder +
-          " — " +
-          (
-            item.judulArtikel ||
-            item.judulBuku ||
-            ""
-          );
-
-      }
-
-      else{
-
-        option.value =
-          item;
-
-        option.textContent =
-          item;
-
-      }
-
-
-      select.appendChild(
-        option
-      );
-
-    }
-  );
-
 }
 
 
 /* ==================================================
-   AMBIL DETAIL ORDER
+   CARI DATA ORDER
 ================================================== */
 
-function ambilDetailOrder(){
+function cariDataOrder(){
 
-  const idOrder =
+  const input =
     document.getElementById(
       "idOrder"
-    ).value;
+    );
+
+
+  const idOrder =
+    input.value.trim();
+
+
+  const btnCari =
+    document.getElementById(
+      "btnCari"
+    );
+
+
+  const status =
+    document.getElementById(
+      "searchStatus"
+    );
 
 
   /*
-    Jika ID Order belum dipilih,
-    kosongkan informasi artikel.
-  */
+   * Validasi ID Order
+   */
 
   if(!idOrder){
 
-    document.getElementById(
-      "judulArtikel"
-    ).value = "";
+    tampilSearchStatus(
+      "Silakan ketik ID Order Artikel terlebih dahulu.",
+      "error"
+    );
 
-
-    document.getElementById(
-      "kodeJurnal"
-    ).value = "";
-
-
-    document.getElementById(
-      "bulanTerbit"
-    ).value = "";
+    input.focus();
 
     return;
 
@@ -1048,55 +1052,76 @@ function ambilDetailOrder(){
 
 
   /*
-    Tampilkan loading
-  */
+   * Kosongkan data lama
+   */
 
-  document.getElementById(
-    "judulArtikel"
-  ).value =
-    "Memuat...";
-
-
-  document.getElementById(
-    "kodeJurnal"
-  ).value =
-    "Memuat...";
-
-
-  document.getElementById(
-    "bulanTerbit"
-  ).value =
-    "Memuat...";
+  kosongkanDetailArtikel();
 
 
   /*
-    Ambil detail dari Code.gs
-  */
+   * Loading tombol
+   */
+
+  btnCari.disabled =
+    true;
+
+
+  btnCari.innerHTML =
+    '<span class="icon">⏳</span>' +
+    '<span class="text">Mencari...</span>';
+
+
+  tampilSearchStatus(
+    "Sedang mencari data ID Order " +
+    idOrder +
+    "...",
+    "loading"
+  );
+
+
+  /*
+   * ==================================================
+   * PANGGIL APPS SCRIPT
+   * ==================================================
+   *
+   * Method:
+   *
+   * ambilDetailOrderArtikel(idOrder)
+   *
+   */
 
   google.script.run
 
     .withSuccessHandler(
       function(data){
 
+        /*
+         * Kembalikan tombol
+         */
+
+        btnCari.disabled =
+          false;
+
+
+        btnCari.innerHTML =
+          '<span class="icon">🔍</span>' +
+          '<span class="text">Cari Data</span>';
+
+
+        /*
+         * Data tidak ditemukan
+         */
+
         if(!data){
 
-          document.getElementById(
-            "judulArtikel"
-          ).value = "";
+          kosongkanDetailArtikel();
 
 
-          document.getElementById(
-            "kodeJurnal"
-          ).value = "";
-
-
-          document.getElementById(
-            "bulanTerbit"
-          ).value = "";
-
-
-          alert(
-            "Data ID Order Artikel tidak ditemukan."
+          tampilSearchStatus(
+            "ID Order Artikel \"" +
+            idOrder +
+            "\" tidak ditemukan.",
+            "error"
           );
 
           return;
@@ -1105,70 +1130,186 @@ function ambilDetailOrder(){
 
 
         /*
-          JUDUL ARTIKEL
-        */
+         * Ambil data artikel.
+         *
+         * Dibuat fleksibel agar tetap
+         * bisa membaca beberapa nama
+         * field dari Apps Script.
+         */
 
-        document.getElementById(
-          "judulArtikel"
-        ).value =
+        const judulArtikel =
           data.judulArtikel ||
+          data.judul ||
           data.judulBuku ||
           "";
 
 
-        /*
-          KODE JURNAL
-        */
-
-        document.getElementById(
-          "kodeJurnal"
-        ).value =
+        const kodeJurnal =
           data.kodeJurnal ||
+          data.kode_jurnal ||
+          "";
+
+
+        const bulanTerbit =
+          data.bulanTerbit ||
+          data.bulan_terbit ||
           "";
 
 
         /*
-          BULAN TERBIT
-        */
-
-        document.getElementById(
-          "bulanTerbit"
-        ).value =
-          data.bulanTerbit ||
-          "";
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error){
+         * Isi detail artikel
+         */
 
         document.getElementById(
           "judulArtikel"
-        ).value = "";
+        ).value =
+          judulArtikel;
 
 
         document.getElementById(
           "kodeJurnal"
-        ).value = "";
+        ).value =
+          kodeJurnal;
 
 
         document.getElementById(
           "bulanTerbit"
-        ).value = "";
+        ).value =
+          bulanTerbit;
 
 
-        alert(
-          "Gagal mengambil detail order artikel:\n" +
-          error.message
+        /*
+         * Validasi apakah data utama
+         * berhasil ditemukan.
+         */
+
+        if(
+          !judulArtikel &&
+          !kodeJurnal &&
+          !bulanTerbit
+        ){
+
+          tampilSearchStatus(
+            "ID Order ditemukan, tetapi detail artikel kosong.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * Berhasil
+         */
+
+        tampilSearchStatus(
+          "✓ Data artikel berhasil ditemukan.",
+          "success"
+        );
+
+
+        console.log(
+          "Detail Order Artikel:",
+          data
         );
 
       }
     )
 
+
+    .withFailureHandler(
+      function(error){
+
+        /*
+         * Kembalikan tombol
+         */
+
+        btnCari.disabled =
+          false;
+
+
+        btnCari.innerHTML =
+          '<span class="icon">🔍</span>' +
+          '<span class="text">Cari Data</span>';
+
+
+        kosongkanDetailArtikel();
+
+
+        tampilSearchStatus(
+          "Gagal mengambil data: " +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          ),
+          "error"
+        );
+
+
+        console.error(
+          "Error ambilDetailOrderArtikel:",
+          error
+        );
+
+      }
+    )
+
+
     .ambilDetailOrderArtikel(
       idOrder
     );
+
+}
+
+
+/* ==================================================
+   KOSONGKAN DETAIL ARTIKEL
+================================================== */
+
+function kosongkanDetailArtikel(){
+
+  document.getElementById(
+    "judulArtikel"
+  ).value = "";
+
+
+  document.getElementById(
+    "kodeJurnal"
+  ).value = "";
+
+
+  document.getElementById(
+    "bulanTerbit"
+  ).value = "";
+
+}
+
+
+/* ==================================================
+   STATUS PENCARIAN
+================================================== */
+
+function tampilSearchStatus(
+  message,
+  type
+){
+
+  const status =
+    document.getElementById(
+      "searchStatus"
+    );
+
+
+  status.textContent =
+    message;
+
+
+  status.className =
+    "search-status active " +
+    type;
 
 }
 
@@ -1191,8 +1332,8 @@ function simpanRiset(
 
 
   /*
-    Validasi HTML
-  */
+   * Validasi HTML
+   */
 
   if(!form.checkValidity()){
 
@@ -1204,40 +1345,45 @@ function simpanRiset(
 
 
   /*
-    Ambil data
-  */
+   * Ambil data
+   */
 
   const data = {
 
     idOrder:
       document.getElementById(
         "idOrder"
-      ).value,
+      ).value.trim(),
+
 
     kodeJurnal:
       document.getElementById(
         "kodeJurnal"
-      ).value,
+      ).value.trim(),
+
 
     judulArtikel:
       document.getElementById(
         "judulArtikel"
-      ).value,
+      ).value.trim(),
+
 
     bulanTerbit:
       document.getElementById(
         "bulanTerbit"
-      ).value,
+      ).value.trim(),
+
 
     timRiset:
       document.getElementById(
         "timRiset"
-      ).value,
+      ).value.trim(),
+
 
     arsip:
       document.getElementById(
         "arsip"
-      ).value
+      ).value.trim()
 
   };
 
@@ -1249,8 +1395,12 @@ function simpanRiset(
   if(!data.idOrder){
 
     alert(
-      "Silakan pilih ID Order Artikel."
+      "Silakan ketik ID Order Artikel."
     );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
     return;
 
@@ -1260,7 +1410,7 @@ function simpanRiset(
   if(!data.judulArtikel){
 
     alert(
-      "Judul artikel belum ditemukan."
+      "Data artikel belum ditemukan. Silakan klik Cari Data terlebih dahulu."
     );
 
     return;
@@ -1271,7 +1421,7 @@ function simpanRiset(
   if(!data.kodeJurnal){
 
     alert(
-      "Kode jurnal belum ditemukan."
+      "Kode jurnal belum ditemukan. Silakan klik Cari Data terlebih dahulu."
     );
 
     return;
@@ -1282,7 +1432,7 @@ function simpanRiset(
   if(!data.bulanTerbit){
 
     alert(
-      "Bulan terbit belum ditemukan."
+      "Bulan terbit belum ditemukan. Silakan klik Cari Data terlebih dahulu."
     );
 
     return;
@@ -1293,8 +1443,12 @@ function simpanRiset(
   if(!data.timRiset){
 
     alert(
-      "Silakan pilih Nama Tim Riset."
+      "Silakan ketik Nama Tim Riset."
     );
+
+    document.getElementById(
+      "timRiset"
+    ).focus();
 
     return;
 
@@ -1306,6 +1460,10 @@ function simpanRiset(
     alert(
       "Masukkan link Google Drive hasil artikel."
     );
+
+    document.getElementById(
+      "arsip"
+    ).focus();
 
     return;
 
@@ -1364,8 +1522,8 @@ function simpanRiset(
 
 
         /*
-          Jika berhasil
-        */
+         * Jika berhasil
+         */
 
         if(
           result &&
@@ -1379,8 +1537,8 @@ function simpanRiset(
 
 
           /*
-            Reset form
-          */
+           * Reset form
+           */
 
           document.getElementById(
             "risetForm"
@@ -1388,30 +1546,28 @@ function simpanRiset(
 
 
           /*
-            Informasi artikel tetap tampil,
-            tetapi dikosongkan kembali.
-          */
+           * Kosongkan detail artikel
+           */
 
-          document.getElementById(
-            "judulArtikel"
-          ).value = "";
-
-
-          document.getElementById(
-            "kodeJurnal"
-          ).value = "";
-
-
-          document.getElementById(
-            "bulanTerbit"
-          ).value = "";
+          kosongkanDetailArtikel();
 
 
           /*
-            Muat kembali daftar order
-          */
+           * Kosongkan status pencarian
+           */
 
-          muatDaftarOrderArtikel();
+          const status =
+            document.getElementById(
+              "searchStatus"
+            );
+
+
+          status.textContent =
+            "";
+
+
+          status.className =
+            "search-status";
 
         }
 
@@ -1420,16 +1576,17 @@ function simpanRiset(
           alert(
             result &&
             result.message
-            ?
-            result.message
-            :
-            "Gagal menyimpan hasil riset."
+              ?
+              result.message
+              :
+              "Gagal menyimpan hasil riset."
           );
 
         }
 
       }
     )
+
 
     .withFailureHandler(
       function(error){
@@ -1449,11 +1606,30 @@ function simpanRiset(
 
         alert(
           "Gagal menyimpan hasil riset artikel:\n" +
-          error.message
+          (
+            error &&
+            error.message
+              ?
+              error.message
+              :
+              error
+          )
+        );
+
+
+        console.error(
+          "Error simpanRisetArtikel:",
+          error
         );
 
       }
     )
+
+
+    /*
+     * Tetap menggunakan method
+     * yang sudah digunakan sebelumnya.
+     */
 
     .simpanRisetArtikel(
       data
