@@ -189,19 +189,19 @@ small{
 ========================= */
 
 .order-search{
-  display:flex;
+  display:grid;
+  grid-template-columns:1fr auto;
   gap:10px;
-  align-items:stretch;
+  align-items:start;
 }
 
 .order-search input{
-  flex:1;
   min-width:0;
 }
 
 .btn-search{
   border:0;
-  padding:0 18px;
+  padding:13px 18px;
   border-radius:9px;
   background:#2f6f95;
   color:white;
@@ -347,6 +347,8 @@ small{
 .popup{
   width:90%;
   max-width:500px;
+  max-height:90vh;
+  overflow-y:auto;
   background:white;
   border-radius:18px;
   padding:30px;
@@ -447,6 +449,11 @@ small{
     font-size:13px;
   }
 
+  .container{
+    margin:25px auto;
+    padding:0 15px;
+  }
+
   .form-card{
     padding:25px 20px;
   }
@@ -460,12 +467,12 @@ small{
   }
 
   .order-search{
+    grid-template-columns:1fr;
     gap:8px;
   }
 
   .btn-search{
-    padding:0 14px;
-    font-size:13px;
+    width:100%;
   }
 
 }
@@ -549,8 +556,10 @@ ID Order Olah Data yang telah dibuat.
 
 Masukkan <strong>ID Order Olah Data</strong> pada kolom
 pencarian, kemudian tekan tombol <strong>🔍 Cari Data</strong>.
+
 Sistem akan mengambil <strong>Nama Pemesan</strong> dan
-<strong>Judul Penelitian</strong> dari data Order secara otomatis.
+<strong>Judul Olah Data</strong> langsung dari data
+<strong>Sheet Order</strong> secara otomatis.
 
 <br><br>
 
@@ -659,18 +668,18 @@ readonly>
 
 
 <!-- ==================================================
-     JUDUL PENELITIAN
+     JUDUL OLAH DATA
 ================================================== -->
 
 <div class="form-group">
 
 <label>
-Judul Penelitian
+Judul Olah Data
 </label>
 
 <input
 type="text"
-id="judul"
+id="judulOlahData"
 class="readonly"
 placeholder="Akan muncul setelah data dicari"
 readonly>
@@ -835,7 +844,7 @@ class="result-value">
 <div class="result-row">
 
 <div class="result-label">
-JUDUL PENELITIAN
+JUDUL OLAH DATA
 </div>
 
 <div
@@ -868,6 +877,25 @@ class="result-value">
 </div>
 
 
+<!-- ARSIP -->
+
+<div class="result-row">
+
+<div class="result-label">
+ARSIP HASIL DATA
+</div>
+
+<div
+id="resultArsip"
+class="result-value">
+
+-
+
+</div>
+
+</div>
+
+
 </div>
 
 
@@ -890,7 +918,7 @@ SELESAI
 
 
 /* ==================================================
-   INIT
+   INITIAL LOAD
 ================================================== */
 
 document.addEventListener(
@@ -920,221 +948,42 @@ function tekanEnterOrder(event){
 
 
 /* ==================================================
-   CARI DATA ORDER
+   RESET DETAIL ORDER
 ================================================== */
 
-function cariDataOrder(){
+function kosongkanDetail(){
 
-  const input =
-    document.getElementById(
-      "idOrder"
-    );
+  document.getElementById(
+    "nama"
+  ).value = "";
 
 
-  const btnCari =
-    document.getElementById(
-      "btnCari"
-    );
+  document.getElementById(
+    "judulOlahData"
+  ).value = "";
 
+}
 
-  const idOrder =
-    input.value.trim();
 
+/* ==================================================
+   SET DETAIL ORDER
+================================================== */
 
-  /* ==================================================
-     VALIDASI ID ORDER
-  ================================================== */
+function setDetail(
+  nama,
+  judulOlahData
+){
 
-  if(!idOrder){
+  document.getElementById(
+    "nama"
+  ).value =
+    nama || "";
 
-    input.focus();
 
-    tampilkanStatusCari(
-      "Silakan ketik ID Order Olah Data terlebih dahulu.",
-      "error"
-    );
-
-    kosongkanDetail();
-
-    return;
-
-  }
-
-
-  /* ==================================================
-     KOSONGKAN DATA LAMA
-  ================================================== */
-
-  kosongkanDetail();
-
-
-  /* ==================================================
-     BUTTON LOADING
-  ================================================== */
-
-  btnCari.disabled =
-    true;
-
-  btnCari.textContent =
-    "⏳ Mencari...";
-
-
-  tampilkanStatusCari(
-    "Sedang mencari data order...",
-    "loading"
-  );
-
-
-  /* ==================================================
-     AMBIL DATA DARI CODE.GS
-  ================================================== */
-
-  google.script.run
-
-    .withSuccessHandler(
-      function(data){
-
-        btnCari.disabled =
-          false;
-
-        btnCari.textContent =
-          "🔍 Cari Data";
-
-
-        /* ==================================================
-           DATA TIDAK DITEMUKAN
-        ================================================== */
-
-        if(!data){
-
-          kosongkanDetail();
-
-          tampilkanStatusCari(
-            "❌ ID Order tidak ditemukan. Periksa kembali ID Order yang diketik.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        /* ==================================================
-           NAMA PEMESAN
-        ================================================== */
-
-        const nama =
-          data.nama ||
-          data.namaPemesan ||
-          "";
-
-
-        /* ==================================================
-           JUDUL OLAH DATA
-           
-           PENTING:
-           Sumber utama menggunakan:
-           
-           data.judulOlahData
-           
-           karena field tersebut berasal dari
-           Sheet Order.
-        ================================================== */
-
-        const judul =
-          data.judulOlahData ||
-          data.judul ||
-          data.judulPenelitian ||
-          "";
-
-
-        /* ==================================================
-           TAMPILKAN DETAIL
-        ================================================== */
-
-        setDetail(
-          nama,
-          judul
-        );
-
-
-        /* ==================================================
-           VALIDASI DATA
-        ================================================== */
-
-        if(!nama && !judul){
-
-          tampilkanStatusCari(
-            "⚠️ ID Order ditemukan, tetapi Nama Pemesan dan Judul Olah Data kosong.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        if(!judul){
-
-          tampilkanStatusCari(
-            "⚠️ Data ditemukan, tetapi Judul Olah Data kosong pada Sheet Order.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        /* ==================================================
-           BERHASIL
-        ================================================== */
-
-        tampilkanStatusCari(
-          "✓ Data Order ditemukan. Nama Pemesan dan Judul Penelitian berhasil ditampilkan.",
-          "success"
-        );
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        btnCari.disabled =
-          false;
-
-        btnCari.textContent =
-          "🔍 Cari Data";
-
-
-        kosongkanDetail();
-
-
-        tampilkanStatusCari(
-          "❌ Gagal mencari data order.",
-          "error"
-        );
-
-
-        alert(
-          "Gagal mengambil detail order:\n" +
-          (
-            error &&
-            error.message
-            ?
-            error.message
-            :
-            "Terjadi kesalahan."
-          )
-        );
-
-      }
-    )
-
-    .ambilDetailOrderOlahData(
-      idOrder
-    );
+  document.getElementById(
+    "judulOlahData"
+  ).value =
+    judulOlahData || "";
 
 }
 
@@ -1179,38 +1028,348 @@ function tampilkanStatusCari(
 
 
 /* ==================================================
-   SET DETAIL
+   CARI DATA ORDER
 ================================================== */
 
-function setDetail(
-  nama,
-  judul
-){
+function cariDataOrder(){
 
-  document.getElementById(
-    "nama"
-  ).value =
-    nama || "";
+  const input =
+    document.getElementById(
+      "idOrder"
+    );
 
 
-  document.getElementById(
-    "judul"
-  ).value =
-    judul || "";
-
-}
+  const btnCari =
+    document.getElementById(
+      "btnCari"
+    );
 
 
-/* ==================================================
-   KOSONGKAN DETAIL
-================================================== */
+  const idOrder =
+    input.value.trim();
 
-function kosongkanDetail(){
 
-  setDetail(
-    "",
-    ""
+  /* ==================================================
+     VALIDASI
+  ================================================== */
+
+  if(!idOrder){
+
+    input.focus();
+
+
+    tampilkanStatusCari(
+      "Silakan ketik ID Order Olah Data terlebih dahulu.",
+      "error"
+    );
+
+
+    kosongkanDetail();
+
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     CEK GOOGLE APPS SCRIPT
+  ================================================== */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    tampilkanStatusCari(
+      "Google Apps Script tidak tersedia.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     KOSONGKAN DATA LAMA
+  ================================================== */
+
+  kosongkanDetail();
+
+
+  /* ==================================================
+     BUTTON LOADING
+  ================================================== */
+
+  btnCari.disabled =
+    true;
+
+
+  btnCari.textContent =
+    "⏳ MENCARI...";
+
+
+  tampilkanStatusCari(
+    "Sedang mengambil data Order...",
+    "loading"
   );
+
+
+  /* ==================================================
+     PANGGIL BACKEND
+     
+     SAMA SEPERTI HTML INVOICE:
+     
+     ambilOrderDataUntukInvoice(idOrder)
+  ================================================== */
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(data){
+
+        btnCari.disabled =
+          false;
+
+
+        btnCari.textContent =
+          "🔍 Cari Data";
+
+
+        console.log(
+          "DETAIL ORDER DATA:",
+          data
+        );
+
+
+        /* ==================================================
+           DATA TIDAK DITEMUKAN
+        ================================================== */
+
+        if(!data){
+
+          kosongkanDetail();
+
+
+          tampilkanStatusCari(
+            "❌ ID Order tidak ditemukan. Periksa kembali ID Order yang diketik.",
+            "error"
+          );
+
+
+          return;
+
+        }
+
+
+        /* ==================================================
+           BACKEND success:false
+        ================================================== */
+
+        if(
+          data.success === false
+        ){
+
+          kosongkanDetail();
+
+
+          tampilkanStatusCari(
+            data.message ||
+            "❌ Data Order tidak ditemukan.",
+            "error"
+          );
+
+
+          return;
+
+        }
+
+
+        /* ==================================================
+           JIKA BACKEND MEMBUNGKUS DATA
+           
+           Contoh:
+           
+           {
+             success:true,
+             data:{
+               nama: "...",
+               judulOlahData: "..."
+             }
+           }
+        ================================================== */
+
+        let order =
+          data;
+
+
+        if(
+          data.data &&
+          typeof data.data === "object" &&
+          !Array.isArray(data.data)
+        ){
+
+          order =
+            data.data;
+
+        }
+
+
+        console.log(
+          "ORDER YANG DIPROSES:",
+          order
+        );
+
+
+        /* ==================================================
+           AMBIL NAMA PEMESAN
+           
+           Prioritas utama:
+           nama
+           
+           Sama seperti HTML Invoice.
+        ================================================== */
+
+        const nama =
+          order.nama ||
+          order.namaPemesan ||
+          order.nama_pemesan ||
+          order["Nama Pemesan"] ||
+          order["Nama"] ||
+          "";
+
+
+        /* ==================================================
+           AMBIL JUDUL OLAH DATA
+           
+           PRIORITAS UTAMA:
+           
+           judulOlahData
+           
+           karena data ini berasal dari
+           SHEET ORDER.
+        ================================================== */
+
+        const judulOlahData =
+          order.judulOlahData ||
+          order.judul_olah_data ||
+          order["Judul Olah Data"] ||
+          order.judul ||
+          order.judulPenelitian ||
+          order["Judul Penelitian"] ||
+          order.namaLayanan ||
+          order.layanan ||
+          order.pekerjaan ||
+          "";
+
+
+        console.log(
+          "NAMA PEMESAN:",
+          nama
+        );
+
+
+        console.log(
+          "JUDUL OLAH DATA:",
+          judulOlahData
+        );
+
+
+        /* ==================================================
+           TAMPILKAN DATA
+        ================================================== */
+
+        setDetail(
+          nama,
+          judulOlahData
+        );
+
+
+        /* ==================================================
+           VALIDASI NAMA
+        ================================================== */
+
+        if(!nama){
+
+          tampilkanStatusCari(
+            "⚠️ ID Order ditemukan, tetapi Nama Pemesan tidak tersedia pada Sheet Order.",
+            "error"
+          );
+
+
+          return;
+
+        }
+
+
+        /* ==================================================
+           VALIDASI JUDUL
+        ================================================== */
+
+        if(!judulOlahData){
+
+          tampilkanStatusCari(
+            "⚠️ ID Order ditemukan, tetapi Judul Olah Data tidak tersedia pada Sheet Order.",
+            "error"
+          );
+
+
+          return;
+
+        }
+
+
+        /* ==================================================
+           BERHASIL
+        ================================================== */
+
+        tampilkanStatusCari(
+          "✓ Data Order berhasil ditemukan. Nama Pemesan dan Judul Olah Data berhasil ditampilkan.",
+          "success"
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        btnCari.disabled =
+          false;
+
+
+        btnCari.textContent =
+          "🔍 Cari Data";
+
+
+        console.error(
+          "ERROR DETAIL ORDER DATA:",
+          error
+        );
+
+
+        kosongkanDetail();
+
+
+        tampilkanStatusCari(
+          "❌ Gagal mengambil data Order: " +
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          ),
+          "error"
+        );
+
+      }
+    )
+
+    .ambilOrderDataUntukInvoice(
+      idOrder
+    );
 
 }
 
@@ -1249,50 +1408,75 @@ function simpanHasilData(
      AMBIL DATA
   ================================================== */
 
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value.trim();
+
+
+  const nama =
+    document.getElementById(
+      "nama"
+    ).value.trim();
+
+
+  const judulOlahData =
+    document.getElementById(
+      "judulOlahData"
+    ).value.trim();
+
+
+  const timPengolah =
+    document.getElementById(
+      "timPengolah"
+    ).value.trim();
+
+
+  const arsip =
+    document.getElementById(
+      "arsip"
+    ).value.trim();
+
+
+  /* ==================================================
+     DATA YANG DIKIRIM KE CODE.GS
+     
+     judulOlahData menjadi field utama.
+  ================================================== */
+
   const data = {
 
     idOrder:
-      document.getElementById(
-        "idOrder"
-      ).value.trim(),
-
+      idOrder,
 
     nama:
-      document.getElementById(
-        "nama"
-      ).value.trim(),
-
-
-    judul:
-      document.getElementById(
-        "judul"
-      ).value.trim(),
-
-
-    /*
-      Simpan juga judulOlahData
-      supaya konsisten dengan data
-      yang berasal dari Sheet Order.
-    */
+      nama,
 
     judulOlahData:
-      document.getElementById(
-        "judul"
-      ).value.trim(),
+      judulOlahData,
 
+    /*
+     * Alias judul tetap dikirim
+     * agar kompatibel dengan backend
+     * jika masih membaca field judul.
+     */
+
+    judul:
+      judulOlahData,
 
     timPengolah:
-      document.getElementById(
-        "timPengolah"
-      ).value.trim(),
-
+      timPengolah,
 
     arsip:
-      document.getElementById(
-        "arsip"
-      ).value.trim()
+      arsip
 
   };
+
+
+  console.log(
+    "DATA HASIL OLAH DATA:",
+    data
+  );
 
 
   /* ==================================================
@@ -1305,9 +1489,11 @@ function simpanHasilData(
       "Silakan ketik ID Order Olah Data."
     );
 
+
     document.getElementById(
       "idOrder"
     ).focus();
+
 
     return;
 
@@ -1321,12 +1507,14 @@ function simpanHasilData(
   if(!data.nama){
 
     alert(
-      "Nama pemesan belum ditemukan. Silakan klik 🔍 Cari Data terlebih dahulu."
+      "Nama Pemesan belum ditemukan. Silakan klik 🔍 Cari Data terlebih dahulu."
     );
+
 
     document.getElementById(
       "idOrder"
     ).focus();
+
 
     return;
 
@@ -1343,9 +1531,11 @@ function simpanHasilData(
       "Judul Olah Data belum ditemukan. Silakan klik 🔍 Cari Data terlebih dahulu."
     );
 
+
     document.getElementById(
       "idOrder"
     ).focus();
+
 
     return;
 
@@ -1362,9 +1552,11 @@ function simpanHasilData(
       "Silakan ketik Nama Tim Pengolah Data."
     );
 
+
     document.getElementById(
       "timPengolah"
     ).focus();
+
 
     return;
 
@@ -1381,9 +1573,11 @@ function simpanHasilData(
       "Masukkan link Google Drive hasil data."
     );
 
+
     document.getElementById(
       "arsip"
     ).focus();
+
 
     return;
 
@@ -1420,6 +1614,39 @@ function simpanHasilData(
 
 
   /* ==================================================
+     CEK GOOGLE APPS SCRIPT
+  ================================================== */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    btn.disabled =
+      false;
+
+
+    btn.textContent =
+      "💾 SIMPAN HASIL DATA";
+
+
+    loading.classList.remove(
+      "active"
+    );
+
+
+    alert(
+      "Google Apps Script tidak tersedia."
+    );
+
+
+    return;
+
+  }
+
+
+  /* ==================================================
      KIRIM KE CODE.GS
   ================================================== */
 
@@ -1438,6 +1665,12 @@ function simpanHasilData(
 
         loading.classList.remove(
           "active"
+        );
+
+
+        console.log(
+          "HASIL SIMPAN:",
+          result
         );
 
 
@@ -1508,14 +1741,12 @@ function simpanHasilData(
 
           alert(
 
-            result &&
-            result.message
+            (
+              result &&
+              result.message
+            )
 
-            ?
-
-            result.message
-
-            :
+            ||
 
             "Gagal menyimpan hasil data."
 
@@ -1542,15 +1773,19 @@ function simpanHasilData(
         );
 
 
+        console.error(
+          "ERROR SIMPAN HASIL DATA:",
+          error
+        );
+
+
         alert(
           "Gagal menyimpan hasil data:\n" +
           (
             error &&
             error.message
-            ?
-            error.message
-            :
-            "Terjadi kesalahan."
+              ? error.message
+              : "Terjadi kesalahan."
           )
         );
 
@@ -1573,11 +1808,19 @@ function tampilkanPopupBerhasil(
   result
 ){
 
+  /* ==================================================
+     ID ORDER
+  ================================================== */
+
   document.getElementById(
     "resultIdOrder"
   ).textContent =
     data.idOrder || "-";
 
+
+  /* ==================================================
+     NAMA
+  ================================================== */
 
   document.getElementById(
     "resultNama"
@@ -1585,17 +1828,43 @@ function tampilkanPopupBerhasil(
     data.nama || "-";
 
 
+  /* ==================================================
+     JUDUL OLAH DATA
+  ================================================== */
+
   document.getElementById(
     "resultJudul"
   ).textContent =
     data.judulOlahData || "-";
 
 
+  /* ==================================================
+     TIM
+  ================================================== */
+
   document.getElementById(
     "resultTimPengolah"
   ).textContent =
     data.timPengolah || "-";
 
+
+  /* ==================================================
+     ARSIP
+  ================================================== */
+
+  const resultArsip =
+    document.getElementById(
+      "resultArsip"
+    );
+
+
+  resultArsip.textContent =
+    data.arsip || "-";
+
+
+  /* ==================================================
+     BUKA POPUP
+  ================================================== */
 
   document.getElementById(
     "popupBerhasil"
