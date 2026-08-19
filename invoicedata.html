@@ -21,6 +21,7 @@ body{
   color:#183b56;
 }
 
+
 /* =========================
    HEADER
 ========================= */
@@ -44,6 +45,7 @@ body{
   font-size:14px;
 }
 
+
 /* =========================
    CONTAINER
 ========================= */
@@ -53,6 +55,7 @@ body{
   margin:40px auto;
   padding:0 20px;
 }
+
 
 /* =========================
    BACK
@@ -73,6 +76,7 @@ body{
   background:#4a5568;
 }
 
+
 /* =========================
    CARD
 ========================= */
@@ -83,6 +87,7 @@ body{
   border-radius:18px;
   box-shadow:0 8px 30px rgba(0,0,0,.08);
 }
+
 
 /* =========================
    TITLE
@@ -101,6 +106,7 @@ body{
   line-height:1.5;
 }
 
+
 /* =========================
    INFO
 ========================= */
@@ -115,6 +121,7 @@ body{
   line-height:1.6;
 }
 
+
 /* =========================
    SECTION TITLE
 ========================= */
@@ -127,6 +134,7 @@ body{
   font-weight:bold;
   color:#183b56;
 }
+
 
 /* =========================
    FORM
@@ -179,6 +187,75 @@ small{
   font-size:12px;
 }
 
+
+/* =========================
+   INPUT + BUTTON
+========================= */
+
+.input-action{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:start;
+}
+
+.btn-cari{
+  border:0;
+  padding:13px 18px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+  white-space:nowrap;
+}
+
+.btn-cari:hover{
+  background:#183b56;
+}
+
+.btn-cari:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+
+/* =========================
+   STATUS ORDER
+========================= */
+
+.order-status{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.order-status.active{
+  display:block;
+}
+
+.order-status.loading{
+  background:#f0f7fb;
+  color:#2f6f95;
+}
+
+.order-status.success{
+  background:#f0fff4;
+  color:#276749;
+  border:1px solid #c6f6d5;
+}
+
+.order-status.error{
+  background:#fff5f5;
+  color:#c53030;
+  border:1px solid #fed7d7;
+}
+
+
 /* =========================
    DATA ORDER
 ========================= */
@@ -217,6 +294,7 @@ small{
   line-height:1.5;
   word-break:break-word;
 }
+
 
 /* =========================
    HARGA
@@ -269,8 +347,9 @@ small{
   color:#183b56;
 }
 
+
 /* =========================
-   BUTTON
+   BUTTON SIMPAN
 ========================= */
 
 .btn-save{
@@ -295,6 +374,7 @@ small{
   cursor:not-allowed;
 }
 
+
 /* =========================
    LOADING
 ========================= */
@@ -310,6 +390,7 @@ small{
 .loading.active{
   display:block;
 }
+
 
 /* =========================
    POPUP
@@ -415,6 +496,7 @@ small{
   background:#2f6f95;
 }
 
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -456,11 +538,20 @@ small{
     gap:8px;
   }
 
+  .input-action{
+    grid-template-columns:1fr;
+  }
+
+  .btn-cari{
+    width:100%;
+  }
+
 }
 
 </style>
 
-  <script src="api.js"></script>
+<script src="api.js"></script>
+
 </head>
 
 
@@ -473,13 +564,13 @@ small{
 
 <header class="header">
 
-<div class="logo">
-ADMIN MANAGEMENT
-</div>
+  <div class="logo">
+    ADMIN MANAGEMENT
+  </div>
 
-<div class="header-right">
-INVOICE OLAH DATA
-</div>
+  <div class="header-right">
+    INVOICE OLAH DATA
+  </div>
 
 </header>
 
@@ -510,14 +601,14 @@ onclick="kembali()">
 
 <div class="form-title">
 
-<h1>
-🧾 Form Invoice Olah Data
-</h1>
+  <h1>
+    🧾 Form Invoice Olah Data
+  </h1>
 
-<p>
-Catat transaksi pembayaran berdasarkan
-ID Order Olah Data yang telah dibuat.
-</p>
+  <p>
+    Catat transaksi pembayaran berdasarkan
+    ID Order Olah Data yang telah dibuat.
+  </p>
 
 </div>
 
@@ -528,19 +619,28 @@ ID Order Olah Data yang telah dibuat.
 
 <div class="info-box">
 
-<strong>📌 Informasi Invoice</strong><br>
+  <strong>📌 Informasi Invoice</strong><br>
 
-Pilih ID Order Data yang sudah dibuat.
-Setelah ID Order dipilih, sistem akan menampilkan
-<strong>nama pemesan</strong> dan <strong>judul olah data</strong>
-secara otomatis.
+  ID Order Data sekarang <strong>diketik langsung</strong>
+  oleh admin. Tidak menggunakan dropdown.
 
-<br><br>
+  <br><br>
 
-Harga transaksi terdiri dari
-<strong>Harga Awal + Extra Cost − Promo</strong>.
-Nomor invoice tidak dibuat terpisah karena transaksi
-langsung menggunakan <strong>ID Order</strong>.
+  Setelah ID Order dimasukkan dan tombol
+  <strong>CARI DATA ORDER</strong> ditekan,
+  sistem akan mengambil <strong>Nama Pemesan</strong>
+  dan <strong>Judul Olah Data</strong> berdasarkan
+  ID Order tersebut.
+
+  <br><br>
+
+  <strong>Marketing Input</strong> juga diketik langsung
+  oleh admin dan tidak menggunakan dropdown.
+
+  <br><br>
+
+  Harga transaksi terdiri dari
+  <strong>Harga Awal + Extra Cost − Promo</strong>.
 
 </div>
 
@@ -565,20 +665,42 @@ onsubmit="simpanInvoice(event)">
 ID Order Data <span class="required">*</span>
 </label>
 
-<select
-id="idOrder"
-required
-onchange="ambilDetailOrder()">
 
-<option value="">
-Pilih ID Order Data
-</option>
+<div class="input-action">
 
-</select>
+  <input
+  type="text"
+  id="idOrder"
+  required
+  autocomplete="off"
+  placeholder="Ketik ID Order Data"
+  onkeydown="handleEnterOrder(event)"
+  onblur="ambilDetailOrder()">
+
+
+  <button
+  type="button"
+  id="btnCariOrder"
+  class="btn-cari"
+  onclick="ambilDetailOrder()">
+
+  🔍 CARI DATA ORDER
+
+  </button>
+
+</div>
+
 
 <small>
-Pilih ID Order Data yang akan dicatat transaksinya.
+Ketik ID Order Data secara manual, kemudian klik
+<strong>CARI DATA ORDER</strong>.
 </small>
+
+
+<div
+id="orderStatus"
+class="order-status">
+</div>
 
 </div>
 
@@ -650,34 +772,18 @@ class="data-value">
 Marketing Input <span class="required">*</span>
 </label>
 
-<select
+
+<input
+type="text"
 id="marketingInput"
-required>
+required
+autocomplete="off"
+placeholder="Ketik nama marketing">
 
-<option value="">
-Pilih Marketing
-</option>
-
-<option value="Marketing 1">
-Marketing 1
-</option>
-
-<option value="Marketing 2">
-Marketing 2
-</option>
-
-<option value="Marketing 3">
-Marketing 3
-</option>
-
-<option value="Marketing 4">
-Marketing 4
-</option>
-
-</select>
 
 <small>
-Marketing yang melakukan pencatatan transaksi.
+Ketik nama marketing yang melakukan pencatatan
+transaksi.
 </small>
 
 </div>
@@ -946,7 +1052,6 @@ ID ORDER
 
 <strong id="popupIdOrder">
 -
-
 </strong>
 
 </div>
@@ -980,136 +1085,49 @@ SELESAI
 
 
 /* ==================================================
-   TANGGAL OTOMATIS
+   INITIAL LOAD
 ================================================== */
 
 document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-const today =
-new Date()
-.toISOString()
-.split("T")[0];
+  const today =
+    new Date()
+    .toISOString()
+    .split("T")[0];
 
 
-document.getElementById(
-"tanggal"
-).value =
-today;
+  document.getElementById(
+    "tanggal"
+  ).value =
+    today;
 
 
-/* ==================================================
-   AMBIL DAFTAR ORDER DATA
-================================================== */
-
-if(
-typeof google !== "undefined" &&
-google.script &&
-google.script.run
-){
-
-google.script.run
-
-.withSuccessHandler(
-isiDropdownOrder
-)
-
-.withFailureHandler(
-function(error){
-
-console.error(
-"Gagal mengambil daftar order data:",
-error
-);
-
-alert(
-"Gagal mengambil daftar order data:\n" +
-error.message
-);
-
-}
-)
-
-.ambilDaftarOrderData();
-
-}
+  /*
+   * TIDAK ADA LAGI
+   *
+   * ambilDaftarOrderData()
+   *
+   * karena ID ORDER sekarang diketik manual.
+   */
 
 });
 
 
 /* ==================================================
-   ISI DROPDOWN ORDER
+   ENTER PADA ID ORDER
 ================================================== */
 
-function isiDropdownOrder(data){
+function handleEnterOrder(event){
 
-const select =
-document.getElementById(
-"idOrder"
-);
+  if(event.key === "Enter"){
 
+    event.preventDefault();
 
-select.innerHTML =
-`
-<option value="">
-Pilih ID Order Data
-</option>
-`;
+    ambilDetailOrder();
 
-
-if(!Array.isArray(data)){
-
-return;
-
-}
-
-
-data.forEach(
-function(item){
-
-const option =
-document.createElement(
-"option"
-);
-
-
-if(
-typeof item === "object"
-){
-
-option.value =
-item.idOrder ||
-"";
-
-
-option.textContent =
-item.idOrder +
-" — " +
-(
-item.nama ||
-item.namaPemesan ||
-""
-);
-
-}
-
-else{
-
-option.value =
-item;
-
-option.textContent =
-item;
-
-}
-
-
-select.appendChild(
-option
-);
-
-});
+  }
 
 }
 
@@ -1120,16 +1138,42 @@ option
 
 function resetDetailOrder(){
 
-document.getElementById(
-"namaPemesan"
-).textContent =
-"-";
+  document.getElementById(
+    "namaPemesan"
+  ).textContent =
+    "-";
 
 
-document.getElementById(
-"judulOlahData"
-).textContent =
-"-";
+  document.getElementById(
+    "judulOlahData"
+  ).textContent =
+    "-";
+
+}
+
+
+/* ==================================================
+   STATUS PENCARIAN ORDER
+================================================== */
+
+function setOrderStatus(
+  message,
+  type
+){
+
+  const status =
+    document.getElementById(
+      "orderStatus"
+    );
+
+
+  status.textContent =
+    message;
+
+
+  status.className =
+    "order-status active " +
+    type;
 
 }
 
@@ -1140,90 +1184,321 @@ document.getElementById(
 
 function ambilDetailOrder(){
 
-const idOrder =
-document.getElementById(
-"idOrder"
-).value;
+  const input =
+    document.getElementById(
+      "idOrder"
+    );
 
 
-resetDetailOrder();
+  const idOrder =
+    input.value.trim();
 
 
-if(!idOrder){
-
-return;
-
-}
+  resetDetailOrder();
 
 
-if(
-typeof google !== "undefined" &&
-google.script &&
-google.script.run
-){
+  /*
+   * Jika kosong
+   */
 
-google.script.run
+  if(!idOrder){
 
-.withSuccessHandler(
-function(data){
+    setOrderStatus(
+      "",
+      ""
+    );
 
-if(!data){
+    document.getElementById(
+      "orderStatus"
+    ).className =
+      "order-status";
 
-alert(
-"Data order tidak ditemukan."
-);
+    return;
 
-return;
-
-}
-
-
-/* =========================
-   NAMA PEMESAN
-========================= */
-
-document.getElementById(
-"namaPemesan"
-).textContent =
-
-data.nama ||
-data.namaPemesan ||
-"-";
+  }
 
 
-/* =========================
-   JUDUL OLAH DATA
-========================= */
+  /*
+   * Cek Google Apps Script
+   */
 
-document.getElementById(
-"judulOlahData"
-).textContent =
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
 
-data.judulOlahData ||
-data.judul ||
-data.namaLayanan ||
-data.layanan ||
-"-";
+    setOrderStatus(
+      "Google Apps Script tidak tersedia.",
+      "error"
+    );
 
-}
-)
+    return;
 
-.withFailureHandler(
-function(error){
+  }
 
-alert(
-"Gagal mengambil detail order data:\n" +
-error.message
-);
 
-}
-)
+  /*
+   * Tombol cari
+   */
 
-.ambilOrderDataUntukInvoice(
-idOrder
-);
+  const btnCari =
+    document.getElementById(
+      "btnCariOrder"
+    );
 
-}
+
+  btnCari.disabled =
+    true;
+
+
+  btnCari.textContent =
+    "⏳ MENCARI...";
+
+
+  setOrderStatus(
+    "Sedang mengambil data Order...",
+    "loading"
+  );
+
+
+  /*
+   * PANGGIL BACKEND
+   */
+
+  google.script.run
+
+  .withSuccessHandler(
+    function(data){
+
+      btnCari.disabled =
+        false;
+
+
+      btnCari.textContent =
+        "🔍 CARI DATA ORDER";
+
+
+      console.log(
+        "DETAIL ORDER DATA:",
+        data
+      );
+
+
+      /*
+       * DATA TIDAK DITEMUKAN
+       */
+
+      if(!data){
+
+        resetDetailOrder();
+
+
+        setOrderStatus(
+          "ID Order tidak ditemukan.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      /*
+       * Backend bisa mengembalikan
+       * success:false
+       */
+
+      if(
+        data.success === false
+      ){
+
+        resetDetailOrder();
+
+
+        setOrderStatus(
+          data.message ||
+          "Data Order tidak ditemukan.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      /*
+       * Jika backend membungkus data
+       * di dalam data
+       */
+
+      let order =
+        data;
+
+
+      if(
+        data.data &&
+        typeof data.data === "object" &&
+        !Array.isArray(data.data)
+      ){
+
+        order =
+          data.data;
+
+      }
+
+
+      /*
+       * =========================
+       * NAMA PEMESAN
+       * =========================
+       */
+
+      const nama =
+        order.nama ||
+        order.namaPemesan ||
+        order.nama_pemesan ||
+        order["Nama Pemesan"] ||
+        order["Nama"] ||
+        "";
+
+
+      /*
+       * =========================
+       * JUDUL OLAH DATA
+       * =========================
+       */
+
+      const judulOlahData =
+        order.judulOlahData ||
+        order.judul_olah_data ||
+        order.judul ||
+        order.namaLayanan ||
+        order.layanan ||
+        order.pekerjaan ||
+        order["Judul Olah Data"] ||
+        order["Judul"] ||
+        "";
+
+
+      /*
+       * =========================
+       * VALIDASI DATA
+       * =========================
+       */
+
+      if(!nama){
+
+        resetDetailOrder();
+
+
+        setOrderStatus(
+          "ID Order ditemukan, tetapi Nama Pemesan tidak tersedia.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      if(!judulOlahData){
+
+        document.getElementById(
+          "namaPemesan"
+        ).textContent =
+          nama;
+
+
+        document.getElementById(
+          "judulOlahData"
+        ).textContent =
+          "-";
+
+
+        setOrderStatus(
+          "ID Order ditemukan, tetapi Judul Olah Data tidak tersedia.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      /*
+       * =========================
+       * TAMPILKAN DATA
+       * =========================
+       */
+
+      document.getElementById(
+        "namaPemesan"
+      ).textContent =
+        nama;
+
+
+      document.getElementById(
+        "judulOlahData"
+      ).textContent =
+        judulOlahData;
+
+
+      /*
+       * =========================
+       * BERHASIL
+       * =========================
+       */
+
+      setOrderStatus(
+        "✓ Data Order berhasil ditemukan.",
+        "success"
+      );
+
+    }
+  )
+
+  .withFailureHandler(
+    function(error){
+
+      btnCari.disabled =
+        false;
+
+
+      btnCari.textContent =
+        "🔍 CARI DATA ORDER";
+
+
+      console.error(
+        "ERROR DETAIL ORDER DATA:",
+        error
+      );
+
+
+      resetDetailOrder();
+
+
+      setOrderStatus(
+        "Gagal mengambil data Order: " +
+        (
+          error &&
+          error.message
+            ? error.message
+            : error
+        ),
+        "error"
+      );
+
+    }
+  )
+
+  .ambilOrderDataUntukInvoice(
+    idOrder
+  );
 
 }
 
@@ -1234,64 +1509,64 @@ idOrder
 
 function hitungTotal(){
 
-const hargaAwal =
-Number(
-document.getElementById(
-"hargaAwal"
-).value
-) || 0;
+  const hargaAwal =
+    Number(
+      document.getElementById(
+        "hargaAwal"
+      ).value
+    ) || 0;
 
 
-const extraCost =
-Number(
-document.getElementById(
-"extraCost"
-).value
-) || 0;
+  const extraCost =
+    Number(
+      document.getElementById(
+        "extraCost"
+      ).value
+    ) || 0;
 
 
-const promo =
-Number(
-document.getElementById(
-"promo"
-).value
-) || 0;
+  const promo =
+    Number(
+      document.getElementById(
+        "promo"
+      ).value
+    ) || 0;
 
 
-/*
-RUMUS:
+  /*
+   * RUMUS:
+   *
+   * TOTAL =
+   * HARGA AWAL
+   * +
+   * EXTRA COST
+   * -
+   * PROMO
+   */
 
-TOTAL =
-HARGA AWAL
-+
-EXTRA COST
--
-PROMO
-*/
-
-let total =
-hargaAwal +
-extraCost -
-promo;
-
-
-/*
-TOTAL TIDAK BOLEH NEGATIF
-*/
-
-if(total < 0){
-
-total = 0;
-
-}
+  let total =
+    hargaAwal +
+    extraCost -
+    promo;
 
 
-document.getElementById(
-"totalHarga"
-).textContent =
+  /*
+   * TOTAL TIDAK BOLEH NEGATIF
+   */
 
-"Rp " +
-formatRupiah(total);
+  if(total < 0){
+
+    total = 0;
+
+  }
+
+
+  document.getElementById(
+    "totalHarga"
+  ).textContent =
+
+    "Rp " +
+    formatRupiah(total);
 
 }
 
@@ -1302,63 +1577,67 @@ formatRupiah(total);
 
 function ubahStatusPembayaran(){
 
-const status =
-document.getElementById(
-"statusPembayaran"
-).value;
+  const status =
+    document.getElementById(
+      "statusPembayaran"
+    ).value;
 
 
-const label =
-document.getElementById(
-"labelNominal"
-);
+  const label =
+    document.getElementById(
+      "labelNominal"
+    );
 
 
-const deskripsi =
-document.getElementById(
-"deskripsiNominal"
-);
+  const deskripsi =
+    document.getElementById(
+      "deskripsiNominal"
+    );
 
 
-if(status === "DP"){
+  if(status === "DP"){
 
-label.innerHTML =
-"Nominal DP <span class='required'>*</span>";
+    label.innerHTML =
+      "Nominal DP <span class='required'>*</span>";
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran DP.";
 
-}
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran DP.";
 
-else if(status === "Pelunasan"){
+  }
 
-label.innerHTML =
-"Nominal Pelunasan <span class='required'>*</span>";
+  else if(status === "Pelunasan"){
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran pelunasan.";
+    label.innerHTML =
+      "Nominal Pelunasan <span class='required'>*</span>";
 
-}
 
-else if(status === "Lunas"){
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran pelunasan.";
 
-label.innerHTML =
-"Nominal Lunas <span class='required'>*</span>";
+  }
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran lunas.";
+  else if(status === "Lunas"){
 
-}
+    label.innerHTML =
+      "Nominal Lunas <span class='required'>*</span>";
 
-else{
 
-label.innerHTML =
-"Nominal Pembayaran <span class='required'>*</span>";
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran lunas.";
 
-deskripsi.textContent =
-"Masukkan nominal pembayaran sesuai transaksi.";
+  }
 
-}
+  else{
+
+    label.innerHTML =
+      "Nominal Pembayaran <span class='required'>*</span>";
+
+
+    deskripsi.textContent =
+      "Masukkan nominal pembayaran sesuai transaksi.";
+
+  }
 
 }
 
@@ -1369,455 +1648,559 @@ deskripsi.textContent =
 
 function simpanInvoice(event){
 
-event.preventDefault();
+  event.preventDefault();
 
 
-const form =
-document.getElementById(
-"invoiceForm"
-);
+  const form =
+    document.getElementById(
+      "invoiceForm"
+    );
 
 
-if(!form.checkValidity()){
+  /*
+   * VALIDASI HTML
+   */
 
-form.reportValidity();
+  if(!form.checkValidity()){
 
-return;
+    form.reportValidity();
 
-}
+    return;
 
+  }
 
-/* ==================================================
-   DATA ORDER
-================================================== */
 
-const idOrder =
-document.getElementById(
-"idOrder"
-).value;
+  /* ==================================================
+     DATA ORDER
+  ================================================== */
 
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value.trim();
 
-const nama =
-document.getElementById(
-"namaPemesan"
-).textContent;
 
+  const nama =
+    document.getElementById(
+      "namaPemesan"
+    ).textContent.trim();
 
-const judulOlahData =
-document.getElementById(
-"judulOlahData"
-).textContent;
 
+  const judulOlahData =
+    document.getElementById(
+      "judulOlahData"
+    ).textContent.trim();
 
-/* ==================================================
-   DATA PEMBAYARAN
-================================================== */
 
-const marketingInput =
-document.getElementById(
-"marketingInput"
-).value;
+  /* ==================================================
+     DATA PEMBAYARAN
+  ================================================== */
 
+  const marketingInput =
+    document.getElementById(
+      "marketingInput"
+    ).value.trim();
 
-const tanggal =
-document.getElementById(
-"tanggal"
-).value;
 
+  const tanggal =
+    document.getElementById(
+      "tanggal"
+    ).value;
 
-const hargaAwal =
-document.getElementById(
-"hargaAwal"
-).value;
 
+  const hargaAwal =
+    document.getElementById(
+      "hargaAwal"
+    ).value;
 
-const extraCost =
-document.getElementById(
-"extraCost"
-).value || 0;
 
+  const extraCost =
+    document.getElementById(
+      "extraCost"
+    ).value || 0;
 
-const promo =
-document.getElementById(
-"promo"
-).value || 0;
 
+  const promo =
+    document.getElementById(
+      "promo"
+    ).value || 0;
 
-const statusPembayaran =
-document.getElementById(
-"statusPembayaran"
-).value;
 
+  const statusPembayaran =
+    document.getElementById(
+      "statusPembayaran"
+    ).value;
 
-const nominal =
-document.getElementById(
-"nominal"
-).value;
 
+  const nominal =
+    document.getElementById(
+      "nominal"
+    ).value;
 
-/* ==================================================
-   HITUNG TOTAL
-================================================== */
 
-const totalHarga =
+  /* ==================================================
+     HITUNG TOTAL
+  ================================================== */
 
-(
-Number(hargaAwal) || 0
-)
+  let totalHarga =
 
-+
+    (
+      Number(hargaAwal) || 0
+    )
 
-(
-Number(extraCost) || 0
-)
+    +
 
--
+    (
+      Number(extraCost) || 0
+    )
 
-(
-Number(promo) || 0
-);
+    -
 
+    (
+      Number(promo) || 0
+    );
 
-/* ==================================================
-   VALIDASI
-================================================== */
 
-if(!idOrder){
+  if(totalHarga < 0){
 
-alert(
-"Silakan pilih ID Order Data."
-);
+    totalHarga = 0;
 
-return;
+  }
 
-}
 
+  /* ==================================================
+     VALIDASI
+  ================================================== */
 
-if(
-nama === "-" ||
-nama === ""
-){
+  if(!idOrder){
 
-alert(
-"Nama pemesan belum tersedia."
-);
+    alert(
+      "Silakan ketik ID Order Data."
+    );
 
-return;
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
-}
+    return;
 
+  }
 
-if(
-judulOlahData === "-" ||
-judulOlahData === ""
-){
 
-alert(
-"Judul olah data belum tersedia."
-);
+  /*
+   * Pastikan data order sudah dicari.
+   */
 
-return;
+  if(
+    nama === "-" ||
+    nama === ""
+  ){
 
-}
+    alert(
+      "Data Order belum ditemukan. Silakan klik CARI DATA ORDER terlebih dahulu."
+    );
 
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
-if(!marketingInput){
+    return;
 
-alert(
-"Silakan pilih Marketing Input."
-);
+  }
 
-return;
 
-}
+  if(
+    judulOlahData === "-" ||
+    judulOlahData === ""
+  ){
 
+    alert(
+      "Judul olah data belum tersedia. Silakan cari kembali data Order."
+    );
 
-if(
-hargaAwal === "" ||
-Number(hargaAwal) < 0
-){
+    return;
 
-alert(
-"Harga awal belum diisi dengan benar."
-);
+  }
 
-return;
 
-}
+  /*
+   * MARKETING SEKARANG TEXT INPUT
+   */
 
+  if(!marketingInput){
 
-if(
-Number(extraCost) < 0
-){
+    alert(
+      "Silakan ketik nama Marketing Input."
+    );
 
-alert(
-"Extra Cost tidak boleh kurang dari 0."
-);
+    document.getElementById(
+      "marketingInput"
+    ).focus();
 
-return;
+    return;
 
-}
+  }
 
 
-if(
-Number(promo) < 0
-){
+  if(
+    hargaAwal === "" ||
+    Number(hargaAwal) < 0
+  ){
 
-alert(
-"Promo tidak boleh kurang dari 0."
-);
+    alert(
+      "Harga awal belum diisi dengan benar."
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(totalHarga < 0){
+  if(
+    Number(extraCost) < 0
+  ){
 
-alert(
-"Total harga tidak boleh negatif."
-);
+    alert(
+      "Extra Cost tidak boleh kurang dari 0."
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(!statusPembayaran){
+  if(
+    Number(promo) < 0
+  ){
 
-alert(
-"Silakan pilih Status Pembayaran."
-);
+    alert(
+      "Promo tidak boleh kurang dari 0."
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-if(
-nominal === "" ||
-Number(nominal) < 0
-){
+  if(totalHarga < 0){
 
-alert(
-"Nominal pembayaran belum diisi dengan benar."
-);
+    alert(
+      "Total harga tidak boleh negatif."
+    );
 
-return;
+    return;
 
-}
+  }
 
 
-/* ==================================================
-   DATA YANG DIKIRIM KE CODE.GS
-================================================== */
+  if(!statusPembayaran){
 
-const data = {
+    alert(
+      "Silakan pilih Status Pembayaran."
+    );
 
-idOrder:
-idOrder,
+    return;
 
-nama:
-nama,
+  }
 
-judulOlahData:
-judulOlahData,
 
-marketingInput:
-marketingInput,
+  if(
+    nominal === "" ||
+    Number(nominal) < 0
+  ){
 
-tanggal:
-tanggal,
+    alert(
+      "Nominal pembayaran belum diisi dengan benar."
+    );
 
-hargaAwal:
-hargaAwal,
+    return;
 
-extraCost:
-extraCost,
+  }
 
-promo:
-promo,
 
-totalHarga:
-totalHarga,
+  /* ==================================================
+     DATA YANG DIKIRIM KE CODE.GS
+  ================================================== */
 
-statusPembayaran:
-statusPembayaran,
+  const data = {
 
-nominal:
-nominal
+    idOrder:
+      idOrder,
 
-};
+    nama:
+      nama,
 
+    judulOlahData:
+      judulOlahData,
 
-/* ==================================================
-   LOADING
-================================================== */
+    marketingInput:
+      marketingInput,
 
-const btn =
-document.getElementById(
-"btnSimpan"
-);
+    tanggal:
+      tanggal,
 
+    hargaAwal:
+      hargaAwal,
 
-const loading =
-document.getElementById(
-"loading"
-);
+    extraCost:
+      extraCost,
 
+    promo:
+      promo,
 
-btn.disabled =
-true;
+    totalHarga:
+      totalHarga,
 
+    statusPembayaran:
+      statusPembayaran,
 
-btn.textContent =
-"MENYIMPAN...";
+    nominal:
+      nominal
 
+  };
 
-loading.classList.add(
-"active"
-);
 
+  console.log(
+    "DATA TRANSAKSI OLAH DATA:",
+    data
+  );
 
-/* ==================================================
-   GOOGLE APPS SCRIPT
-================================================== */
 
-if(
-typeof google !== "undefined" &&
-google.script &&
-google.script.run
-){
+  /* ==================================================
+     LOADING
+  ================================================== */
 
-google.script.run
+  const btn =
+    document.getElementById(
+      "btnSimpan"
+    );
 
-.withSuccessHandler(
-function(result){
 
-btn.disabled =
-false;
+  const loading =
+    document.getElementById(
+      "loading"
+    );
 
 
-btn.textContent =
-"💾 SIMPAN TRANSAKSI OLAH DATA";
+  btn.disabled =
+    true;
 
 
-loading.classList.remove(
-"active"
-);
+  btn.textContent =
+    "MENYIMPAN...";
 
 
-if(
-result &&
-result.success
-){
+  loading.classList.add(
+    "active"
+  );
 
-/*
-TAMPILKAN POPUP
-TANPA ID INVOICE
-*/
 
-tampilkanPopupInvoice(
-data
-);
+  /* ==================================================
+     GOOGLE APPS SCRIPT
+  ================================================== */
 
+  if(
+    typeof google !== "undefined" &&
+    google.script &&
+    google.script.run
+  ){
 
-/*
-RESET FORM
-*/
+    google.script.run
 
-document.getElementById(
-"invoiceForm"
-).reset();
+    .withSuccessHandler(
+      function(result){
 
+        btn.disabled =
+          false;
 
-resetDetailOrder();
 
+        btn.textContent =
+          "💾 SIMPAN TRANSAKSI OLAH DATA";
 
-document.getElementById(
-"tanggal"
-).value =
-new Date()
-.toISOString()
-.split("T")[0];
 
+        loading.classList.remove(
+          "active"
+        );
 
-document.getElementById(
-"totalHarga"
-).textContent =
-"Rp 0";
 
-}
+        console.log(
+          "HASIL SIMPAN:",
+          result
+        );
 
-else{
 
-alert(
-"Gagal menyimpan transaksi olah data."
-);
+        if(
+          result &&
+          result.success
+        ){
 
-}
+          /*
+           * TAMPILKAN POPUP
+           */
 
-}
-)
+          tampilkanPopupInvoice(
+            data
+          );
 
-.withFailureHandler(
-function(error){
 
-btn.disabled =
-false;
+          /*
+           * RESET FORM
+           */
 
+          document.getElementById(
+            "invoiceForm"
+          ).reset();
 
-btn.textContent =
-"💾 SIMPAN TRANSAKSI OLAH DATA";
 
+          /*
+           * RESET DETAIL ORDER
+           */
 
-loading.classList.remove(
-"active"
-);
+          resetDetailOrder();
 
 
-alert(
-"Gagal menyimpan transaksi olah data:\n" +
-error.message
-);
+          /*
+           * RESET STATUS ORDER
+           */
 
-}
-)
+          document.getElementById(
+            "orderStatus"
+          ).className =
+            "order-status";
 
-.simpanInvoiceOlahData(data);
 
+          document.getElementById(
+            "orderStatus"
+          ).textContent =
+            "";
 
-return;
 
-}
+          /*
+           * TANGGAL KEMBALI HARI INI
+           */
 
+          document.getElementById(
+            "tanggal"
+          ).value =
 
-/* ==================================================
-   MODE PREVIEW
-================================================== */
+            new Date()
+            .toISOString()
+            .split("T")[0];
 
-console.log(
-"DATA TRANSAKSI OLAH DATA:",
-data
-);
 
+          /*
+           * TOTAL KEMBALI 0
+           */
 
-btn.disabled =
-false;
+          document.getElementById(
+            "totalHarga"
+          ).textContent =
+            "Rp 0";
 
 
-btn.textContent =
-"💾 SIMPAN TRANSAKSI OLAH DATA";
+          /*
+           * RESET LABEL NOMINAL
+           */
 
+          ubahStatusPembayaran();
 
-loading.classList.remove(
-"active"
-);
+        }
 
+        else{
 
-tampilkanPopupInvoice(
-data
-);
+          alert(
+
+            (
+              result &&
+              result.message
+            )
+
+            ||
+
+            "Gagal menyimpan transaksi olah data."
+
+          );
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error){
+
+        btn.disabled =
+          false;
+
+
+        btn.textContent =
+          "💾 SIMPAN TRANSAKSI OLAH DATA";
+
+
+        loading.classList.remove(
+          "active"
+        );
+
+
+        console.error(
+          "ERROR SIMPAN TRANSAKSI:",
+          error
+        );
+
+
+        alert(
+
+          "Gagal menyimpan transaksi olah data:\n" +
+
+          (
+            error &&
+            error.message
+              ? error.message
+              : error
+          )
+
+        );
+
+      }
+    )
+
+    .simpanInvoiceOlahData(
+      data
+    );
+
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     MODE PREVIEW
+     Jika google.script.run tidak tersedia
+  ================================================== */
+
+  console.log(
+    "MODE PREVIEW:",
+    data
+  );
+
+
+  btn.disabled =
+    false;
+
+
+  btn.textContent =
+    "💾 SIMPAN TRANSAKSI OLAH DATA";
+
+
+  loading.classList.remove(
+    "active"
+  );
+
+
+  tampilkanPopupInvoice(
+    data
+  );
 
 }
 
@@ -1827,79 +2210,79 @@ data
 ================================================== */
 
 function tampilkanPopupInvoice(
-data
+  data
 ){
 
-/*
-ID ORDER
-*/
+  /*
+   * ID ORDER
+   */
 
-document.getElementById(
-"popupIdOrder"
-).textContent =
-data.idOrder;
-
-
-/*
-DETAIL TRANSAKSI
-*/
-
-document.getElementById(
-"detailInvoice"
-).innerHTML =
-
-"Nama Pemesan: <strong>" +
-escapeHtml(data.nama) +
-"</strong><br>" +
-
-"Judul Olah Data: <strong>" +
-escapeHtml(data.judulOlahData) +
-"</strong><br>" +
-
-"Marketing: <strong>" +
-escapeHtml(data.marketingInput) +
-"</strong><br>" +
-
-"Tanggal Pembayaran: <strong>" +
-escapeHtml(data.tanggal) +
-"</strong><br>" +
-
-"Harga Awal: <strong>Rp " +
-formatRupiah(data.hargaAwal) +
-"</strong><br>" +
-
-"Extra Cost: <strong>Rp " +
-formatRupiah(data.extraCost) +
-"</strong><br>" +
-
-"Promo: <strong>Rp " +
-formatRupiah(data.promo) +
-"</strong><br>" +
-
-"<hr>" +
-
-"Total Harga: <strong>Rp " +
-formatRupiah(data.totalHarga) +
-"</strong><br>" +
-
-"Status Pembayaran: <strong>" +
-escapeHtml(data.statusPembayaran) +
-"</strong><br>" +
-
-"Nominal Pembayaran: <strong>Rp " +
-formatRupiah(data.nominal) +
-"</strong>";
+  document.getElementById(
+    "popupIdOrder"
+  ).textContent =
+    data.idOrder;
 
 
-/*
-BUKA POPUP
-*/
+  /*
+   * DETAIL TRANSAKSI
+   */
 
-document.getElementById(
-"popupBerhasil"
-).classList.add(
-"active"
-);
+  document.getElementById(
+    "detailInvoice"
+  ).innerHTML =
+
+    "Nama Pemesan: <strong>" +
+    escapeHtml(data.nama) +
+    "</strong><br>" +
+
+    "Judul Olah Data: <strong>" +
+    escapeHtml(data.judulOlahData) +
+    "</strong><br>" +
+
+    "Marketing: <strong>" +
+    escapeHtml(data.marketingInput) +
+    "</strong><br>" +
+
+    "Tanggal Pembayaran: <strong>" +
+    escapeHtml(data.tanggal) +
+    "</strong><br>" +
+
+    "Harga Awal: <strong>Rp " +
+    formatRupiah(data.hargaAwal) +
+    "</strong><br>" +
+
+    "Extra Cost: <strong>Rp " +
+    formatRupiah(data.extraCost) +
+    "</strong><br>" +
+
+    "Promo: <strong>Rp " +
+    formatRupiah(data.promo) +
+    "</strong><br>" +
+
+    "<hr>" +
+
+    "Total Harga: <strong>Rp " +
+    formatRupiah(data.totalHarga) +
+    "</strong><br>" +
+
+    "Status Pembayaran: <strong>" +
+    escapeHtml(data.statusPembayaran) +
+    "</strong><br>" +
+
+    "Nominal Pembayaran: <strong>Rp " +
+    formatRupiah(data.nominal) +
+    "</strong>";
+
+
+  /*
+   * BUKA POPUP
+   */
+
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.add(
+    "active"
+  );
 
 }
 
@@ -1910,11 +2293,11 @@ document.getElementById(
 
 function formatRupiah(angka){
 
-return new Intl.NumberFormat(
-"id-ID"
-).format(
-Number(angka) || 0
-);
+  return new Intl.NumberFormat(
+    "id-ID"
+  ).format(
+    Number(angka) || 0
+  );
 
 }
 
@@ -1925,32 +2308,36 @@ Number(angka) || 0
 
 function escapeHtml(text){
 
-return String(text)
+  return String(
+    text == null
+      ? ""
+      : text
+  )
 
-.replace(
-/&/g,
-"&amp;"
-)
+  .replace(
+    /&/g,
+    "&amp;"
+  )
 
-.replace(
-/</g,
-"&lt;"
-)
+  .replace(
+    /</g,
+    "&lt;"
+  )
 
-.replace(
-/>/g,
-"&gt;"
-)
+  .replace(
+    />/g,
+    "&gt;"
+  )
 
-.replace(
-/"/g,
-"&quot;"
-)
+  .replace(
+    /"/g,
+    "&quot;"
+  )
 
-.replace(
-/'/g,
-"&#039;"
-);
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
@@ -1961,11 +2348,11 @@ return String(text)
 
 function tutupPopup(){
 
-document.getElementById(
-"popupBerhasil"
-).classList.remove(
-"active"
-);
+  document.getElementById(
+    "popupBerhasil"
+  ).classList.remove(
+    "active"
+  );
 
 }
 
@@ -1976,8 +2363,8 @@ document.getElementById(
 
 function kembali(){
 
-window.location.href =
-"data.html";
+  window.location.href =
+    "data.html";
 
 }
 
