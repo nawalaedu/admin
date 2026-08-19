@@ -124,6 +124,40 @@ small{
 
 
 /* =========================================================
+   INPUT + BUTTON CARI
+========================================================= */
+
+.input-search{
+  display:flex;
+  gap:10px;
+}
+
+.input-search input{
+  flex:1;
+}
+
+.btn-search{
+  border:0;
+  padding:0 20px;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.btn-search:hover{
+  background:#183b56;
+}
+
+.btn-search:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+
+/* =========================================================
    STATUS
 ========================================================= */
 
@@ -170,6 +204,7 @@ small{
   font-weight:bold;
   cursor:pointer;
   font-size:14px;
+  margin-top:10px;
 }
 
 .btn-save:hover{
@@ -303,6 +338,14 @@ small{
     padding:25px 20px;
   }
 
+  .input-search{
+    flex-direction:column;
+  }
+
+  .btn-search{
+    padding:13px;
+  }
+
 }
 
 </style>
@@ -352,7 +395,7 @@ small{
 
   <p>
     Catat invoice dan pembayaran berdasarkan
-    order buku serta author buku.
+    ID Order Buku dan ID Author.
   </p>
 
 </div>
@@ -362,23 +405,23 @@ small{
 
   <strong>Informasi:</strong><br>
 
+  ID Order Buku dan ID Author sekarang
+  <strong>diketik secara manual</strong> agar halaman
+  lebih ringan dan tidak perlu memuat seluruh data.
+
+  <br><br>
+
   Satu ID Order Buku dapat memiliki
   <strong>banyak Author</strong>.
 
   <br><br>
 
-  Pilih terlebih dahulu
-  <strong>ID Order Buku</strong>.
+  Ketik <strong>ID Order Buku</strong> lalu klik
+  <strong>Cari Order</strong>.
 
-  Setelah order dipilih, sistem akan menampilkan
-  seluruh <strong>ID Author</strong> yang terdaftar
-  pada order tersebut.
-
-  <br><br>
-
-  Selanjutnya pilih salah satu
-  <strong>ID Author</strong>.
-  Nama Author dan Bab akan terisi otomatis.
+  Setelah order ditemukan, ketik
+  <strong>ID Author</strong> lalu klik
+  <strong>Cari Author</strong>.
 
 </div>
 
@@ -398,19 +441,29 @@ small{
     ID Order Buku
   </label>
 
-  <select
-    id="idOrder"
-    required
-    onchange="ambilDetailOrder()">
+  <div class="input-search">
 
-    <option value="">
-      Memuat ID Order Buku...
-    </option>
+    <input
+      type="text"
+      id="idOrder"
+      placeholder="Contoh: ORD001"
+      autocomplete="off"
+      required>
 
-  </select>
+    <button
+      type="button"
+      id="btnCariOrder"
+      class="btn-search"
+      onclick="cariOrder()">
+
+      🔍 Cari Order
+
+    </button>
+
+  </div>
 
   <small>
-    Pilih ID Order Buku terlebih dahulu.
+    Ketik ID Order Buku secara manual.
   </small>
 
   <div
@@ -435,11 +488,11 @@ small{
     type="text"
     id="judulBuku"
     class="readonly"
-    placeholder="Otomatis berdasarkan ID Order"
+    placeholder="Akan muncul setelah Order ditemukan"
     readonly>
 
   <small>
-    Judul buku otomatis mengikuti ID Order Buku.
+    Judul buku akan terisi otomatis berdasarkan ID Order.
   </small>
 
 </div>
@@ -455,20 +508,30 @@ small{
     ID Author
   </label>
 
-  <select
-    id="idAuthor"
-    required
-    onchange="pilihAuthor()">
+  <div class="input-search">
 
-    <option value="">
-      Pilih ID Author
-    </option>
+    <input
+      type="text"
+      id="idAuthor"
+      placeholder="Contoh: AUTH001"
+      autocomplete="off"
+      required>
 
-  </select>
+    <button
+      type="button"
+      id="btnCariAuthor"
+      class="btn-search"
+      onclick="cariAuthor()">
+
+      🔍 Cari Author
+
+    </button>
+
+  </div>
 
   <small>
-    Satu order dapat memiliki banyak author.
-    Pilih ID Author yang akan dibuatkan invoice.
+    Ketik ID Author secara manual.
+    Satu Order Buku dapat memiliki banyak Author.
   </small>
 
   <div
@@ -493,7 +556,7 @@ small{
     type="text"
     id="namaAuthor"
     class="readonly"
-    placeholder="Otomatis berdasarkan ID Author"
+    placeholder="Akan muncul setelah Author ditemukan"
     readonly>
 
 </div>
@@ -513,7 +576,7 @@ small{
     type="text"
     id="bab"
     class="readonly"
-    placeholder="Otomatis berdasarkan ID Author"
+    placeholder="Akan muncul setelah Author ditemukan"
     readonly>
 
 </div>
@@ -736,8 +799,6 @@ document.addEventListener(
 
     setTanggalHariIni();
 
-    ambilDaftarOrderBuku();
-
   }
 );
 
@@ -793,214 +854,18 @@ function gasTersedia(){
 
 
 /* =========================================================
-   AMBIL DAFTAR ORDER BUKU
+   CARI ORDER BERDASARKAN ID
 ========================================================= */
 
-function ambilDaftarOrderBuku(){
+function cariOrder(){
 
-  const select =
+  const input =
     document.getElementById(
       "idOrder"
     );
-
-  const status =
-    document.getElementById(
-      "orderStatus"
-    );
-
-
-  select.innerHTML =
-    '<option value="">Memuat ID Order Buku...</option>';
-
-
-  if(!gasTersedia()){
-
-    select.innerHTML =
-      '<option value="">Google Apps Script tidak tersedia</option>';
-
-    return;
-
-  }
-
-
-  google.script.run
-
-    .withSuccessHandler(
-      function(result){
-
-        console.log(
-          "DAFTAR ORDER BUKU:",
-          result
-        );
-
-
-        let orders =
-          normalisasiArray(
-            result,
-            [
-              "data",
-              "orders",
-              "orderList",
-              "daftarOrder",
-              "daftarOrderBuku"
-            ]
-          );
-
-
-        select.innerHTML =
-          '<option value="">Pilih ID Order Buku</option>';
-
-
-        if(
-          !orders ||
-          orders.length === 0
-        ){
-
-          select.innerHTML =
-            '<option value="">Belum ada ID Order Buku</option>';
-
-          return;
-
-        }
-
-
-        orders.forEach(
-          function(item){
-
-            const data =
-              normalisasiObject(
-                item
-              );
-
-
-            const idOrder =
-              ambilNilai(
-                data,
-                [
-                  "idOrder",
-                  "orderId",
-                  "id_order",
-                  "ID_Order",
-                  "IDOrder",
-                  "ID Order",
-                  "ID Order Buku",
-                  "idOrderBuku"
-                ]
-              );
-
-
-            const judul =
-              ambilNilai(
-                data,
-                [
-                  "judulBuku",
-                  "judul",
-                  "namaBuku",
-                  "Judul Buku"
-                ]
-              );
-
-
-            if(!idOrder){
-
-              return;
-
-            }
-
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-
-            option.value =
-              idOrder;
-
-
-            option.textContent =
-              idOrder +
-              (
-                judul
-                  ? " — " + judul
-                  : ""
-              );
-
-
-            option.dataset.judul =
-              judul || "";
-
-
-            select.appendChild(
-              option
-            );
-
-          }
-        );
-
-
-        if(select.options.length === 1){
-
-          select.innerHTML =
-            '<option value="">ID Order Buku tidak ditemukan</option>';
-
-        }
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        console.error(
-          "ERROR DAFTAR ORDER BUKU:",
-          error
-        );
-
-
-        select.innerHTML =
-          '<option value="">Gagal memuat ID Order Buku</option>';
-
-
-        alert(
-          "Gagal mengambil daftar ID Order Buku:\n" +
-          errorMessage(error)
-        );
-
-      }
-    )
-
-    /*
-     * =====================================================
-     * METHOD YANG DIPAKAI
-     * =====================================================
-     *
-     * Jangan menggunakan:
-     *
-     * ambilOrderBukuUntukInvoice()
-     *
-     * karena method tersebut tidak terdaftar.
-     *
-     * Gunakan method yang sudah tersedia:
-     *
-     * ambilDaftarOrderBuku()
-     */
-
-    .ambilDaftarOrderBuku();
-
-}
-
-
-/* =========================================================
-   AMBIL DETAIL ORDER + SEMUA AUTHOR
-========================================================= */
-
-function ambilDetailOrder(){
 
   const idOrder =
-    document.getElementById(
-      "idOrder"
-    ).value;
+    input.value.trim();
 
 
   const judul =
@@ -1008,28 +873,14 @@ function ambilDetailOrder(){
       "judulBuku"
     );
 
-
-  const authorSelect =
-    document.getElementById(
-      "idAuthor"
-    );
-
-
-  const nama =
-    document.getElementById(
-      "namaAuthor"
-    );
-
-
-  const bab =
-    document.getElementById(
-      "bab"
-    );
-
-
   const status =
     document.getElementById(
-      "authorStatus"
+      "orderStatus"
+    );
+
+  const btn =
+    document.getElementById(
+      "btnCariOrder"
     );
 
 
@@ -1039,13 +890,28 @@ function ambilDetailOrder(){
 
   judul.value = "";
 
-  nama.value = "";
+  document.getElementById(
+    "idAuthor"
+  ).value = "";
 
-  bab.value = "";
+  document.getElementById(
+    "namaAuthor"
+  ).value = "";
+
+  document.getElementById(
+    "bab"
+  ).value = "";
 
 
-  authorSelect.innerHTML =
-    '<option value="">Memuat ID Author...</option>';
+  document.getElementById(
+    "authorStatus"
+  ).className =
+    "status-box";
+
+  document.getElementById(
+    "authorStatus"
+  ).textContent =
+    "";
 
 
   status.className =
@@ -1057,64 +923,55 @@ function ambilDetailOrder(){
 
   if(!idOrder){
 
-    authorSelect.innerHTML =
-      '<option value="">Pilih ID Author</option>';
+    status.className =
+      "status-box show error";
+
+    status.textContent =
+      "Silakan ketik ID Order Buku.";
+
+    input.focus();
 
     return;
-
-  }
-
-
-  /*
-   * Ambil judul dari option
-   * supaya tampilan terasa lebih cepat.
-   */
-
-  const orderSelect =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  const orderOption =
-    orderSelect.options[
-      orderSelect.selectedIndex
-    ];
-
-
-  if(
-    orderOption &&
-    orderOption.dataset.judul
-  ){
-
-    judul.value =
-      orderOption.dataset.judul;
 
   }
 
 
   if(!gasTersedia()){
 
-    authorSelect.innerHTML =
-      '<option value="">Google Apps Script tidak tersedia</option>';
+    status.className =
+      "status-box show error";
+
+    status.textContent =
+      "Google Apps Script tidak tersedia.";
 
     return;
 
   }
 
 
+  btn.disabled =
+    true;
+
+  btn.textContent =
+    "Mencari...";
+
+
+  status.className =
+    "status-box show loading";
+
+  status.textContent =
+    "⏳ Mencari ID Order Buku...";
+
+
   /*
-   * Jika judul belum tersedia,
-   * tampilkan loading.
+   * =====================================================
+   * BACKEND
+   * =====================================================
+   *
+   * Hanya mengirim SATU ID ORDER.
+   *
+   * Tidak mengambil seluruh daftar order.
    */
-
-  if(!judul.value){
-
-    judul.value =
-      "Memuat...";
-
-  }
-
 
   google.script.run
 
@@ -1122,17 +979,27 @@ function ambilDetailOrder(){
       function(result){
 
         console.log(
-          "DETAIL ORDER BUKU:",
+          "HASIL CARI ORDER:",
           result
         );
 
 
-        if(!result){
+        btn.disabled =
+          false;
 
-          judul.value = "";
+        btn.textContent =
+          "🔍 Cari Order";
 
-          authorSelect.innerHTML =
-            '<option value="">Order Buku tidak ditemukan</option>';
+
+        if(
+          !result
+        ){
+
+          status.className =
+            "status-box show error";
+
+          status.textContent =
+            "ID Order Buku tidak ditemukan.";
 
           return;
 
@@ -1143,26 +1010,17 @@ function ambilDetailOrder(){
           result.success === false
         ){
 
-          judul.value = "";
+          status.className =
+            "status-box show error";
 
-          authorSelect.innerHTML =
-            '<option value="">Gagal mengambil Author</option>';
-
-          alert(
+          status.textContent =
             result.message ||
-            "Gagal mengambil detail Order Buku."
-          );
+            "ID Order Buku tidak ditemukan.";
 
           return;
 
         }
 
-
-        /*
-         * ===============================================
-         * NORMALISASI DATA ORDER
-         * ===============================================
-         */
 
         const data =
           ambilObjectData(
@@ -1171,9 +1029,7 @@ function ambilDetailOrder(){
 
 
         /*
-         * ===============================================
-         * JUDUL
-         * ===============================================
+         * Ambil judul buku
          */
 
         const judulData =
@@ -1188,194 +1044,33 @@ function ambilDetailOrder(){
           );
 
 
-        if(judulData){
-
-          judul.value =
-            judulData;
-
-        }
-
-
         /*
-         * ===============================================
-         * CARI SEMUA AUTHOR
-         * ===============================================
+         * Jika backend mengembalikan
+         * ID Order tetapi judul kosong.
          */
 
-        let authors =
-          cariDaftarAuthor(
-            result,
-            data
-          );
-
-
-        /*
-         * Jika backend mengembalikan satu object author,
-         * ubah menjadi array.
-         */
-
-        if(
-          authors &&
-          !Array.isArray(authors) &&
-          typeof authors === "object"
-        ){
-
-          authors =
-            [authors];
-
-        }
-
-
-        if(!Array.isArray(authors)){
-
-          authors = [];
-
-        }
-
-
-        /*
-         * ===============================================
-         * ISI DROPDOWN AUTHOR
-         * ===============================================
-         */
-
-        authorSelect.innerHTML =
-          '<option value="">Pilih ID Author</option>';
-
-
-        authors.forEach(
-          function(item){
-
-            const author =
-              normalisasiObject(
-                item
-              );
-
-
-            const idAuthor =
-              ambilNilai(
-                author,
-                [
-                  "idAuthor",
-                  "authorId",
-                  "id_author",
-                  "authorID",
-                  "ID_Author",
-                  "IDAuthor",
-                  "ID Author",
-                  "id"
-                ]
-              );
-
-
-            const namaAuthor =
-              ambilNilai(
-                author,
-                [
-                  "namaAuthor",
-                  "nama",
-                  "nama_author",
-                  "authorNama",
-                  "namaPenulis",
-                  "Nama Author",
-                  "Nama"
-                ]
-              );
-
-
-            const babAuthor =
-              ambilNilai(
-                author,
-                [
-                  "bab",
-                  "Bab",
-                  "namaBab",
-                  "nama_bab",
-                  "Nama Bab"
-                ]
-              );
-
-
-            if(!idAuthor){
-
-              return;
-
-            }
-
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-
-            option.value =
-              idAuthor;
-
-
-            option.textContent =
-              idAuthor +
-              (
-                namaAuthor
-                  ? " — " + namaAuthor
-                  : ""
-              );
-
-
-            /*
-             * Simpan data author
-             * langsung pada option.
-             *
-             * Ini membuat proses pemilihan
-             * author jauh lebih cepat.
-             */
-
-            option.dataset.nama =
-              namaAuthor || "";
-
-
-            option.dataset.bab =
-              babAuthor || "";
-
-
-            authorSelect.appendChild(
-              option
-            );
-
-          }
-        );
-
-
-        /*
-         * ===============================================
-         * HASIL
-         * ===============================================
-         */
-
-        if(
-          authorSelect.options.length === 1
-        ){
-
-          authorSelect.innerHTML =
-            '<option value="">Belum ada ID Author pada Order ini</option>';
+        if(!judulData){
 
           status.className =
             "status-box show error";
 
           status.textContent =
-            "Tidak ditemukan ID Author pada Order Buku ini.";
+            "Order ditemukan, tetapi Judul Buku tidak tersedia.";
 
           return;
 
         }
 
 
+        judul.value =
+          judulData;
+
+
         status.className =
           "status-box show success";
 
         status.textContent =
-          authors.length +
-          " Author tersedia pada Order Buku ini. Silakan pilih ID Author.";
+          "✓ Order ditemukan. Silakan ketik ID Author.";
 
       }
     )
@@ -1383,23 +1078,25 @@ function ambilDetailOrder(){
     .withFailureHandler(
       function(error){
 
+        btn.disabled =
+          false;
+
+        btn.textContent =
+          "🔍 Cari Order";
+
+
         console.error(
-          "ERROR DETAIL ORDER BUKU:",
+          "ERROR CARI ORDER:",
           error
         );
 
 
-        judul.value = "";
+        status.className =
+          "status-box show error";
 
-
-        authorSelect.innerHTML =
-          '<option value="">Gagal memuat ID Author</option>';
-
-
-        alert(
-          "Gagal mengambil detail Order Buku:\n" +
-          errorMessage(error)
-        );
+        status.textContent =
+          "Gagal mencari Order Buku: " +
+          errorMessage(error);
 
       }
     )
@@ -1409,13 +1106,10 @@ function ambilDetailOrder(){
      * METHOD BACKEND
      * =====================================================
      *
-     * Ini memakai:
+     * Pastikan Apps Script memiliki:
      *
-     * ambilDetailOrder()
+     * ambilDetailOrder(idOrder)
      *
-     * Bukan:
-     *
-     * ambilOrderBukuUntukInvoice()
      */
 
     .ambilDetailOrder(
@@ -1426,21 +1120,25 @@ function ambilDetailOrder(){
 
 
 /* =========================================================
-   PILIH AUTHOR
+   CARI AUTHOR BERDASARKAN ID
 ========================================================= */
 
-function pilihAuthor(){
+function cariAuthor(){
 
-  const select =
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value.trim();
+
+
+  const idAuthorInput =
     document.getElementById(
       "idAuthor"
     );
 
 
-  const option =
-    select.options[
-      select.selectedIndex
-    ];
+  const idAuthor =
+    idAuthorInput.value.trim();
 
 
   const nama =
@@ -1458,6 +1156,12 @@ function pilihAuthor(){
   const status =
     document.getElementById(
       "authorStatus"
+    );
+
+
+  const btn =
+    document.getElementById(
+      "btnCariAuthor"
     );
 
 
@@ -1477,49 +1181,21 @@ function pilihAuthor(){
     "";
 
 
-  if(
-    !option ||
-    !option.value
-  ){
-
-    return;
-
-  }
-
-
   /*
-   * =====================================================
-   * PRIORITAS 1
-   * Ambil langsung dari data option.
-   *
-   * Ini cepat dan tidak perlu request
-   * ke server lagi.
-   * =====================================================
+   * ID Order wajib sudah dicari
    */
 
-  const namaOption =
-    option.dataset.nama || "";
-
-
-  const babOption =
-    option.dataset.bab || "";
-
-
-  if(namaOption){
-
-    nama.value =
-      namaOption;
-
-
-    bab.value =
-      babOption;
-
+  if(!idOrder){
 
     status.className =
-      "status-box show success";
+      "status-box show error";
 
     status.textContent =
-      "✓ Data Author berhasil dipilih.";
+      "Silakan cari ID Order Buku terlebih dahulu.";
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
 
     return;
 
@@ -1527,12 +1203,46 @@ function pilihAuthor(){
 
 
   /*
-   * =====================================================
-   * PRIORITAS 2
-   * Jika option tidak memiliki nama,
-   * baru ambil dari backend.
-   * =====================================================
+   * ID Author wajib diisi
    */
+
+  if(!idAuthor){
+
+    status.className =
+      "status-box show error";
+
+    status.textContent =
+      "Silakan ketik ID Author.";
+
+    idAuthorInput.focus();
+
+    return;
+
+  }
+
+
+  /*
+   * Pastikan order sudah ditemukan
+   */
+
+  const judul =
+    document.getElementById(
+      "judulBuku"
+    ).value.trim();
+
+
+  if(!judul){
+
+    status.className =
+      "status-box show error";
+
+    status.textContent =
+      "Cari ID Order Buku terlebih dahulu.";
+
+    return;
+
+  }
+
 
   if(!gasTersedia()){
 
@@ -1540,19 +1250,34 @@ function pilihAuthor(){
       "status-box show error";
 
     status.textContent =
-      "Data Author belum tersedia.";
+      "Google Apps Script tidak tersedia.";
 
     return;
 
   }
 
 
+  btn.disabled =
+    true;
+
+  btn.textContent =
+    "Mencari...";
+
+
   status.className =
     "status-box show loading";
 
   status.textContent =
-    "⏳ Mengambil data Author...";
+    "⏳ Mencari ID Author...";
 
+
+  /*
+   * =====================================================
+   * BACKEND
+   * =====================================================
+   *
+   * Hanya mencari SATU ID AUTHOR.
+   */
 
   google.script.run
 
@@ -1560,9 +1285,16 @@ function pilihAuthor(){
       function(result){
 
         console.log(
-          "DETAIL AUTHOR:",
+          "HASIL CARI AUTHOR:",
           result
         );
+
+
+        btn.disabled =
+          false;
+
+        btn.textContent =
+          "🔍 Cari Author";
 
 
         if(!result){
@@ -1587,7 +1319,7 @@ function pilihAuthor(){
 
           status.textContent =
             result.message ||
-            "Data Author tidak ditemukan.";
+            "ID Author tidak ditemukan.";
 
           return;
 
@@ -1600,6 +1332,10 @@ function pilihAuthor(){
           );
 
 
+        /*
+         * Nama Author
+         */
+
         const namaAuthor =
           ambilNilai(
             data,
@@ -1608,10 +1344,16 @@ function pilihAuthor(){
               "nama",
               "nama_author",
               "authorNama",
-              "Nama Author"
+              "namaPenulis",
+              "Nama Author",
+              "Nama"
             ]
           );
 
+
+        /*
+         * Bab
+         */
 
         const dataBab =
           ambilNilai(
@@ -1620,6 +1362,7 @@ function pilihAuthor(){
               "bab",
               "Bab",
               "namaBab",
+              "nama_bab",
               "Nama Bab"
             ]
           );
@@ -1631,31 +1374,21 @@ function pilihAuthor(){
             "status-box show error";
 
           status.textContent =
-            "ID Author ditemukan tetapi nama Author kosong.";
+            "ID Author ditemukan tetapi Nama Author kosong.";
 
           return;
 
         }
 
 
+        /*
+         * Tampilkan data
+         */
+
         nama.value =
           namaAuthor;
 
-
         bab.value =
-          dataBab || "";
-
-
-        /*
-         * Simpan ke option supaya
-         * pemilihan berikutnya cepat.
-         */
-
-        option.dataset.nama =
-          namaAuthor;
-
-
-        option.dataset.bab =
           dataBab || "";
 
 
@@ -1663,7 +1396,7 @@ function pilihAuthor(){
           "status-box show success";
 
         status.textContent =
-          "✓ Data Author berhasil ditemukan.";
+          "✓ Author ditemukan dan sesuai dengan Order Buku.";
 
       }
     )
@@ -1671,8 +1404,15 @@ function pilihAuthor(){
     .withFailureHandler(
       function(error){
 
+        btn.disabled =
+          false;
+
+        btn.textContent =
+          "🔍 Cari Author";
+
+
         console.error(
-          "ERROR DETAIL AUTHOR:",
+          "ERROR CARI AUTHOR:",
           error
         );
 
@@ -1681,186 +1421,33 @@ function pilihAuthor(){
           "status-box show error";
 
         status.textContent =
-          "Gagal mengambil data Author.";
+          "Gagal mencari Author: " +
+          errorMessage(error);
 
       }
     )
 
+    /*
+     * =====================================================
+     * METHOD BACKEND
+     * =====================================================
+     *
+     * Mengirim:
+     *
+     * 1. ID Author
+     *
+     * 2. ID Order
+     *
+     * ID Order ikut dikirim supaya backend
+     * dapat memastikan Author tersebut
+     * memang milik Order Buku tersebut.
+     *
+     */
+
     .ambilDetailAuthor(
-      option.value
+      idAuthor,
+      idOrder
     );
-
-}
-
-
-/* =========================================================
-   NORMALISASI ARRAY
-========================================================= */
-
-function normalisasiArray(
-  result,
-  keys
-){
-
-  if(
-    Array.isArray(result)
-  ){
-
-    return result;
-
-  }
-
-
-  if(
-    !result ||
-    typeof result !== "object"
-  ){
-
-    return [];
-
-  }
-
-
-  for(
-    let i = 0;
-    i < keys.length;
-    i++
-  ){
-
-    const value =
-      result[
-        keys[i]
-      ];
-
-
-    if(
-      Array.isArray(value)
-    ){
-
-      return value;
-
-    }
-
-  }
-
-
-  return [];
-
-}
-
-
-/* =========================================================
-   AMBIL OBJECT DATA
-========================================================= */
-
-function ambilObjectData(
-  result
-){
-
-  if(
-    !result ||
-    typeof result !== "object"
-  ){
-
-    return {};
-
-  }
-
-
-  if(
-    result.data &&
-    typeof result.data === "object" &&
-    !Array.isArray(result.data)
-  ){
-
-    return result.data;
-
-  }
-
-
-  return result;
-
-}
-
-
-/* =========================================================
-   CARI DAFTAR AUTHOR
-========================================================= */
-
-function cariDaftarAuthor(
-  result,
-  data
-){
-
-  const sumber =
-    [
-      result,
-      data,
-      data.data
-    ];
-
-
-  const keys =
-    [
-      "authors",
-      "author",
-      "penulis",
-      "authorList",
-      "authorsList",
-      "daftarAuthor",
-      "daftar_author",
-      "listAuthor",
-      "listAuthors",
-      "authorData"
-    ];
-
-
-  for(
-    let i = 0;
-    i < sumber.length;
-    i++
-  ){
-
-    const obj =
-      sumber[i];
-
-
-    if(
-      !obj ||
-      typeof obj !== "object"
-    ){
-
-      continue;
-
-    }
-
-
-    for(
-      let j = 0;
-      j < keys.length;
-      j++
-    ){
-
-      const value =
-        obj[
-          keys[j]
-        ];
-
-
-      if(
-        Array.isArray(value)
-      ){
-
-        return value;
-
-      }
-
-    }
-
-  }
-
-
-  return [];
 
 }
 
@@ -1900,7 +1487,41 @@ function normalisasiObject(
 
 
 /* =========================================================
-   AMBIL NILAI DARI BEBERAPA NAMA FIELD
+   AMBIL OBJECT DATA
+========================================================= */
+
+function ambilObjectData(
+  result
+){
+
+  if(
+    !result ||
+    typeof result !== "object"
+  ){
+
+    return {};
+
+  }
+
+
+  if(
+    result.data &&
+    typeof result.data === "object" &&
+    !Array.isArray(result.data)
+  ){
+
+    return result.data;
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   AMBIL NILAI
 ========================================================= */
 
 function ambilNilai(
@@ -2134,13 +1755,15 @@ function simpanInvoice(
 
 
   /*
-   * Validasi tambahan
+   * =====================================================
+   * VALIDASI
+   * =====================================================
    */
 
   if(!data.idOrder){
 
     alert(
-      "Silakan pilih ID Order Buku."
+      "ID Order Buku wajib diisi."
     );
 
     return;
@@ -2151,7 +1774,7 @@ function simpanInvoice(
   if(!data.judulBuku){
 
     alert(
-      "Judul Buku belum tersedia."
+      "Silakan cari ID Order Buku terlebih dahulu."
     );
 
     return;
@@ -2162,7 +1785,7 @@ function simpanInvoice(
   if(!data.idAuthor){
 
     alert(
-      "Silakan pilih ID Author."
+      "ID Author wajib diisi."
     );
 
     return;
@@ -2173,7 +1796,7 @@ function simpanInvoice(
   if(!data.namaAuthor){
 
     alert(
-      "Nama Author belum tersedia."
+      "Silakan cari ID Author terlebih dahulu."
     );
 
     return;
@@ -2272,7 +1895,7 @@ function simpanInvoice(
       function(result){
 
         console.log(
-          "HASIL SIMPAN INVOICE BUKU:",
+          "HASIL SIMPAN INVOICE:",
           result
         );
 
@@ -2399,7 +2022,7 @@ function simpanInvoice(
 
 
         console.error(
-          "ERROR SIMPAN INVOICE BUKU:",
+          "ERROR SIMPAN INVOICE:",
           error
         );
 
@@ -2431,21 +2054,9 @@ function resetFormInvoice(){
 
 
   document.getElementById(
-    "idOrder"
-  ).selectedIndex =
-    0;
-
-
-  document.getElementById(
     "judulBuku"
   ).value =
     "";
-
-
-  document.getElementById(
-    "idAuthor"
-  ).innerHTML =
-    '<option value="">Pilih ID Author</option>';
 
 
   document.getElementById(
@@ -2461,25 +2072,25 @@ function resetFormInvoice(){
 
 
   document.getElementById(
-    "authorStatus"
+    "orderStatus"
   ).className =
     "status-box";
 
 
   document.getElementById(
-    "authorStatus"
+    "orderStatus"
   ).textContent =
     "";
 
 
   document.getElementById(
-    "orderStatus"
+    "authorStatus"
   ).className =
     "status-box";
 
 
   document.getElementById(
-    "orderStatus"
+    "authorStatus"
   ).textContent =
     "";
 
@@ -2579,7 +2190,8 @@ function errorMessage(
 
 
   return String(
-    error || "Error tidak diketahui"
+    error ||
+    "Error tidak diketahui"
   );
 
 }
@@ -2610,6 +2222,54 @@ function kembali(){
     "buku.html";
 
 }
+
+
+/* =========================================================
+   ENTER UNTUK CARI ORDER
+========================================================= */
+
+document.getElementById(
+  "idOrder"
+).addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Enter"
+    ){
+
+      event.preventDefault();
+
+      cariOrder();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ENTER UNTUK CARI AUTHOR
+========================================================= */
+
+document.getElementById(
+  "idAuthor"
+).addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Enter"
+    ){
+
+      event.preventDefault();
+
+      cariAuthor();
+
+    }
+
+  }
+);
 
 </script>
 
