@@ -369,15 +369,6 @@ small{
 }
 
 /* =========================
-   LOADING DROPDOWN
-========================= */
-
-select.loading{
-  background:#f1f5f9;
-  color:#718096;
-}
-
-/* =========================
    MODAL
 ========================= */
 
@@ -662,9 +653,7 @@ id="orderForm"
 onsubmit="simpanOrder(event)">
 
 
-<!-- ==================================================
-     TANGGAL
-================================================== -->
+<!-- TANGGAL -->
 
 <div class="form-group">
 
@@ -682,7 +671,8 @@ required>
 
 
 <!-- ==================================================
-     MARKETING ORDER
+     MARKETING
+     SEKARANG INPUT MANUAL
 ================================================== -->
 
 <div class="form-group">
@@ -691,27 +681,21 @@ required>
 Marketing
 </label>
 
-<select
+<input
+type="text"
 id="marketing"
 name="marketing"
+placeholder="Masukkan nama marketing"
 required>
 
-<option value="">
-Memuat Marketing...
-</option>
-
-</select>
-
 <small>
-Pilih nama Marketing yang melakukan input order.
+Isi nama marketing secara manual.
 </small>
 
 </div>
 
 
-<!-- ==================================================
-     JUDUL
-================================================== -->
+<!-- JUDUL -->
 
 <div class="form-group">
 
@@ -729,9 +713,7 @@ required>
 </div>
 
 
-<!-- ==================================================
-     RINCIAN BAB
-================================================== -->
+<!-- RINCIAN BAB -->
 
 <div class="form-group">
 
@@ -764,9 +746,7 @@ untuk author Mandiri dan author Kolaborasi.
 </div>
 
 
-<!-- ==================================================
-     K M T
-================================================== -->
+<!-- K M T -->
 
 <div class="form-group">
 
@@ -801,9 +781,7 @@ T - Tunggal
 </div>
 
 
-<!-- ==================================================
-     JENIS PENULISAN
-================================================== -->
+<!-- JENIS PENULISAN -->
 
 <div class="form-group">
 
@@ -841,15 +819,12 @@ Naskah Mandiri
 id="authorMTSection"
 style="display:none;">
 
-
 <div
 id="infoAuthorMT"
 class="info-box">
 </div>
 
-
 <div id="authorMTContainer"></div>
-
 
 <button
 type="button"
@@ -861,13 +836,10 @@ onclick="tambahAuthorMT()">
 
 </button>
 
-
 </div>
 
 
-<!-- ==================================================
-     SIMPAN
-================================================== -->
+<!-- SIMPAN -->
 
 <button
 type="submit"
@@ -884,7 +856,7 @@ SIMPAN ORDER BUKU
 
 
 <!-- ==================================================
-     FORM TAMBAH AUTHOR
+     FORM TAMBAH AUTHOR KOLABORASI
 ================================================== -->
 
 <div
@@ -913,9 +885,7 @@ id="authorForm"
 onsubmit="simpanAuthor(event)">
 
 
-<!-- ==================================================
-     ID ORDER
-================================================== -->
+<!-- ID ORDER -->
 
 <div class="form-group">
 
@@ -930,23 +900,19 @@ onchange="ambilDetailOrder()"
 required>
 
 <option value="">
-Memuat ID Order...
+Pilih ID Order
 </option>
 
 </select>
 
 <small>
-
 ID Order menjadi identitas utama buku.
-
 </small>
 
 </div>
 
 
-<!-- ==================================================
-     JUDUL
-================================================== -->
+<!-- JUDUL -->
 
 <div class="form-group">
 
@@ -965,7 +931,8 @@ readonly>
 
 
 <!-- ==================================================
-     MARKETING AUTHOR
+     MARKETING INPUT
+     SEKARANG INPUT MANUAL
 ================================================== -->
 
 <div class="form-group">
@@ -974,30 +941,21 @@ readonly>
 Marketing Input
 </label>
 
-<select
+<input
+type="text"
 id="marketingAuthor"
 name="marketingAuthor"
+placeholder="Masukkan nama marketing"
 required>
 
-<option value="">
-Memuat Marketing...
-</option>
-
-</select>
-
 <small>
-
-Marketing yang melakukan input author kolaborasi
-dipilih di sini.
-
+Isi nama marketing yang melakukan input author kolaborasi.
 </small>
 
 </div>
 
 
-<!-- ==================================================
-     TANGGAL
-================================================== -->
+<!-- TANGGAL -->
 
 <div class="form-group">
 
@@ -1034,9 +992,7 @@ dalam satu kali input.
 
 <div id="authorContainer">
 
-
 <div class="author-card">
-
 
 <div class="author-header">
 
@@ -1048,7 +1004,6 @@ Author
 
 
 <div class="author-grid">
-
 
 <div>
 
@@ -1120,7 +1075,6 @@ Daftar bab akan muncul otomatis.
 
 </div>
 
-
 </div>
 
 </div>
@@ -1145,26 +1099,22 @@ SIMPAN AUTHOR KOLABORASI
 
 
 <!-- ==================================================
-     MODAL
+     MODAL ID ORDER
 ================================================== -->
 
 <div
 id="orderModal"
 class="modal">
 
-
 <div class="modal-box">
-
 
 <div class="modal-icon">
 ✅
 </div>
 
-
 <h2>
 Order Buku Berhasil
 </h2>
-
 
 <p>
 
@@ -1177,7 +1127,6 @@ Tambah Author, Invoice, ISBN, dan HKI.
 
 
 <div class="order-result">
-
 
 <div class="result-row">
 
@@ -1212,7 +1161,6 @@ class="result-value">
 
 </div>
 
-
 </div>
 
 
@@ -1239,7 +1187,6 @@ TUTUP
 
 </div>
 
-
 </div>
 
 </div>
@@ -1248,15 +1195,11 @@ TUTUP
 <script>
 
 /* ==================================================
-   VARIABEL GLOBAL
+   INIT
 ================================================== */
 
 let jumlahAuthorMT = 0;
 
-
-/* ==================================================
-   INIT
-================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -1268,382 +1211,29 @@ document.addEventListener(
         .split("T")[0];
 
 
-    const tanggal =
-      document.getElementById("tanggal");
-
-    if(tanggal){
-      tanggal.value = today;
-    }
+    document.getElementById(
+      "tanggal"
+    ).value = today;
 
 
-    const tanggalTambah =
-      document.getElementById("tanggalTambah");
-
-    if(tanggalTambah){
-      tanggalTambah.value = today;
-    }
+    document.getElementById(
+      "tanggalTambah"
+    ).value = today;
 
 
-    /*
-      LOAD MARKETING
-    */
+    document.getElementById(
+      "rincianBab"
+    ).addEventListener(
+      "input",
+      function(){
 
-    muatDropdownMarketing();
+        refreshSemuaBabAuthorMT();
 
-
-    /*
-      RINCIAN BAB
-    */
-
-    const rincianBab =
-      document.getElementById("rincianBab");
-
-    if(rincianBab){
-
-      rincianBab.addEventListener(
-        "input",
-        function(){
-
-          refreshSemuaBabAuthorMT();
-
-        }
-      );
-
-    }
+      }
+    );
 
   }
 );
-
-
-/* ==================================================
-   LOAD DROPDOWN MARKETING
-================================================== */
-
-function muatDropdownMarketing(){
-
-  const dropdownOrder =
-    document.getElementById(
-      "marketing"
-    );
-
-  const dropdownAuthor =
-    document.getElementById(
-      "marketingAuthor"
-    );
-
-
-  /*
-    Tampilkan status loading
-  */
-
-  if(dropdownOrder){
-
-    dropdownOrder.classList.add(
-      "loading"
-    );
-
-    dropdownOrder.innerHTML = `
-      <option value="">
-        Memuat Marketing...
-      </option>
-    `;
-
-  }
-
-
-  if(dropdownAuthor){
-
-    dropdownAuthor.classList.add(
-      "loading"
-    );
-
-    dropdownAuthor.innerHTML = `
-      <option value="">
-        Memuat Marketing...
-      </option>
-    `;
-
-  }
-
-
-  /*
-    Jika Google Apps Script tersedia,
-    ambil dari Code.gs.
-  */
-
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
-
-    google.script.run
-
-      .withSuccessHandler(
-        function(data){
-
-          isiDropdownMarketing(
-            data
-          );
-
-        }
-      )
-
-      .withFailureHandler(
-        function(error){
-
-          console.error(
-            "Gagal mengambil Marketing:",
-            error
-          );
-
-
-          /*
-            FALLBACK
-          */
-
-          isiDropdownMarketing(
-            null
-          );
-
-        }
-      )
-
-      .ambilDaftarMarketing();
-
-
-    return;
-
-  }
-
-
-  /*
-    Jika tidak terhubung GAS,
-    gunakan fallback.
-  */
-
-  isiDropdownMarketing(null);
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN MARKETING
-================================================== */
-
-function isiDropdownMarketing(
-  data
-){
-
-  const dropdownOrder =
-    document.getElementById(
-      "marketing"
-    );
-
-  const dropdownAuthor =
-    document.getElementById(
-      "marketingAuthor"
-    );
-
-
-  /*
-    Bersihkan dropdown
-  */
-
-  if(dropdownOrder){
-
-    dropdownOrder.innerHTML = `
-      <option value="">
-        Pilih Marketing
-      </option>
-    `;
-
-  }
-
-
-  if(dropdownAuthor){
-
-    dropdownAuthor.innerHTML = `
-      <option value="">
-        Pilih Marketing
-      </option>
-    `;
-
-  }
-
-
-  /*
-    Data dari Code.gs
-  */
-
-  let daftarMarketing = [];
-
-
-  if(Array.isArray(data)){
-
-    daftarMarketing = data;
-
-  }
-
-
-  /*
-    FALLBACK
-    Jika backend belum menyediakan data.
-  */
-
-  if(daftarMarketing.length === 0){
-
-    daftarMarketing = [
-      "Marketing 1",
-      "Marketing 2",
-      "Marketing 3",
-      "Marketing 4"
-    ];
-
-  }
-
-
-  /*
-    Buat option
-  */
-
-  daftarMarketing.forEach(
-    function(item){
-
-      let value = "";
-      let text = "";
-
-
-      /*
-        Jika backend mengirim object:
-
-        {
-          nama: "Budi",
-          id: "..."
-        }
-
-        atau
-
-        {
-          namaMarketing: "Budi"
-        }
-      */
-
-      if(
-        typeof item === "object" &&
-        item !== null
-      ){
-
-        value =
-          item.namaMarketing ||
-          item.nama ||
-          item.name ||
-          item.value ||
-          item.id ||
-          "";
-
-
-        text =
-          item.namaMarketing ||
-          item.nama ||
-          item.name ||
-          item.label ||
-          item.value ||
-          item.id ||
-          "";
-
-      }
-      else{
-
-        value =
-          String(item);
-
-        text =
-          String(item);
-
-      }
-
-
-      if(!value){
-        return;
-      }
-
-
-      /*
-        Dropdown Order
-      */
-
-      if(dropdownOrder){
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-
-        option.value =
-          value;
-
-
-        option.textContent =
-          text;
-
-
-        dropdownOrder.appendChild(
-          option
-        );
-
-      }
-
-
-      /*
-        Dropdown Tambah Author
-      */
-
-      if(dropdownAuthor){
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-
-        option.value =
-          value;
-
-
-        option.textContent =
-          text;
-
-
-        dropdownAuthor.appendChild(
-          option
-        );
-
-      }
-
-    }
-  );
-
-
-  if(dropdownOrder){
-
-    dropdownOrder.classList.remove(
-      "loading"
-    );
-
-  }
-
-
-  if(dropdownAuthor){
-
-    dropdownAuthor.classList.remove(
-      "loading"
-    );
-
-  }
-
-}
 
 
 /* ==================================================
@@ -1684,118 +1274,28 @@ function ubahJenisInput(){
       .classList.add("active");
 
 
-    /*
-      Pastikan Marketing tersedia.
-    */
+    if(
+      typeof google !== "undefined" &&
+      google.script &&
+      google.script.run
+    ){
 
-    muatDropdownMarketing();
+      google.script.run
+        .withSuccessHandler(
+          isiDropdownOrder
+        )
+        .withFailureHandler(
+          function(error){
 
+            console.error(error);
 
-    /*
-      Ambil daftar ID Order.
-    */
+          }
+        )
+        .ambilDaftarOrder();
 
-    muatDropdownOrder();
-
-  }
-
-}
-
-
-/* ==================================================
-   LOAD DROPDOWN ID ORDER
-================================================== */
-
-function muatDropdownOrder(){
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  if(!select){
-    return;
-  }
-
-
-  select.innerHTML = `
-    <option value="">
-      Memuat ID Order...
-    </option>
-  `;
-
-
-  select.classList.add(
-    "loading"
-  );
-
-
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
-
-    google.script.run
-
-      .withSuccessHandler(
-        function(data){
-
-          isiDropdownOrder(
-            data
-          );
-
-        }
-      )
-
-      .withFailureHandler(
-        function(error){
-
-          console.error(
-            "Gagal mengambil daftar order:",
-            error
-          );
-
-
-          select.innerHTML = `
-            <option value="">
-              Gagal memuat ID Order
-            </option>
-          `;
-
-
-          select.classList.remove(
-            "loading"
-          );
-
-
-          alert(
-            "Gagal mengambil daftar ID Order: " +
-            (error.message || error)
-          );
-
-        }
-      )
-
-      .ambilDaftarOrder();
-
-
-    return;
+    }
 
   }
-
-
-  select.innerHTML = `
-    <option value="">
-      ID Order belum tersedia
-    </option>
-  `;
-
-
-  select.classList.remove(
-    "loading"
-  );
 
 }
 
@@ -1873,9 +1373,8 @@ function ubahKMT(){
 
       <br><br>
 
-      Setiap author dapat memilih
-      <strong>Semua Bab</strong> atau
-      <strong>Pilih Bab</strong>.
+      Atau masing-masing author dapat memilih
+      <strong>Semua Bab</strong>.
 
     `;
 
@@ -2303,7 +1802,7 @@ function refreshSemuaBabAuthorMT(){
 
 
 /* ==================================================
-   MODE BAB
+   MODE BAB MANDIRI
 ================================================== */
 
 function ubahModeBab(radio){
@@ -2314,18 +1813,19 @@ function ubahModeBab(radio){
     );
 
 
-  if(!card){
-    return;
-  }
-
-
   const mode =
     radio.value;
 
 
   const pilihanBab =
     card.querySelector(
-      ".bab-author-container > .bab-author-container"
+      ".bab-author-container"
+    );
+
+
+  const checkboxBox =
+    card.querySelector(
+      ".bab-author-container .bab-list"
     );
 
 
@@ -2337,12 +1837,8 @@ function ubahModeBab(radio){
 
   if(mode === "semua"){
 
-    if(pilihanBab){
-
-      pilihanBab.style.display =
-        "none";
-
-    }
+    checkboxBox.style.display =
+      "none";
 
 
     hiddenBab.value =
@@ -2364,12 +1860,8 @@ function ubahModeBab(radio){
 
   if(mode === "pilih"){
 
-    if(pilihanBab){
-
-      pilihanBab.style.display =
-        "block";
-
-    }
+    checkboxBox.style.display =
+      "grid";
 
 
     hiddenBab.value =
@@ -2381,7 +1873,7 @@ function ubahModeBab(radio){
 
 
 /* ==================================================
-   UPDATE BAB
+   UPDATE BAB AUTHOR M
 ================================================== */
 
 function updateBabAuthorMT(
@@ -2427,7 +1919,7 @@ function updateBabAuthorMT(
 
 
 /* ==================================================
-   HAPUS AUTHOR
+   HAPUS AUTHOR M
 ================================================== */
 
 function hapusAuthorMT(
@@ -2453,7 +1945,7 @@ function hapusAuthorMT(
 
 
 /* ==================================================
-   NOMOR AUTHOR
+   NOMOR AUTHOR M
 ================================================== */
 
 function perbaruiNomorAuthorMT(){
@@ -2483,7 +1975,7 @@ function perbaruiNomorAuthorMT(){
 
 
 /* ==================================================
-   DETAIL ORDER
+   DETAIL ORDER KOLABORASI
 ================================================== */
 
 function ambilDetailOrder(){
@@ -2494,15 +1986,11 @@ function ambilDetailOrder(){
     ).value;
 
 
-  const judul =
-    document.getElementById(
-      "judulBukuAuthor"
-    );
-
-
   if(!idOrder){
 
-    judul.value = "";
+    document.getElementById(
+      "judulBukuAuthor"
+    ).value = "";
 
 
     const container =
@@ -2539,22 +2027,17 @@ function ambilDetailOrder(){
   ){
 
     google.script.run
-
       .withSuccessHandler(
         function(data){
 
           if(!data){
-
-            alert(
-              "Detail order tidak ditemukan."
-            );
-
             return;
-
           }
 
 
-          judul.value =
+          document.getElementById(
+            "judulBukuAuthor"
+          ).value =
             data.judulBuku || "";
 
 
@@ -2564,18 +2047,16 @@ function ambilDetailOrder(){
 
         }
       )
-
       .withFailureHandler(
         function(error){
 
           alert(
             "Gagal mengambil detail order: " +
-            (error.message || error)
+            error.message
           );
 
         }
       )
-
       .ambilDetailOrder(idOrder);
 
   }
@@ -2686,49 +2167,17 @@ function isiDropdownOrder(
     );
 
 
-  if(!select){
-    return;
-  }
-
-
   select.innerHTML = `
+
     <option value="">
       Pilih ID Order
     </option>
+
   `;
 
 
   if(!Array.isArray(data)){
-
-    select.innerHTML = `
-      <option value="">
-        Tidak ada ID Order
-      </option>
-    `;
-
-    select.classList.remove(
-      "loading"
-    );
-
     return;
-
-  }
-
-
-  if(data.length === 0){
-
-    select.innerHTML = `
-      <option value="">
-        Belum ada Order Buku
-      </option>
-    `;
-
-    select.classList.remove(
-      "loading"
-    );
-
-    return;
-
   }
 
 
@@ -2742,38 +2191,17 @@ function isiDropdownOrder(
 
 
       if(
-        typeof item === "object" &&
-        item !== null
+        typeof item === "object"
       ){
 
-        const id =
-          item.idOrder ||
-          item.IDOrder ||
-          item.id ||
-          "";
-
-
-        const judul =
-          item.judulBuku ||
-          item.judul ||
-          "";
-
-
-        if(!id){
-          return;
-        }
-
-
         option.value =
-          id;
+          item.idOrder || "";
 
 
         option.textContent =
-          judul
-          ?
-          id + " — " + judul
-          :
-          id;
+          item.idOrder +
+          " — " +
+          (item.judulBuku || "");
 
       }
       else{
@@ -2792,11 +2220,6 @@ function isiDropdownOrder(
       );
 
     }
-  );
-
-
-  select.classList.remove(
-    "loading"
   );
 
 }
@@ -2897,12 +2320,12 @@ function simpanOrder(
     marketing:
       document.getElementById(
         "marketing"
-      ).value,
+      ).value.trim(),
 
     judulBuku:
       document.getElementById(
         "judulBuku"
-      ).value,
+      ).value.trim(),
 
     rincianBab:
       document.getElementById(
@@ -2962,7 +2385,7 @@ function simpanOrder(
 
           alert(
             "Gagal menyimpan order: " +
-            (error.message || error)
+            error.message
           );
 
         }
@@ -3098,7 +2521,7 @@ function simpanAuthor(
   const marketing =
     document.getElementById(
       "marketingAuthor"
-    ).value;
+    ).value.trim();
 
 
   const tanggal =
@@ -3205,7 +2628,7 @@ function simpanAuthor(
     google.script.run
 
       .withSuccessHandler(
-        function(){
+        function(result){
 
           alert(
             "Author kolaborasi berhasil disimpan."
@@ -3222,7 +2645,7 @@ function simpanAuthor(
 
           alert(
             "Gagal menyimpan author: " +
-            (error.message || error)
+            error.message
           );
 
         }
@@ -3248,8 +2671,6 @@ function simpanAuthor(
     data.idOrder +
     "\nJudul: " +
     data.judulBuku +
-    "\nMarketing: " +
-    data.marketingInput +
     "\nAuthor: " +
     data.author.nama +
     "\nJumlah Bab: " +
@@ -3260,7 +2681,7 @@ function simpanAuthor(
 
 
 /* ==================================================
-   RESET AUTHOR
+   RESET FORM AUTHOR
 ================================================== */
 
 function resetFormAuthor(){
@@ -3308,13 +2729,6 @@ function resetFormAuthor(){
   document.getElementById(
     "tanggalTambah"
   ).value = today;
-
-
-  /*
-    Marketing tetap dimuat kembali
-  */
-
-  muatDropdownMarketing();
 
 }
 
@@ -3379,58 +2793,7 @@ function salinIdOrder(){
         }
       );
 
-    return;
-
   }
-
-
-  /*
-    FALLBACK COPY
-  */
-
-  const textarea =
-    document.createElement(
-      "textarea"
-    );
-
-
-  textarea.value =
-    id;
-
-
-  document.body.appendChild(
-    textarea
-  );
-
-
-  textarea.select();
-
-
-  try{
-
-    document.execCommand(
-      "copy"
-    );
-
-
-    alert(
-      "ID Order berhasil disalin: " +
-      id
-    );
-
-  }
-  catch(error){
-
-    alert(
-      "ID Order: " + id
-    );
-
-  }
-
-
-  document.body.removeChild(
-    textarea
-  );
 
 }
 
