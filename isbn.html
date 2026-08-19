@@ -21,6 +21,10 @@ body{
   color:#183b56;
 }
 
+/* =====================================================
+   HEADER
+===================================================== */
+
 .header{
   background:linear-gradient(135deg,#183b56,#2f6f95);
   color:white;
@@ -30,11 +34,19 @@ body{
   align-items:center;
 }
 
+/* =====================================================
+   CONTAINER
+===================================================== */
+
 .container{
   max-width:850px;
   margin:40px auto;
   padding:0 20px;
 }
+
+/* =====================================================
+   BACK
+===================================================== */
 
 .back{
   background:#718096;
@@ -46,12 +58,24 @@ body{
   margin-bottom:20px;
 }
 
+.back:hover{
+  background:#4a5568;
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
 .form-card{
   background:white;
   padding:35px;
   border-radius:18px;
   box-shadow:0 8px 30px rgba(0,0,0,.08);
 }
+
+/* =====================================================
+   TITLE
+===================================================== */
 
 .form-title{
   margin-bottom:30px;
@@ -65,6 +89,10 @@ body{
   color:#718096;
   line-height:1.5;
 }
+
+/* =====================================================
+   FORM
+===================================================== */
 
 .form-group{
   margin-bottom:20px;
@@ -91,11 +119,22 @@ input:focus,
 select:focus{
   outline:none;
   border-color:#2f6f95;
+  box-shadow:0 0 0 3px rgba(47,111,149,.08);
 }
+
+/* =====================================================
+   READONLY
+===================================================== */
 
 .readonly{
   background:#f1f5f9;
+  color:#4a5568;
+  cursor:not-allowed;
 }
+
+/* =====================================================
+   SMALL
+===================================================== */
 
 small{
   display:block;
@@ -103,6 +142,10 @@ small{
   color:#718096;
   line-height:1.5;
 }
+
+/* =====================================================
+   INFO BOX
+===================================================== */
 
 .info-box{
   background:#f0f7fb;
@@ -113,6 +156,10 @@ small{
   font-size:14px;
   line-height:1.6;
 }
+
+/* =====================================================
+   BUTTON SAVE
+===================================================== */
 
 .btn-save{
   width:100%;
@@ -135,6 +182,10 @@ small{
   cursor:not-allowed;
 }
 
+/* =====================================================
+   LOADING
+===================================================== */
+
 .loading{
   display:none;
   text-align:center;
@@ -145,6 +196,10 @@ small{
 .loading.active{
   display:block;
 }
+
+/* =====================================================
+   STATUS ORDER
+===================================================== */
 
 .status-order{
   display:none;
@@ -158,6 +213,25 @@ small{
 
 .status-order.show{
   display:block;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:650px){
+
+  .header{
+    padding:20px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+  }
+
+  .form-card{
+    padding:25px 20px;
+  }
+
 }
 
 </style>
@@ -175,21 +249,29 @@ small{
 <body>
 
 
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header class="header">
 
-<div>
-ADMIN MANAGEMENT
-</div>
+  <div>
+    ADMIN MANAGEMENT
+  </div>
 
-<div>
-ISBN
-</div>
+  <div>
+    ISBN
+  </div>
 
 </header>
 
 
 <div class="container">
 
+
+<!-- =====================================================
+     BACK
+===================================================== -->
 
 <button
 type="button"
@@ -204,6 +286,10 @@ onclick="kembali()">
 <div class="form-card">
 
 
+<!-- =====================================================
+     TITLE
+===================================================== -->
+
 <div class="form-title">
 
 <h1>
@@ -217,15 +303,28 @@ Kelola data ISBN berdasarkan order buku.
 </div>
 
 
+<!-- =====================================================
+     INFO
+===================================================== -->
+
 <div class="info-box">
 
 <strong>Informasi:</strong><br>
 
-Pilih ID Order untuk menghubungkan data ISBN
-dengan buku yang sesuai.
+Masukkan <strong>ID Order Buku</strong> secara manual
+untuk menghubungkan data ISBN dengan buku yang sesuai.
+
+<br><br>
+
+Nama <strong>Tim Riset</strong> juga dapat diketik
+secara manual sesuai data yang diperlukan.
 
 </div>
 
+
+<!-- =====================================================
+     FORM
+===================================================== -->
 
 <form
 id="isbnForm"
@@ -242,21 +341,18 @@ onsubmit="simpanISBN(event)">
 ID Order Buku
 </label>
 
-
-<select
+<input
+type="text"
 id="idOrder"
+name="idOrder"
+placeholder="Contoh: ORD/BUK/0001"
+autocomplete="off"
 required
 onchange="ambilDetailOrder()">
 
-<option value="">
-⏳ Memuat ID Order...
-</option>
-
-</select>
-
-
 <small>
-Pilih ID Order dari order buku yang telah dibuat.
+Ketik ID Order Buku secara manual.
+Contoh: <strong>ORD/BUK/0001</strong>
 </small>
 
 
@@ -281,9 +377,15 @@ Judul Buku
 <input
 type="text"
 id="judulBuku"
+name="judulBuku"
 class="readonly"
 placeholder="Otomatis berdasarkan ID Order"
 readonly>
+
+<small>
+Judul Buku akan diambil otomatis berdasarkan
+ID Order jika ID Order ditemukan.
+</small>
 
 </div>
 
@@ -298,31 +400,18 @@ readonly>
 Nama Tim Riset
 </label>
 
-<select
+<input
+type="text"
 id="timRiset"
+name="timRiset"
+placeholder="Ketik nama tim riset"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih Tim Riset
-</option>
-
-<option value="Tim Riset 1">
-Tim Riset 1
-</option>
-
-<option value="Tim Riset 2">
-Tim Riset 2
-</option>
-
-<option value="Tim Riset 3">
-Tim Riset 3
-</option>
-
-<option value="Tim Riset 4">
-Tim Riset 4
-</option>
-
-</select>
+<small>
+Masukkan nama Tim Riset secara manual.
+Contoh: Tim Riset 1, Tim Riset Buku, atau nama tim lainnya.
+</small>
 
 </div>
 
@@ -340,8 +429,14 @@ Nomor ISBN
 <input
 type="text"
 id="nomorISBN"
+name="nomorISBN"
 placeholder="Masukkan nomor ISBN"
+autocomplete="off"
 required>
+
+<small>
+Masukkan nomor ISBN yang telah diterbitkan.
+</small>
 
 </div>
 
@@ -359,7 +454,9 @@ Arsip
 <input
 type="url"
 id="arsip"
+name="arsip"
 placeholder="Masukkan link Google Drive"
+autocomplete="off"
 required>
 
 <small>
@@ -404,358 +501,36 @@ class="loading">
 
 
 /* =========================================================
-   SAAT HALAMAN DIBUKA
+   INIT
 ========================================================= */
 
 document.addEventListener(
-"DOMContentLoaded",
-function(){
+  "DOMContentLoaded",
+  function(){
 
-  console.log(
-    "ISBN: halaman berhasil dimuat."
-  );
-
-  /*
-   * LANGSUNG LOAD ID ORDER BUKU
-   */
-  muatDaftarOrder();
-
-});
-
-
-/* =========================================================
-   LOAD DAFTAR ID ORDER BUKU
-========================================================= */
-
-function muatDaftarOrder(){
-
-  const select =
-    document.getElementById(
-      "idOrder"
+    console.log(
+      "ISBN: halaman berhasil dimuat."
     );
 
-  const status =
-    document.getElementById(
-      "statusOrder"
-    );
+    /*
+     * Tidak lagi memuat daftar ID Order.
+     *
+     * ID Order sekarang diketik manual.
+     */
 
-
-  /*
-   * Reset dropdown
-   */
-
-  select.innerHTML =
-    '<option value="">⏳ Mengambil ID Order Buku...</option>';
-
-
-  status.textContent =
-    "";
-
-  status.classList.remove(
-    "show"
-  );
-
-
-  console.log(
-    "ISBN: memanggil ambilDaftarOrderBuku()"
-  );
-
-
-  /*
-   * =====================================================
-   * PANGGIL API
-   *
-   * Code.gs:
-   *
-   * case 'ambilDaftarOrderBuku':
-   *   return getOrderList(
-   *      CONFIG.DB.BUKU,
-   *      CONFIG.SHEET.BUKU_ORDER
-   *   );
-   * =====================================================
-   */
-
-  google.script.run
-
-  .withSuccessHandler(
-    function(result){
-
-      console.log(
-        "ISBN: hasil ambilDaftarOrderBuku:",
-        result
+    const idOrder =
+      document.getElementById(
+        "idOrder"
       );
 
+    if(idOrder){
 
-      /*
-       * Bersihkan dropdown
-       */
-
-      select.innerHTML =
-        '<option value="">Pilih ID Order</option>';
-
-
-      /*
-       * getOrderList() mengembalikan
-       * ARRAY secara langsung.
-       */
-
-      if(!Array.isArray(result)){
-
-        console.error(
-          "ISBN: response bukan array:",
-          result
-        );
-
-
-        select.innerHTML =
-          '<option value="">Data Order tidak valid</option>';
-
-
-        status.textContent =
-          "Response API tidak berupa daftar order.";
-
-
-        status.classList.add(
-          "show"
-        );
-
-
-        return;
-
-      }
-
-
-      /*
-       * Tidak ada data
-       */
-
-      if(result.length === 0){
-
-        select.innerHTML =
-          '<option value="">Tidak ada ID Order</option>';
-
-
-        status.textContent =
-          "Tidak ditemukan order buku.";
-
-
-        status.classList.add(
-          "show"
-        );
-
-
-        console.warn(
-          "ISBN: ORDER BUKU kosong."
-        );
-
-
-        return;
-
-      }
-
-
-      let jumlah =
-        0;
-
-
-      /*
-       * Masukkan order satu per satu
-       */
-
-      result.forEach(
-        function(order){
-
-          if(!order){
-            return;
-          }
-
-
-          /*
-           * Code.gs mengharapkan:
-           *
-           * idOrder
-           */
-
-          const idOrder =
-            String(
-              order.idOrder || ""
-            ).trim();
-
-
-          /*
-           * Kalau tidak ada idOrder
-           * jangan dimasukkan.
-           */
-
-          if(!idOrder){
-
-            console.warn(
-              "Order tanpa idOrder:",
-              order
-            );
-
-            return;
-
-          }
-
-
-          const option =
-            document.createElement(
-              "option"
-            );
-
-
-          /*
-           * VALUE = ID ORDER
-           */
-
-          option.value =
-            idOrder;
-
-
-          /*
-           * Ambil judul
-           */
-
-          const judul =
-            order.judulBuku ||
-            order.judul ||
-            "";
-
-
-          /*
-           * Yang terlihat:
-           *
-           * ORD/BUK/0001 - Judul Buku
-           */
-
-          if(judul){
-
-            option.textContent =
-              idOrder +
-              " - " +
-              judul;
-
-          }
-
-          else{
-
-            option.textContent =
-              idOrder;
-
-          }
-
-
-          /*
-           * Tambahkan ke dropdown
-           */
-
-          select.appendChild(
-            option
-          );
-
-
-          jumlah++;
-
-        }
-      );
-
-
-      /*
-       * Status
-       */
-
-      if(jumlah > 0){
-
-        status.textContent =
-          jumlah +
-          " ID Order berhasil dimuat.";
-
-
-        status.classList.add(
-          "show"
-        );
-
-
-        console.log(
-          "ISBN:",
-          jumlah,
-          "ID Order berhasil dimuat."
-        );
-
-      }
-
-      else{
-
-        select.innerHTML =
-          '<option value="">Tidak ada ID Order valid</option>';
-
-
-        status.textContent =
-          "Order ditemukan tetapi kolom idOrder tidak terbaca.";
-
-
-        status.classList.add(
-          "show"
-        );
-
-
-        console.warn(
-          "ISBN: semua order tidak memiliki property idOrder."
-        );
-
-      }
+      idOrder.focus();
 
     }
-  )
 
-
-  .withFailureHandler(
-    function(error){
-
-      console.error(
-        "ISBN: error ambilDaftarOrderBuku:",
-        error
-      );
-
-
-      select.innerHTML =
-        '<option value="">Gagal mengambil ID Order</option>';
-
-
-      status.textContent =
-        "Gagal mengambil data order.";
-
-
-      status.classList.add(
-        "show"
-      );
-
-
-      alert(
-        "Gagal mengambil ID Order Buku.\n\n" +
-        (
-          error &&
-          error.message
-            ? error.message
-            : String(error)
-        )
-      );
-
-    }
-  )
-
-
-  /*
-   * METHOD KHUSUS BUKU
-   *
-   * JANGAN diganti menjadi
-   * ambilDaftarOrder()
-   */
-
-  .ambilDaftarOrderBuku();
-
-}
+  }
+);
 
 
 /* =========================================================
@@ -778,16 +553,30 @@ function ambilDetailOrder(){
     );
 
 
+  const status =
+    document.getElementById(
+      "statusOrder"
+    );
+
+
   /*
-   * Kosongkan judul
+   * Kosongkan judul terlebih dahulu
    */
 
   judul.value =
     "";
 
 
+  status.textContent =
+    "";
+
+  status.classList.remove(
+    "show"
+  );
+
+
   /*
-   * Kalau belum memilih order
+   * Kalau ID Order kosong
    */
 
   if(!idOrder){
@@ -795,6 +584,18 @@ function ambilDetailOrder(){
     return;
 
   }
+
+
+  /*
+   * Tampilkan status
+   */
+
+  status.textContent =
+    "⏳ Mencari ID Order Buku...";
+
+  status.classList.add(
+    "show"
+  );
 
 
   console.log(
@@ -807,7 +608,32 @@ function ambilDetailOrder(){
    * =====================================================
    * PANGGIL DETAIL ORDER BUKU
    * =====================================================
+   *
+   * Code.gs:
+   *
+   * ambilDetailOrderBuku(idOrder)
+   *
    */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    console.warn(
+      "Google Apps Script tidak tersedia."
+    );
+
+
+    status.textContent =
+      "Mode preview: detail order tidak dapat diambil.";
+
+
+    return;
+
+  }
+
 
   google.script.run
 
@@ -820,12 +646,30 @@ function ambilDetailOrder(){
       );
 
 
+      /*
+       * Jika tidak ditemukan
+       */
+
       if(!data){
 
+        judul.value =
+          "";
+
+
+        status.textContent =
+          "❌ ID Order tidak ditemukan.";
+
+
+        status.classList.add(
+          "show"
+        );
+
+
         alert(
-          "ID Order tidak ditemukan:\n\n" +
+          "ID Order Buku tidak ditemukan:\n\n" +
           idOrder
         );
+
 
         return;
 
@@ -833,26 +677,41 @@ function ambilDetailOrder(){
 
 
       /*
-       * Isi judul
+       * Ambil judul buku
        */
 
-      judul.value =
+      const judulData =
         data.judulBuku ||
         data.judul ||
         "";
 
 
+      judul.value =
+        judulData;
+
+
       /*
-       * Kalau judul kosong
+       * Status berhasil
        */
 
-      if(!judul.value){
+      if(judulData){
 
-        console.warn(
-          "Order ditemukan tetapi judul buku kosong."
-        );
+        status.textContent =
+          "✅ ID Order ditemukan. Judul Buku berhasil diambil.";
 
       }
+
+      else{
+
+        status.textContent =
+          "⚠️ ID Order ditemukan, tetapi Judul Buku kosong.";
+
+      }
+
+
+      status.classList.add(
+        "show"
+      );
 
     }
   )
@@ -864,6 +723,19 @@ function ambilDetailOrder(){
       console.error(
         "ISBN: error detail order:",
         error
+      );
+
+
+      judul.value =
+        "";
+
+
+      status.textContent =
+        "❌ Gagal mengambil detail order.";
+
+
+      status.classList.add(
+        "show"
       );
 
 
@@ -896,9 +768,30 @@ function ambilDetailOrder(){
    SIMPAN ISBN
 ========================================================= */
 
-function simpanISBN(event){
+function simpanISBN(
+  event
+){
 
   event.preventDefault();
+
+
+  const form =
+    document.getElementById(
+      "isbnForm"
+    );
+
+
+  /*
+   * VALIDASI HTML
+   */
+
+  if(!form.checkValidity()){
+
+    form.reportValidity();
+
+    return;
+
+  }
 
 
   const btn =
@@ -914,7 +807,9 @@ function simpanISBN(event){
 
 
   /*
-   * Ambil data form
+   * =====================================================
+   * AMBIL DATA FORM
+   * =====================================================
    */
 
   const data = {
@@ -926,25 +821,37 @@ function simpanISBN(event){
         ).value || ""
       ).trim(),
 
+
     judulBuku:
-      document.getElementById(
-        "judulBuku"
-      ).value,
+      String(
+        document.getElementById(
+          "judulBuku"
+        ).value || ""
+      ).trim(),
+
 
     timRiset:
-      document.getElementById(
-        "timRiset"
-      ).value,
+      String(
+        document.getElementById(
+          "timRiset"
+        ).value || ""
+      ).trim(),
+
 
     nomorISBN:
-      document.getElementById(
-        "nomorISBN"
-      ).value,
+      String(
+        document.getElementById(
+          "nomorISBN"
+        ).value || ""
+      ).trim(),
+
 
     arsip:
-      document.getElementById(
-        "arsip"
-      ).value
+      String(
+        document.getElementById(
+          "arsip"
+        ).value || ""
+      ).trim()
 
   };
 
@@ -955,95 +862,206 @@ function simpanISBN(event){
   );
 
 
-  /*
-   * VALIDASI ID ORDER
-   */
+  /* =====================================================
+     VALIDASI ID ORDER
+  ===================================================== */
 
   if(!data.idOrder){
 
     alert(
-      "Silakan pilih ID Order Buku terlebih dahulu."
+      "ID Order Buku wajib diisi."
     );
+
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
+
 
     return;
 
   }
 
 
-  /*
-   * VALIDASI TIM RISET
-   */
+  /* =====================================================
+     VALIDASI TIM RISET
+  ===================================================== */
 
   if(!data.timRiset){
 
     alert(
-      "Silakan pilih Tim Riset."
+      "Nama Tim Riset wajib diisi."
     );
+
+
+    document.getElementById(
+      "timRiset"
+    ).focus();
+
 
     return;
 
   }
 
 
-  /*
-   * VALIDASI ISBN
-   */
+  /* =====================================================
+     VALIDASI ISBN
+  ===================================================== */
 
   if(!data.nomorISBN){
 
     alert(
-      "Silakan masukkan Nomor ISBN."
+      "Nomor ISBN wajib diisi."
     );
+
+
+    document.getElementById(
+      "nomorISBN"
+    ).focus();
+
 
     return;
 
   }
 
 
-  /*
-   * VALIDASI ARSIP
-   */
+  /* =====================================================
+     VALIDASI ARSIP
+  ===================================================== */
 
   if(!data.arsip){
 
     alert(
-      "Silakan masukkan link Arsip."
+      "Link Arsip wajib diisi."
     );
+
+
+    document.getElementById(
+      "arsip"
+    ).focus();
+
 
     return;
 
   }
 
 
-  /*
-   * LOADING
-   */
+  /* =====================================================
+     VALIDASI URL ARSIP
+  ===================================================== */
+
+  try{
+
+    new URL(
+      data.arsip
+    );
+
+  }
+
+  catch(error){
+
+    alert(
+      "Link Arsip tidak valid.\n\n" +
+      "Masukkan link Google Drive yang benar."
+    );
+
+
+    document.getElementById(
+      "arsip"
+    ).focus();
+
+
+    return;
+
+  }
+
+
+  /* =====================================================
+     LOADING
+  ===================================================== */
 
   btn.disabled =
     true;
 
+
   btn.textContent =
     "MENYIMPAN...";
+
 
   loading.classList.add(
     "active"
   );
 
 
+  /* =====================================================
+     KIRIM KE CODE.GS
+  ===================================================== */
+
+  if(
+    typeof google === "undefined" ||
+    !google.script ||
+    !google.script.run
+  ){
+
+    console.log(
+      "ISBN: mode preview.",
+      data
+    );
+
+
+    setTimeout(
+      function(){
+
+        btn.disabled =
+          false;
+
+
+        btn.textContent =
+          "SIMPAN ISBN";
+
+
+        loading.classList.remove(
+          "active"
+        );
+
+
+        alert(
+          "Mode preview.\n\n" +
+
+          "ID Order: " +
+          data.idOrder +
+
+          "\nJudul Buku: " +
+          data.judulBuku +
+
+          "\nTim Riset: " +
+          data.timRiset +
+
+          "\nNomor ISBN: " +
+          data.nomorISBN +
+
+          "\nArsip: " +
+          data.arsip
+        );
+
+      },
+      500
+    );
+
+
+    return;
+
+  }
+
+
   /*
    * =====================================================
-   * SIMPAN KE CODE.GS
+   * GOOGLE APPS SCRIPT
    * =====================================================
    *
-   * Code.gs:
+   * Tetap menggunakan:
    *
-   * case 'simpanISBN':
-   *   return save(
-   *      CONFIG.DB.BUKU,
-   *      CONFIG.SHEET.BUKU_ISBN,
-   *      args[0],
-   *      'ISBN/'
-   *   );
+   * simpanISBN(data)
    *
    */
 
@@ -1065,8 +1083,10 @@ function simpanISBN(event){
       btn.disabled =
         false;
 
+
       btn.textContent =
         "SIMPAN ISBN";
+
 
       loading.classList.remove(
         "active"
@@ -1074,7 +1094,9 @@ function simpanISBN(event){
 
 
       /*
+       * =================================================
        * BERHASIL
+       * =================================================
        */
 
       if(
@@ -1091,6 +1113,9 @@ function simpanISBN(event){
           "\nJudul Buku: " +
           data.judulBuku +
 
+          "\nTim Riset: " +
+          data.timRiset +
+
           "\nNomor ISBN: " +
           data.nomorISBN
         );
@@ -1100,13 +1125,11 @@ function simpanISBN(event){
          * Reset form
          */
 
-        document.getElementById(
-          "isbnForm"
-        ).reset();
+        form.reset();
 
 
         /*
-         * Judul dikosongkan
+         * Judul readonly dikosongkan
          */
 
         document.getElementById(
@@ -1116,10 +1139,31 @@ function simpanISBN(event){
 
 
         /*
-         * Muat ulang daftar order
+         * Status dikosongkan
          */
 
-        muatDaftarOrder();
+        const status =
+          document.getElementById(
+            "statusOrder"
+          );
+
+
+        status.textContent =
+          "";
+
+
+        status.classList.remove(
+          "show"
+        );
+
+
+        /*
+         * Fokus kembali ke ID Order
+         */
+
+        document.getElementById(
+          "idOrder"
+        ).focus();
 
       }
 
@@ -1151,11 +1195,17 @@ function simpanISBN(event){
       );
 
 
+      /*
+       * Kembalikan tombol
+       */
+
       btn.disabled =
         false;
 
+
       btn.textContent =
         "SIMPAN ISBN";
+
 
       loading.classList.remove(
         "active"
@@ -1164,6 +1214,7 @@ function simpanISBN(event){
 
       alert(
         "Gagal menyimpan ISBN.\n\n" +
+
         (
           error &&
           error.message
@@ -1177,7 +1228,7 @@ function simpanISBN(event){
 
 
   /*
-   * METHOD YANG ADA DI CODE.GS UTAMA
+   * METHOD CODE.GS
    */
 
   .simpanISBN(
@@ -1200,5 +1251,7 @@ function kembali(){
 
 </script>
 
+
 </body>
+
 </html>
