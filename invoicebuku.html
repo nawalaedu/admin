@@ -89,20 +89,17 @@ select{
   border-radius:9px;
   font-size:14px;
   font-family:Arial,sans-serif;
-  background:white;
 }
 
 input:focus,
 select:focus{
   outline:none;
   border-color:#2f6f95;
-  box-shadow:0 0 0 2px rgba(47,111,149,.08);
 }
 
 .readonly{
   background:#f1f5f9;
   color:#4a5568;
-  cursor:not-allowed;
 }
 
 small{
@@ -121,11 +118,6 @@ small{
   font-size:14px;
   line-height:1.6;
 }
-
-
-/* ==================================================
-   BUTTON SAVE
-================================================== */
 
 .btn-save{
   width:100%;
@@ -149,9 +141,9 @@ small{
 }
 
 
-/* ==================================================
+/* =========================
    POPUP
-================================================== */
+========================= */
 
 .popup-overlay{
   display:none;
@@ -240,9 +232,9 @@ small{
 }
 
 
-/* ==================================================
+/* =========================
    LOADING
-================================================== */
+========================= */
 
 .loading{
   display:none;
@@ -256,9 +248,9 @@ small{
 }
 
 
-/* ==================================================
+/* =========================
    RESPONSIVE
-================================================== */
+========================= */
 
 @media(max-width:650px){
 
@@ -331,7 +323,7 @@ small{
 
   <p>
     Catat invoice dan pembayaran berdasarkan
-    order serta author buku.
+    order buku serta author buku.
   </p>
 
 </div>
@@ -351,10 +343,10 @@ small{
 
   <br><br>
 
-  ID Order Buku dipilih melalui dropdown.
-  Setelah ID Order dipilih, daftar ID Author
-  akan otomatis menampilkan author yang terhubung
-  dengan order tersebut.
+  ID Order Buku dan ID Author dipilih dari dropdown.
+  Setelah ID Order Buku dipilih, daftar ID Author
+  akan otomatis menyesuaikan dengan author pada
+  order tersebut.
 
 </div>
 
@@ -411,7 +403,7 @@ small{
 
   <small>
     Judul buku diambil otomatis berdasarkan
-    ID Order Buku yang dipilih.
+    ID Order Buku.
   </small>
 
 </div>
@@ -439,8 +431,8 @@ small{
   </select>
 
   <small>
-    ID Author ditampilkan berdasarkan
-    ID Order Buku yang dipilih.
+    ID Author ditampilkan berdasarkan ID Order Buku
+    yang dipilih.
   </small>
 
 </div>
@@ -464,8 +456,8 @@ small{
     readonly>
 
   <small>
-    Nama Author akan terisi otomatis
-    berdasarkan ID Author.
+    Nama Author diambil otomatis berdasarkan
+    ID Author yang dipilih.
   </small>
 
 </div>
@@ -489,8 +481,7 @@ small{
     readonly>
 
   <small>
-    Bab akan terisi otomatis berdasarkan
-    ID Author yang dipilih.
+    Bab diambil otomatis berdasarkan ID Author.
   </small>
 
 </div>
@@ -514,8 +505,7 @@ small{
     required>
 
   <small>
-    Ketik nama marketing yang melakukan
-    input invoice.
+    Ketik nama marketing yang melakukan input invoice.
   </small>
 
 </div>
@@ -557,7 +547,7 @@ small{
     required>
 
   <small>
-    Masukkan harga yang harus dibayarkan
+    Masukkan total harga yang harus dibayarkan
     kepada author.
   </small>
 
@@ -717,7 +707,7 @@ document.addEventListener(
   function(){
 
     /*
-     * Tanggal otomatis hari ini.
+     * Tanggal hari ini
      */
 
     const today =
@@ -728,15 +718,14 @@ document.addEventListener(
 
     document.getElementById(
       "tanggal"
-    ).value =
-      today;
+    ).value = today;
 
 
     /*
-     * Ambil seluruh daftar ID Order Buku.
+     * Ambil seluruh ID Order Buku.
      */
 
-    ambilDaftarOrderBuku();
+    ambilDaftarOrder();
 
   }
 );
@@ -746,7 +735,7 @@ document.addEventListener(
    AMBIL DAFTAR ORDER BUKU
 ================================================== */
 
-function ambilDaftarOrderBuku(){
+function ambilDaftarOrder(){
 
   const select =
     document.getElementById(
@@ -755,15 +744,11 @@ function ambilDaftarOrderBuku(){
 
 
   select.innerHTML =
-    `
-    <option value="">
-      Memuat ID Order Buku...
-    </option>
-    `;
+    '<option value="">Memuat ID Order Buku...</option>';
 
 
   /*
-   * Pastikan Google Apps Script tersedia.
+   * Cek Google Apps Script
    */
 
   if(
@@ -778,20 +763,12 @@ function ambilDaftarOrderBuku(){
 
 
     select.innerHTML =
-      `
-      <option value="">
-        Google Apps Script tidak tersedia
-      </option>
-      `;
+      '<option value="">Google Apps Script tidak tersedia</option>';
 
     return;
 
   }
 
-
-  /*
-   * Ambil daftar order.
-   */
 
   google.script.run
 
@@ -805,26 +782,11 @@ function ambilDaftarOrderBuku(){
 
 
         select.innerHTML =
-          `
-          <option value="">
-            Pilih ID Order Buku
-          </option>
-          `;
+          '<option value="">Pilih ID Order Buku</option>';
 
 
         /*
-         * Backend bisa mengembalikan:
-         *
-         * [
-         *   {...},
-         *   {...}
-         * ]
-         *
-         * atau:
-         *
-         * {
-         *   data:[...]
-         * }
+         * Antisipasi beberapa format response.
          */
 
         let orders =
@@ -843,51 +805,31 @@ function ambilDaftarOrderBuku(){
         }
 
 
-        /*
-         * Jika data tidak berupa array.
-         */
-
         if(!Array.isArray(orders)){
 
           console.error(
-            "Format daftar Order Buku tidak valid:",
+            "Format daftar order buku tidak valid:",
             result
           );
 
 
           select.innerHTML =
-            `
-            <option value="">
-              Data ID Order tidak valid
-            </option>
-            `;
+            '<option value="">Data ID Order tidak valid</option>';
 
           return;
 
         }
 
-
-        /*
-         * Tidak ada order.
-         */
 
         if(orders.length === 0){
 
           select.innerHTML =
-            `
-            <option value="">
-              Belum ada ID Order Buku
-            </option>
-            `;
+            '<option value="">Belum ada ID Order Buku</option>';
 
           return;
 
         }
 
-
-        /*
-         * Masukkan order ke dropdown.
-         */
 
         orders.forEach(
           function(item){
@@ -900,8 +842,9 @@ function ambilDaftarOrderBuku(){
 
 
             /*
-             * Ambil ID Order dari beberapa
-             * kemungkinan nama field.
+             * ==================================
+             * ID ORDER
+             * ==================================
              */
 
             const idOrder =
@@ -914,7 +857,9 @@ function ambilDaftarOrderBuku(){
 
 
             /*
-             * Ambil judul buku.
+             * ==================================
+             * JUDUL BUKU
+             * ==================================
              */
 
             const judulBuku =
@@ -924,11 +869,6 @@ function ambilDaftarOrderBuku(){
               item["Judul Buku"] ||
               "";
 
-
-            /*
-             * Kalau ID Order kosong,
-             * jangan dimasukkan.
-             */
 
             if(!idOrder){
 
@@ -957,11 +897,10 @@ function ambilDaftarOrderBuku(){
 
 
             /*
-             * Simpan judul di option.
-             * Ini hanya sebagai data cadangan.
+             * Simpan judul sementara.
              */
 
-            option.dataset.judul =
+            option.dataset.judulBuku =
               judulBuku;
 
 
@@ -974,18 +913,15 @@ function ambilDaftarOrderBuku(){
 
 
         /*
-         * Tidak ada ID Order yang berhasil
-         * dimasukkan.
+         * Jika tidak ada data yang berhasil
          */
 
-        if(select.options.length === 1){
+        if(
+          select.options.length === 1
+        ){
 
           select.innerHTML =
-            `
-            <option value="">
-              ID Order Buku tidak ditemukan
-            </option>
-            `;
+            '<option value="">ID Order Buku tidak ditemukan</option>';
 
         }
 
@@ -1002,15 +938,11 @@ function ambilDaftarOrderBuku(){
 
 
         select.innerHTML =
-          `
-          <option value="">
-            Gagal memuat ID Order Buku
-          </option>
-          `;
+          '<option value="">Gagal memuat ID Order Buku</option>';
 
 
         alert(
-          "Gagal mengambil daftar ID Order Buku:\n" +
+          "Gagal mengambil ID Order Buku:\n" +
           (
             error &&
             error.message
@@ -1022,15 +954,17 @@ function ambilDaftarOrderBuku(){
       }
     )
 
+
     /*
-     * Fungsi backend untuk mengambil
-     * seluruh Order Buku.
+     * ==================================================
+     * FUNGSI BACKEND
+     * ==================================================
      *
-     * Jika backend Invoice Buku Anda sudah
-     * memakai fungsi ini, langsung berjalan.
+     * Jika di Code.gs nama fungsi Anda berbeda,
+     * ubah hanya nama fungsi ini.
      */
 
-    .ambilDaftarOrderBuku();
+    .ambilDaftarOrder();
 
 }
 
@@ -1047,13 +981,13 @@ function ambilDetailOrder(){
     ).value;
 
 
-  const judul =
+  const judulBuku =
     document.getElementById(
       "judulBuku"
     );
 
 
-  const author =
+  const idAuthor =
     document.getElementById(
       "idAuthor"
     );
@@ -1072,27 +1006,19 @@ function ambilDetailOrder(){
 
 
   /*
-   * Reset data turunan.
+   * Reset field turunan.
    */
 
-  judul.value = "";
+  judulBuku.value = "";
 
   namaAuthor.value = "";
 
   bab.value = "";
 
 
-  author.innerHTML =
-    `
-    <option value="">
-      Pilih ID Author
-    </option>
-    `;
+  idAuthor.innerHTML =
+    '<option value="">Pilih ID Author</option>';
 
-
-  /*
-   * Jika ID Order belum dipilih.
-   */
 
   if(!idOrder){
 
@@ -1102,7 +1028,32 @@ function ambilDetailOrder(){
 
 
   /*
-   * Pastikan Google Apps Script tersedia.
+   * Ambil judul sementara dari option.
+   */
+
+  const selectOrder =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  const selectedOption =
+    selectOrder.options[
+      selectOrder.selectedIndex
+    ];
+
+
+  if(selectedOption){
+
+    judulBuku.value =
+      selectedOption.dataset.judulBuku ||
+      "";
+
+  }
+
+
+  /*
+   * Cek Google Apps Script.
    */
 
   if(
@@ -1120,17 +1071,11 @@ function ambilDetailOrder(){
   }
 
 
-  /*
-   * Tampilkan loading.
-   */
+  console.log(
+    "AMBIL DETAIL ORDER BUKU:",
+    idOrder
+  );
 
-  judul.value =
-    "Memuat...";
-
-
-  /*
-   * Ambil detail Order Buku.
-   */
 
   google.script.run
 
@@ -1145,8 +1090,6 @@ function ambilDetailOrder(){
 
         if(!result){
 
-          judul.value = "";
-
           alert(
             "Data Order Buku tidak ditemukan."
           );
@@ -1160,8 +1103,6 @@ function ambilDetailOrder(){
           result.success === false
         ){
 
-          judul.value = "";
-
           alert(
             result.message ||
             "Gagal mengambil detail Order Buku."
@@ -1173,26 +1114,24 @@ function ambilDetailOrder(){
 
 
         /*
-         * ======================================
+         * ========================================
          * JUDUL BUKU
-         * ======================================
+         * ========================================
          */
 
-        judul.value =
+        judulBuku.value =
           result.judulBuku ||
           result.judul ||
           result.namaBuku ||
           result["Judul Buku"] ||
+          judulBuku.value ||
           "";
 
 
         /*
-         * ======================================
+         * ========================================
          * DAFTAR AUTHOR
-         * ======================================
-         *
-         * Author harus berasal dari
-         * ID Order Buku yang dipilih.
+         * ========================================
          */
 
         let authors =
@@ -1205,8 +1144,13 @@ function ambilDetailOrder(){
 
 
         /*
-         * Jika backend membungkus data
-         * dalam result.data.
+         * Antisipasi response:
+         *
+         * {
+         *   data:{
+         *      authors:[...]
+         *   }
+         * }
          */
 
         if(
@@ -1214,19 +1158,36 @@ function ambilDetailOrder(){
           typeof result.data === "object"
         ){
 
-          const nested =
-            result.data;
-
-
-          if(!Array.isArray(authors)){
+          if(
+            Array.isArray(
+              result.data.authors
+            )
+          ){
 
             authors =
-              nested.author ||
-              nested.authors ||
-              nested.penulis ||
-              nested.authorList ||
-              nested.authorsList ||
-              [];
+              result.data.authors;
+
+          }
+
+          else if(
+            Array.isArray(
+              result.data.author
+            )
+          ){
+
+            authors =
+              result.data.author;
+
+          }
+
+          else if(
+            Array.isArray(
+              result.data.penulis
+            )
+          ){
+
+            authors =
+              result.data.penulis;
 
           }
 
@@ -1250,12 +1211,8 @@ function ambilDetailOrder(){
 
         if(authors.length === 0){
 
-          author.innerHTML =
-            `
-            <option value="">
-              Belum ada ID Author
-            </option>
-            `;
+          idAuthor.innerHTML =
+            '<option value="">Belum ada ID Author</option>';
 
           return;
 
@@ -1266,16 +1223,12 @@ function ambilDetailOrder(){
          * Reset dropdown.
          */
 
-        author.innerHTML =
-          `
-          <option value="">
-            Pilih ID Author
-          </option>
-          `;
+        idAuthor.innerHTML =
+          '<option value="">Pilih ID Author</option>';
 
 
         /*
-         * Masukkan semua Author.
+         * Masukkan author.
          */
 
         authors.forEach(
@@ -1294,13 +1247,13 @@ function ambilDetailOrder(){
              * ==================================
              */
 
-            const idAuthor =
+            const authorId =
               item.idAuthor ||
               item.authorId ||
-              item.id ||
+              item.id_author ||
               item.ID_Author ||
-              item.IDAuthor ||
               item["ID Author"] ||
+              item.id ||
               "";
 
 
@@ -1313,8 +1266,8 @@ function ambilDetailOrder(){
             const nama =
               item.namaAuthor ||
               item.nama ||
-              item.authorNama ||
               item.nama_author ||
+              item.authorNama ||
               item["Nama Author"] ||
               "";
 
@@ -1325,7 +1278,7 @@ function ambilDetailOrder(){
              * ==================================
              */
 
-            const dataBab =
+            const namaBab =
               item.bab ||
               item.Bab ||
               item.namaBab ||
@@ -1333,12 +1286,7 @@ function ambilDetailOrder(){
               "";
 
 
-            /*
-             * Kalau ID Author tidak ada,
-             * jangan masukkan.
-             */
-
-            if(!idAuthor){
+            if(!authorId){
 
               return;
 
@@ -1356,15 +1304,15 @@ function ambilDetailOrder(){
              */
 
             option.value =
-              idAuthor;
+              authorId;
 
 
             /*
-             * Tampilkan ID Author + Nama.
+             * Tampilan dropdown
              */
 
             option.textContent =
-              idAuthor +
+              authorId +
               (
                 nama
                   ? " — " + nama
@@ -1373,18 +1321,18 @@ function ambilDetailOrder(){
 
 
             /*
-             * Simpan data tambahan.
+             * Simpan data sementara.
              */
 
-            option.dataset.nama =
+            option.dataset.namaAuthor =
               nama;
 
 
             option.dataset.bab =
-              dataBab;
+              namaBab;
 
 
-            author.appendChild(
+            idAuthor.appendChild(
               option
             );
 
@@ -1393,18 +1341,15 @@ function ambilDetailOrder(){
 
 
         /*
-         * Kalau tidak ada ID Author
-         * yang berhasil masuk.
+         * Jika tidak ada author yang valid.
          */
 
-        if(author.options.length === 1){
+        if(
+          idAuthor.options.length === 1
+        ){
 
-          author.innerHTML =
-            `
-            <option value="">
-              ID Author tidak ditemukan
-            </option>
-            `;
+          idAuthor.innerHTML =
+            '<option value="">ID Author tidak ditemukan</option>';
 
         }
 
@@ -1413,8 +1358,6 @@ function ambilDetailOrder(){
 
     .withFailureHandler(
       function(error){
-
-        judul.value = "";
 
         console.error(
           "ERROR DETAIL ORDER BUKU:",
@@ -1435,12 +1378,14 @@ function ambilDetailOrder(){
       }
     )
 
+
     /*
-     * Fungsi backend yang digunakan
-     * untuk mengambil detail Order.
+     * ==================================================
+     * FUNGSI BACKEND
+     * ==================================================
      */
 
-    .ambilDetailOrder(
+    .ambilOrderBukuUntukInvoice(
       idOrder
     );
 
@@ -1453,23 +1398,25 @@ function ambilDetailOrder(){
 
 function ambilDetailAuthor(){
 
+  const idAuthor =
+    document.getElementById(
+      "idAuthor"
+    ).value;
+
+
   const select =
     document.getElementById(
       "idAuthor"
     );
 
 
-  const option =
+  const selectedOption =
     select.options[
       select.selectedIndex
     ];
 
 
-  const idAuthor =
-    select.value;
-
-
-  const nama =
+  const namaAuthor =
     document.getElementById(
       "namaAuthor"
     );
@@ -1485,15 +1432,12 @@ function ambilDetailAuthor(){
    * Reset.
    */
 
-  nama.value = "";
+  namaAuthor.value = "";
 
   bab.value = "";
 
 
-  if(
-    !option ||
-    !idAuthor
-  ){
+  if(!idAuthor){
 
     return;
 
@@ -1501,33 +1445,32 @@ function ambilDetailAuthor(){
 
 
   /*
-   * ======================================
+   * ========================================
    * DATA DARI OPTION
-   * ======================================
+   * ========================================
    *
-   * Kalau daftar author dari backend
-   * sudah membawa nama dan bab,
-   * langsung tampilkan.
+   * Jika data author sudah dikirim bersama
+   * detail Order, langsung tampilkan.
    */
 
-  nama.value =
-    option.dataset.nama ||
-    "";
+  if(selectedOption){
+
+    namaAuthor.value =
+      selectedOption.dataset.namaAuthor ||
+      "";
 
 
-  bab.value =
-    option.dataset.bab ||
-    "";
+    bab.value =
+      selectedOption.dataset.bab ||
+      "";
+
+  }
 
 
   /*
-   * ======================================
-   * AMBIL DATA DETAIL AUTHOR
-   * ======================================
-   *
-   * Tetap panggil backend berdasarkan
-   * ID Author agar data benar-benar
-   * mengikuti data Author.
+   * ========================================
+   * AMBIL DETAIL LANGSUNG BERDASARKAN ID AUTHOR
+   * ========================================
    */
 
   if(
@@ -1539,6 +1482,12 @@ function ambilDetailAuthor(){
     return;
 
   }
+
+
+  console.log(
+    "AMBIL DETAIL AUTHOR:",
+    idAuthor
+  );
 
 
   google.script.run
@@ -1563,9 +1512,9 @@ function ambilDetailAuthor(){
           result.success === false
         ){
 
-          console.warn(
+          console.error(
             result.message ||
-            "Data Author tidak ditemukan."
+            "Detail Author gagal diambil."
           );
 
           return;
@@ -1574,7 +1523,8 @@ function ambilDetailAuthor(){
 
 
         /*
-         * Jika data dibungkus result.data.
+         * Antisipasi response langsung
+         * atau response.data.
          */
 
         let data =
@@ -1593,25 +1543,25 @@ function ambilDetailAuthor(){
 
 
         /*
-         * ==================================
+         * ========================================
          * NAMA AUTHOR
-         * ==================================
+         * ========================================
          */
 
-        nama.value =
+        namaAuthor.value =
           data.namaAuthor ||
           data.nama ||
-          data.authorNama ||
           data.nama_author ||
+          data.authorNama ||
           data["Nama Author"] ||
-          nama.value ||
+          namaAuthor.value ||
           "";
 
 
         /*
-         * ==================================
+         * ========================================
          * BAB
-         * ==================================
+         * ========================================
          */
 
         bab.value =
@@ -1628,23 +1578,23 @@ function ambilDetailAuthor(){
     .withFailureHandler(
       function(error){
 
-        /*
-         * Tidak perlu alert.
-         *
-         * Jika data dari option sudah lengkap,
-         * form tetap bisa digunakan.
-         */
-
         console.error(
           "ERROR DETAIL AUTHOR:",
           error
         );
 
+        /*
+         * Tidak menggunakan alert.
+         * Jika data sudah ada di option,
+         * form tetap dapat digunakan.
+         */
+
       }
     )
 
+
     /*
-     * ID AUTHOR menjadi acuan utama.
+     * Fungsi backend.
      */
 
     .ambilDetailAuthor(
@@ -1766,9 +1716,9 @@ function simpanInvoice(event){
 
 
   /*
-   * ======================================
-   * AMBIL DATA FORM
-   * ======================================
+   * ========================================
+   * DATA FORM
+   * ========================================
    */
 
   const data = {
@@ -1776,31 +1726,31 @@ function simpanInvoice(event){
     idOrder:
       document.getElementById(
         "idOrder"
-      ).value.trim(),
+      ).value,
 
 
     idAuthor:
       document.getElementById(
         "idAuthor"
-      ).value.trim(),
+      ).value,
 
 
     judulBuku:
       document.getElementById(
         "judulBuku"
-      ).value.trim(),
+      ).value,
 
 
     namaAuthor:
       document.getElementById(
         "namaAuthor"
-      ).value.trim(),
+      ).value,
 
 
     bab:
       document.getElementById(
         "bab"
-      ).value.trim(),
+      ).value,
 
 
     marketingInput:
@@ -1902,22 +1852,7 @@ function simpanInvoice(event){
   if(!data.marketingInput){
 
     alert(
-      "Nama Marketing wajib diisi."
-    );
-
-    return;
-
-  }
-
-
-  /* ==================================================
-     VALIDASI TANGGAL
-  ================================================== */
-
-  if(!data.tanggal){
-
-    alert(
-      "Tanggal pembayaran wajib diisi."
+      "Silakan isi Marketing Input."
     );
 
     return;
@@ -1992,9 +1927,7 @@ function simpanInvoice(event){
 
 
   /*
-   * ======================================
-   * CEK GOOGLE APPS SCRIPT
-   * ======================================
+   * Pastikan Google Apps Script tersedia.
    */
 
   if(
@@ -2014,21 +1947,9 @@ function simpanInvoice(event){
     );
 
 
-    console.log(
-      "DATA INVOICE BUKU:",
-      data
-    );
-
-
     alert(
-      "Mode preview.\n\n" +
-      JSON.stringify(
-        data,
-        null,
-        2
-      )
+      "Google Apps Script tidak tersedia."
     );
-
 
     return;
 
@@ -2061,11 +1982,9 @@ function simpanInvoice(event){
         );
 
 
-        /*
-         * ====================================
-         * BERHASIL
-         * ====================================
-         */
+        /* ==============================================
+           BERHASIL
+        ============================================== */
 
         if(
           result &&
@@ -2073,7 +1992,7 @@ function simpanInvoice(event){
         ){
 
           /*
-           * Nomor invoice.
+           * Nomor Invoice
            */
 
           document.getElementById(
@@ -2085,7 +2004,7 @@ function simpanInvoice(event){
 
 
           /*
-           * Detail popup.
+           * Detail popup
            */
 
           document.getElementById(
@@ -2142,7 +2061,7 @@ function simpanInvoice(event){
 
 
           /*
-           * Tampilkan popup.
+           * Tampilkan popup
            */
 
           document.getElementById(
@@ -2208,8 +2127,9 @@ function simpanInvoice(event){
       }
     )
 
+
     /*
-     * Fungsi simpan invoice buku.
+     * Fungsi backend penyimpanan.
      */
 
     .simpanInvoice(
@@ -2225,61 +2145,59 @@ function simpanInvoice(event){
 
 function resetFormInvoice(){
 
-  /*
-   * Reset form.
-   */
-
   document.getElementById(
     "invoiceForm"
   ).reset();
 
 
   /*
-   * Reset Judul Buku.
+   * Reset ID Order
+   */
+
+  document.getElementById(
+    "idOrder"
+  ).value = "";
+
+
+  /*
+   * Reset Judul Buku
    */
 
   document.getElementById(
     "judulBuku"
-  ).value =
-    "";
+  ).value = "";
 
 
   /*
-   * Reset dropdown Author.
+   * Reset ID Author
    */
 
   document.getElementById(
     "idAuthor"
   ).innerHTML =
-    `
-    <option value="">
-      Pilih ID Author
-    </option>
-    `;
+    '<option value="">Pilih ID Author</option>';
 
 
   /*
-   * Reset Nama Author.
+   * Reset Nama Author
    */
 
   document.getElementById(
     "namaAuthor"
-  ).value =
-    "";
+  ).value = "";
 
 
   /*
-   * Reset Bab.
+   * Reset Bab
    */
 
   document.getElementById(
     "bab"
-  ).value =
-    "";
+  ).value = "";
 
 
   /*
-   * Tanggal kembali hari ini.
+   * Tanggal kembali hari ini
    */
 
   document.getElementById(
@@ -2291,7 +2209,7 @@ function resetFormInvoice(){
 
 
   /*
-   * Reset label nominal.
+   * Reset label nominal
    */
 
   document.getElementById(
@@ -2327,12 +2245,12 @@ function formatRupiah(angka){
    ESCAPE HTML
 ================================================== */
 
-function escapeHtml(value){
+function escapeHtml(text){
 
   return String(
-    value == null
+    text == null
       ? ""
-      : value
+      : text
   )
 
   .replace(
@@ -2390,7 +2308,6 @@ function kembali(){
 }
 
 </script>
-
 
 </body>
 
