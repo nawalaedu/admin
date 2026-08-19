@@ -269,6 +269,74 @@ small{
 }
 
 /* =========================
+   BUTTON CEK ID
+========================= */
+
+.id-order-row{
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+}
+
+.id-order-input{
+  flex:1;
+}
+
+.btn-check-id{
+  flex:0 0 150px;
+  height:46px;
+  border:0;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.btn-check-id:hover{
+  background:#183b56;
+}
+
+.btn-check-id:disabled{
+  background:#a0aec0;
+  cursor:not-allowed;
+}
+
+/* =========================
+   STATUS ID ORDER
+========================= */
+
+.id-status{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.id-status.show{
+  display:block;
+}
+
+.id-status.loading{
+  background:#edf2f7;
+  color:#4a5568;
+}
+
+.id-status.success{
+  background:#f0fff4;
+  color:#276749;
+  border:1px solid #c6f6d5;
+}
+
+.id-status.error{
+  background:#fff5f5;
+  color:#c53030;
+  border:1px solid #fed7d7;
+}
+
+/* =========================
    MODAL
 ========================= */
 
@@ -396,6 +464,16 @@ small{
 
   .modal-buttons{
     flex-direction:column;
+  }
+
+  .id-order-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .btn-check-id{
+    width:100%;
+    flex:none;
   }
 
 }
@@ -793,7 +871,16 @@ yang sudah memiliki ID Order.
 
 <br><br>
 
-Pilih ID Order yang sudah dibuat sebelumnya.
+<strong>Tidak perlu memuat daftar seluruh order.</strong>
+
+<br>
+
+Ketik langsung <strong>ID Order Artikel</strong>,
+kemudian klik <strong>CEK ID ORDER</strong>.
+
+<br><br>
+
+Backend hanya akan mencari ID Order yang diketik.
 
 <br><br>
 
@@ -807,7 +894,9 @@ id="authorForm"
 onsubmit="simpanAuthor(event)">
 
 
-<!-- ID ORDER -->
+<!-- ==================================================
+     ID ORDER MANUAL
+================================================== -->
 
 <div class="form-group">
 
@@ -815,27 +904,59 @@ onsubmit="simpanAuthor(event)">
 ID Order Artikel
 </label>
 
-<select
+
+<div class="id-order-row">
+
+<div class="id-order-input">
+
+<input
+type="text"
 id="idOrder"
 name="idOrder"
-onchange="ambilDetailOrder()"
+placeholder="Ketik ID Order Artikel"
+autocomplete="off"
 required>
 
-<option value="">
-Pilih ID Order
-</option>
+</div>
 
-</select>
+
+<button
+type="button"
+id="btnCheckId"
+class="btn-check-id"
+onclick="ambilDetailOrder()">
+
+CEK ID ORDER
+
+</button>
+
+</div>
+
+
+<div
+id="idStatus"
+class="id-status">
+</div>
+
 
 <small>
-ID Order artikel akan digunakan untuk mengambil
-detail artikel.
+
+Ketik ID Order artikel secara manual.
+Contoh: <strong>ORD/ART/001</strong>.
+
+<br>
+
+Sistem tidak akan memuat daftar seluruh ID Order
+dari backend.
+
 </small>
 
 </div>
 
 
-<!-- JUDUL -->
+<!-- ==================================================
+     JUDUL
+================================================== -->
 
 <div class="form-group">
 
@@ -847,13 +968,15 @@ Judul Artikel
 type="text"
 id="judulArtikelAuthor"
 class="readonly"
-placeholder="Otomatis berdasarkan ID Order"
+placeholder="Masukkan ID Order lalu klik CEK ID ORDER"
 readonly>
 
 </div>
 
 
-<!-- KODE JURNAL -->
+<!-- ==================================================
+     KODE JURNAL
+================================================== -->
 
 <div class="form-group">
 
@@ -871,7 +994,9 @@ readonly>
 </div>
 
 
-<!-- BULAN TERBIT -->
+<!-- ==================================================
+     BULAN TERBIT
+================================================== -->
 
 <div class="form-group">
 
@@ -889,7 +1014,9 @@ readonly>
 </div>
 
 
-<!-- MARKETING -->
+<!-- ==================================================
+     MARKETING
+================================================== -->
 
 <div class="form-group">
 
@@ -912,7 +1039,9 @@ author kolaborasi.
 </div>
 
 
-<!-- TANGGAL -->
+<!-- ==================================================
+     TANGGAL
+================================================== -->
 
 <div class="form-group">
 
@@ -1235,6 +1364,29 @@ document.addEventListener(
       "tanggalTambah"
     ).value = today;
 
+
+    /*
+     * Enter pada input ID Order
+     * langsung menjalankan pengecekan.
+     */
+
+    document.getElementById(
+      "idOrder"
+    ).addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+
+          event.preventDefault();
+
+          ambilDetailOrder();
+
+        }
+
+      }
+    );
+
   }
 );
 
@@ -1291,67 +1443,25 @@ function ubahJenisInput(){
       .getElementById("formTambahAuthor")
       .classList.add("active");
 
+    /*
+     * PENTING:
+     * Tidak memanggil muatDaftarOrder().
+     *
+     * Admin langsung mengetik ID Order.
+     */
 
-    /* Selalu reload daftar ID Order
-       ketika masuk ke menu Tambah Author */
+    setTimeout(
+      function(){
 
-    muatDaftarOrder();
+        document.getElementById(
+          "idOrder"
+        ).focus();
 
-  }
-
-}
-
-
-/* ==================================================
-   LOAD DAFTAR ORDER
-================================================== */
-
-function muatDaftarOrder(){
-
-  if(!googleScriptReady()){
-
-    console.warn(
-      "google.script.run tidak tersedia."
+      },
+      100
     );
 
-    return;
-
   }
-
-
-  google.script.run
-
-    .withSuccessHandler(
-      function(data){
-
-        isiDropdownOrder(data);
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        console.error(
-          "Gagal mengambil daftar order:",
-          error
-        );
-
-        alert(
-          "Gagal mengambil daftar ID Order: " +
-          (
-            error && error.message
-              ?
-              error.message
-              :
-              error
-          )
-        );
-
-      }
-    )
-
-    .ambilDaftarOrder();
 
 }
 
@@ -1516,8 +1626,6 @@ function tambahAuthorMT(){
     ).value;
 
 
-  /* Jangan lebih dari 5 */
-
   if(jumlahAuthorMT >= MAX_AUTHOR){
 
     alert(
@@ -1528,8 +1636,6 @@ function tambahAuthorMT(){
 
   }
 
-
-  /* T hanya boleh satu author */
 
   if(
     kmt === "T" &&
@@ -1692,8 +1798,6 @@ function tambahAuthorMT(){
   );
 
 
-  /* Jika sudah 5, sembunyikan tombol */
-
   if(jumlahAuthorMT >= MAX_AUTHOR){
 
     document.getElementById(
@@ -1707,7 +1811,6 @@ function tambahAuthorMT(){
 
 /* ==================================================
    OPTION URUTAN PENULIS
-   MAKSIMAL 5
 ================================================== */
 
 function buatOptionPenulis(){
@@ -1759,9 +1862,6 @@ function hapusAuthorMT(
   perbaruiNomorAuthorMT();
 
 
-  /* Tampilkan kembali tombol jika
-     jumlah author kurang dari 5 */
-
   const kmt =
     document.getElementById(
       "kmt"
@@ -1810,39 +1910,108 @@ function perbaruiNomorAuthorMT(){
 
 
 /* ==================================================
-   DETAIL ORDER
+   STATUS ID ORDER
+================================================== */
+
+function setIdStatus(
+  type,
+  message
+){
+
+  const status =
+    document.getElementById(
+      "idStatus"
+    );
+
+
+  status.className =
+    "id-status show " + type;
+
+
+  status.textContent =
+    message;
+
+}
+
+
+/* ==================================================
+   RESET DETAIL ORDER
+================================================== */
+
+function resetDetailOrder(){
+
+  document.getElementById(
+    "judulArtikelAuthor"
+  ).value = "";
+
+
+  document.getElementById(
+    "kodeJurnalAuthor"
+  ).value = "";
+
+
+  document.getElementById(
+    "bulanTerbitAuthor"
+  ).value = "";
+
+}
+
+
+/* ==================================================
+   DETAIL ORDER ARTIKEL
 ================================================== */
 
 function ambilDetailOrder(){
 
-  const idOrder =
+  const input =
     document.getElementById(
       "idOrder"
-    ).value;
+    );
 
+
+  const idOrder =
+    input.value.trim();
+
+
+  /*
+   * Jangan melakukan request
+   * kalau ID kosong.
+   */
 
   if(!idOrder){
 
-    document.getElementById(
-      "judulArtikelAuthor"
-    ).value = "";
+    resetDetailOrder();
 
+    setIdStatus(
+      "error",
+      "Silakan ketik ID Order Artikel terlebih dahulu."
+    );
 
-    document.getElementById(
-      "kodeJurnalAuthor"
-    ).value = "";
-
-
-    document.getElementById(
-      "bulanTerbitAuthor"
-    ).value = "";
+    input.focus();
 
     return;
 
   }
 
 
+  /*
+   * Bersihkan detail lama
+   * sebelum request baru.
+   */
+
+  resetDetailOrder();
+
+
+  /*
+   * Cek google.script.run
+   */
+
   if(!googleScriptReady()){
+
+    setIdStatus(
+      "error",
+      "Google Script tidak tersedia."
+    );
 
     console.warn(
       "google.script.run tidak tersedia."
@@ -1853,15 +2022,90 @@ function ambilDetailOrder(){
   }
 
 
+  const button =
+    document.getElementById(
+      "btnCheckId"
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "MENCARI...";
+
+
+  setIdStatus(
+    "loading",
+    "Sedang mencari ID Order: " + idOrder
+  );
+
+
+  /*
+   * ==================================================
+   * PENTING
+   *
+   * HANYA SATU ID DIKIRIM KE BACKEND.
+   *
+   * Tidak ada ambilDaftarOrder().
+   * Tidak ada dropdown.
+   * Tidak mengambil semua order.
+   * ==================================================
+   */
+
   google.script.run
 
     .withSuccessHandler(
       function(data){
 
+        button.disabled = false;
+
+        button.textContent =
+          "CEK ID ORDER";
+
+
         if(!data){
 
-          alert(
-            "Detail ID Order tidak ditemukan."
+          resetDetailOrder();
+
+          setIdStatus(
+            "error",
+            "ID Order Artikel tidak ditemukan: " +
+            idOrder
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * Khusus halaman ARTIKEL.
+         *
+         * Tidak menggunakan judulBuku.
+         */
+
+        const judul =
+          data.judulArtikel ||
+          "";
+
+
+        const kodeJurnal =
+          data.kodeJurnal ||
+          "";
+
+
+        const bulanTerbit =
+          data.bulanTerbit ||
+          "";
+
+
+        if(!judul){
+
+          resetDetailOrder();
+
+          setIdStatus(
+            "error",
+            "ID Order ditemukan, tetapi data artikel tidak valid."
           );
 
           return;
@@ -1872,23 +2116,25 @@ function ambilDetailOrder(){
         document.getElementById(
           "judulArtikelAuthor"
         ).value =
-          data.judulArtikel ||
-          data.judulBuku ||
-          "";
+          judul;
 
 
         document.getElementById(
           "kodeJurnalAuthor"
         ).value =
-          data.kodeJurnal ||
-          "";
+          kodeJurnal;
 
 
         document.getElementById(
           "bulanTerbitAuthor"
         ).value =
-          data.bulanTerbit ||
-          "";
+          bulanTerbit;
+
+
+        setIdStatus(
+          "success",
+          "✓ ID Order Artikel ditemukan. Detail artikel berhasil dimuat."
+        );
 
       }
     )
@@ -1896,7 +2142,17 @@ function ambilDetailOrder(){
     .withFailureHandler(
       function(error){
 
-        alert(
+        button.disabled = false;
+
+        button.textContent =
+          "CEK ID ORDER";
+
+
+        resetDetailOrder();
+
+
+        setIdStatus(
+          "error",
           "Gagal mengambil detail order: " +
           (
             error && error.message
@@ -1907,213 +2163,20 @@ function ambilDetailOrder(){
           )
         );
 
+
+        console.error(
+          "GAGAL AMBIL DETAIL ORDER:",
+          error
+        );
+
       }
     )
 
+    /*
+     * HANYA kirim idOrder.
+     */
+
     .ambilDetailOrder(idOrder);
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN ORDER
-================================================== */
-
-function isiDropdownOrder(
-  data,
-  selectedId = ""
-){
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  select.innerHTML = `
-
-    <option value="">
-      Pilih ID Order
-    </option>
-
-  `;
-
-
-  if(!Array.isArray(data)){
-
-    console.warn(
-      "Data daftar order bukan array:",
-      data
-    );
-
-    return;
-
-  }
-
-
-  data.forEach(
-    function(item){
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      let id = "";
-      let judul = "";
-
-
-      if(
-        typeof item === "object" &&
-        item !== null
-      ){
-
-        id =
-          item.idOrder ||
-          item.kodeOrder ||
-          item.orderId ||
-          "";
-
-
-        judul =
-          item.judulArtikel ||
-          item.judulBuku ||
-          item.judul ||
-          "";
-
-      }
-      else{
-
-        id = item;
-
-      }
-
-
-      if(!id){
-
-        return;
-
-      }
-
-
-      option.value =
-        id;
-
-
-      option.textContent =
-        judul
-          ?
-          id + " — " + judul
-          :
-          id;
-
-
-      select.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-  /* Pilih otomatis jika ada ID tertentu */
-
-  if(selectedId){
-
-    select.value =
-      selectedId;
-
-    if(select.value === selectedId){
-
-      ambilDetailOrder();
-
-    }
-
-  }
-
-}
-
-
-/* ==================================================
-   TAMBAHKAN ID ORDER BARU KE DROPDOWN
-================================================== */
-
-function tambahkanOrderBaruKeDropdown(
-  idOrder,
-  judulArtikel
-){
-
-  if(!idOrder){
-
-    return;
-
-  }
-
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  /* Cek apakah sudah ada */
-
-  let option =
-    Array.from(
-      select.options
-    ).find(
-      function(item){
-
-        return item.value === idOrder;
-
-      }
-    );
-
-
-  /* Jika belum ada, buat option baru */
-
-  if(!option){
-
-    option =
-      document.createElement(
-        "option"
-      );
-
-
-    option.value =
-      idOrder;
-
-
-    option.textContent =
-      judulArtikel
-        ?
-        idOrder + " — " + judulArtikel
-        :
-        idOrder;
-
-
-    select.appendChild(
-      option
-    );
-
-  }
-  else{
-
-    option.textContent =
-      judulArtikel
-        ?
-        idOrder + " — " + judulArtikel
-        :
-        idOrder;
-
-  }
-
-
-  /* Pilih ID Order baru */
-
-  select.value =
-    idOrder;
 
 }
 
@@ -2343,31 +2406,11 @@ function simpanOrder(
               data.judulArtikel;
 
 
-            /*
-             * PENTING:
-             * Langsung masukkan ID Order baru
-             * ke dropdown Tambah Author.
-             */
-
-            tambahkanOrderBaruKeDropdown(
-              idOrder,
-              judul
-            );
-
-
-            /*
-             * Tampilkan popup.
-             */
-
             tampilkanPopupOrder(
               idOrder,
               judul
             );
 
-
-            /*
-             * Reset form order setelah berhasil.
-             */
 
             resetFormOrder();
 
@@ -2378,14 +2421,6 @@ function simpanOrder(
               "Order artikel berhasil disimpan, " +
               "tetapi ID Order tidak dikembalikan oleh server."
             );
-
-
-            /*
-             * Tetap reload daftar order
-             * supaya ID terbaru masuk.
-             */
-
-            muatDaftarOrder();
 
           }
 
@@ -2435,12 +2470,6 @@ function simpanOrder(
 
   const previewId =
     "ORD/ART/001";
-
-
-  tambahkanOrderBaruKeDropdown(
-    previewId,
-    data.judulArtikel
-  );
 
 
   tampilkanPopupOrder(
@@ -2556,13 +2585,13 @@ function simpanAuthor(
   const idOrder =
     document.getElementById(
       "idOrder"
-    ).value;
+    ).value.trim();
 
 
   if(!idOrder){
 
     alert(
-      "Silakan pilih ID Order terlebih dahulu."
+      "Silakan ketik ID Order terlebih dahulu."
     );
 
     return;
@@ -2570,10 +2599,30 @@ function simpanAuthor(
   }
 
 
+  /*
+   * Pastikan detail artikel sudah berhasil
+   * dimuat sebelum author disimpan.
+   */
+
   const judulArtikel =
     document.getElementById(
       "judulArtikelAuthor"
-    ).value;
+    ).value.trim();
+
+
+  if(!judulArtikel){
+
+    alert(
+      "Silakan klik CEK ID ORDER terlebih dahulu."
+    );
+
+    document.getElementById(
+      "idOrder"
+    ).focus();
+
+    return;
+
+  }
 
 
   const kodeJurnal =
@@ -2738,21 +2787,9 @@ function simpanAuthor(
           );
 
 
-          resetFormAuthor();
-
-
-          /*
-           * Tetap pertahankan ID Order
-           * setelah reset.
-           */
-
-          document.getElementById(
-            "idOrder"
-          ).value =
-            idOrder;
-
-
-          ambilDetailOrder();
+          resetFormAuthor(
+            idOrder
+          );
 
         }
       )
@@ -2860,13 +2897,9 @@ function resetFormOrder(){
    RESET FORM AUTHOR
 ================================================== */
 
-function resetFormAuthor(){
-
-  const idOrder =
-    document.getElementById(
-      "idOrder"
-    ).value;
-
+function resetFormAuthor(
+  idOrder
+){
 
   const form =
     document.getElementById(
@@ -2878,7 +2911,8 @@ function resetFormAuthor(){
 
 
   /*
-   * ID Order dikembalikan setelah reset.
+   * Kembalikan ID Order
+   * yang tadi diketik.
    */
 
   document.getElementById(
@@ -2887,19 +2921,27 @@ function resetFormAuthor(){
     idOrder;
 
 
-  document.getElementById(
-    "judulArtikelAuthor"
-  ).value = "";
+  /*
+   * Detail artikel tetap dikosongkan
+   * lalu dimuat kembali hanya berdasarkan
+   * ID tersebut.
+   */
+
+  resetDetailOrder();
 
 
-  document.getElementById(
-    "kodeJurnalAuthor"
-  ).value = "";
+  const status =
+    document.getElementById(
+      "idStatus"
+    );
 
 
-  document.getElementById(
-    "bulanTerbitAuthor"
-  ).value = "";
+  status.className =
+    "id-status";
+
+
+  status.textContent =
+    "";
 
 
   const today =
@@ -2914,14 +2956,10 @@ function resetFormAuthor(){
 
 
   /*
-   * Ambil ulang detail berdasarkan ID Order.
+   * Ambil ulang hanya ID yang sama.
    */
 
-  if(idOrder){
-
-    ambilDetailOrder();
-
-  }
+  ambilDetailOrder();
 
 }
 
@@ -3023,10 +3061,16 @@ function tutupModal(){
 
 
 /* ==================================================
-   KEMBALI
+   KEMBALI KE ARTIKEL
 ================================================== */
 
 function kembali(){
+
+  /*
+   * KHUSUS ORDER ARTIKEL
+   *
+   * Jangan diarahkan ke halaman buku.
+   */
 
   window.location.href =
     "artikel.html";
