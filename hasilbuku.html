@@ -143,8 +143,7 @@ label{
   color:#e53e3e;
 }
 
-input,
-select{
+input{
   width:100%;
   padding:13px;
   border:1px solid #d6dee6;
@@ -154,11 +153,98 @@ select{
   background:white;
 }
 
-input:focus,
-select:focus{
+input:focus{
   outline:none;
   border-color:#2f6f95;
   box-shadow:0 0 0 2px rgba(47,111,149,.08);
+}
+
+
+/* =========================
+   INPUT CARI ID ORDER
+========================= */
+
+.order-search{
+  display:flex;
+  gap:10px;
+  align-items:stretch;
+}
+
+.order-search input{
+  flex:1;
+  min-width:0;
+}
+
+
+/* =========================
+   BUTTON CARI
+========================= */
+
+.btn-cari{
+  flex:0 0 120px;
+  border:0;
+  border-radius:9px;
+  background:#2f6f95;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+  padding:0 15px;
+  transition:.2s;
+}
+
+.btn-cari:hover{
+  background:#183b56;
+}
+
+.btn-cari:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+
+/* =========================
+   ICON CARI
+========================= */
+
+.icon-cari{
+  font-size:16px;
+  margin-right:5px;
+}
+
+
+/* =========================
+   STATUS ORDER
+========================= */
+
+.order-status{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.order-status.show{
+  display:block;
+}
+
+.order-status.loading{
+  background:#f1f5f9;
+  color:#718096;
+}
+
+.order-status.success{
+  background:#ecfdf5;
+  color:#065f46;
+  border:1px solid #a7f3d0;
+}
+
+.order-status.error{
+  background:#fef2f2;
+  color:#991b1b;
+  border:1px solid #fecaca;
 }
 
 
@@ -213,7 +299,7 @@ small{
 
 
 /* =========================
-   BUTTON
+   BUTTON SIMPAN
 ========================= */
 
 .btn-save{
@@ -386,11 +472,31 @@ small{
     font-size:24px;
   }
 
+  .order-search{
+    gap:7px;
+  }
+
+  .btn-cari{
+    flex:0 0 55px;
+    padding:0;
+  }
+
+  .btn-cari-text{
+    display:none;
+  }
+
+  .icon-cari{
+    margin:0;
+    font-size:18px;
+  }
+
 }
 
 </style>
 
-  <script src="api.js"></script>
+
+<script src="api.js"></script>
+
 </head>
 
 
@@ -464,8 +570,9 @@ yang telah dibuat.
 
 <strong>Informasi:</strong><br>
 
-Pilih <strong>ID Order Buku</strong> terlebih dahulu.
-Setelah ID Order dipilih, <strong>Judul Buku</strong>
+Ketik <strong>ID Order Buku</strong> secara manual,
+kemudian klik tombol <strong>🔍 Cari Data</strong>.
+Jika ID Order ditemukan, <strong>Judul Buku</strong>
 akan ditampilkan secara otomatis.
 
 <br><br>
@@ -492,24 +599,59 @@ onsubmit="simpanHasilBuku(event)">
 
 <div class="form-group">
 
-<label>
-ID Order Buku <span class="required">*</span>
+<label for="idOrder">
+
+ID Order Buku
+<span class="required">*</span>
+
 </label>
 
-<select
+
+<div class="order-search">
+
+<input
+type="text"
 id="idOrder"
+placeholder="Ketik ID Order Buku"
+autocomplete="off"
 required
-onchange="ambilDetailOrderBuku()">
+onkeydown="tekanEnterCari(event)"
+>
 
-<option value="">
-Pilih ID Order Buku
-</option>
 
-</select>
+<button
+type="button"
+id="btnCariOrder"
+class="btn-cari"
+onclick="cariDataOrder()">
+
+<span class="icon-cari">
+🔍
+</span>
+
+<span class="btn-cari-text">
+Cari Data
+</span>
+
+</button>
+
+</div>
+
 
 <small>
-Pilih ID Order Buku yang sudah dibuat.
+
+Ketik ID Order Buku, lalu klik
+<strong>🔍 Cari Data</strong>
+untuk mengambil data buku.
+
 </small>
+
+
+<div
+id="orderStatus"
+class="order-status">
+
+</div>
 
 </div>
 
@@ -539,15 +681,17 @@ class="detail-section">
 
 <div class="form-group">
 
-<label>
+<label for="judulBuku">
+
 Judul Buku
+
 </label>
 
 <input
 type="text"
 id="judulBuku"
 class="readonly"
-placeholder="Akan muncul setelah ID Order dipilih"
+placeholder="Akan muncul setelah ID Order ditemukan"
 readonly>
 
 </div>
@@ -559,43 +703,33 @@ readonly>
 
 
 <!-- ==================================================
-     TIM BUKU
+     TIM RISET
 ================================================== -->
 
 <div class="form-group">
 
-<label>
-Nama Tim Buku <span class="required">*</span>
+<label for="timRiset">
+
+Nama Tim Riset
+<span class="required">*</span>
+
 </label>
 
-<select
-id="timBuku"
-required>
 
-<option value="">
-Pilih Tim Buku
-</option>
+<input
+type="text"
+id="timRiset"
+placeholder="Ketik Nama Tim Riset"
+autocomplete="off"
+required
+>
 
-<option value="Tim Buku 1">
-Tim Buku 1
-</option>
-
-<option value="Tim Buku 2">
-Tim Buku 2
-</option>
-
-<option value="Tim Buku 3">
-Tim Buku 3
-</option>
-
-<option value="Tim Buku 4">
-Tim Buku 4
-</option>
-
-</select>
 
 <small>
-Pilih tim yang mengerjakan atau memproses buku tersebut.
+
+Ketik nama Tim Riset yang mengerjakan
+atau memproses buku tersebut.
+
 </small>
 
 </div>
@@ -607,19 +741,27 @@ Pilih tim yang mengerjakan atau memproses buku tersebut.
 
 <div class="form-group">
 
-<label>
-Arsip Hasil Buku <span class="required">*</span>
+<label for="arsip">
+
+Arsip Hasil Buku
+<span class="required">*</span>
+
 </label>
+
 
 <input
 type="url"
 id="arsip"
 placeholder="https://drive.google.com/..."
-required>
+required
+>
+
 
 <small>
+
 Masukkan link Google Drive yang berisi hasil buku
 yang sudah selesai dikerjakan.
+
 </small>
 
 </div>
@@ -724,16 +866,16 @@ class="result-value">
 </div>
 
 
-<!-- TIM -->
+<!-- TIM RISET -->
 
 <div class="result-row">
 
 <div class="result-label">
-TIM BUKU
+TIM RISET
 </div>
 
 <div
-id="resultTimBuku"
+id="resultTimRiset"
 class="result-value">
 
 -
@@ -772,184 +914,92 @@ document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-  muatDaftarOrderBuku();
+  console.log(
+    "Halaman Hasil Buku aktif."
+  );
 
 });
 
 
 /* ==================================================
-   MUAT DAFTAR ID ORDER BUKU
+   ENTER PADA ID ORDER
 ================================================== */
 
-function muatDaftarOrderBuku(){
+function tekanEnterCari(event){
 
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
+  if(event.key === "Enter"){
 
+    event.preventDefault();
 
-  select.innerHTML = `
-
-    <option value="">
-      Memuat ID Order Buku...
-    </option>
-
-  `;
-
-
-  google.script.run
-
-    .withSuccessHandler(
-      isiDropdownOrder
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        select.innerHTML = `
-
-          <option value="">
-            Gagal memuat ID Order Buku
-          </option>
-
-        `;
-
-        alert(
-          "Gagal mengambil daftar ID Order Buku:\n" +
-          error.message
-        );
-
-      }
-    )
-
-    .ambilDaftarOrderBuku();
-
-}
-
-
-/* ==================================================
-   ISI DROPDOWN
-================================================== */
-
-function isiDropdownOrder(
-  data
-){
-
-  const select =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  select.innerHTML = `
-
-    <option value="">
-      Pilih ID Order Buku
-    </option>
-
-  `;
-
-
-  if(
-    !Array.isArray(data) ||
-    data.length === 0
-  ){
-
-    select.innerHTML = `
-
-      <option value="">
-        Belum ada Order Buku
-      </option>
-
-    `;
-
-    return;
+    cariDataOrder();
 
   }
 
-
-  data.forEach(
-    function(item){
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      /*
-        Jika Apps Script mengirim object:
-
-        {
-          idOrder:"",
-          judulBuku:""
-        }
-      */
-
-      if(
-        typeof item === "object" &&
-        item !== null
-      ){
-
-        option.value =
-          item.idOrder || "";
-
-
-        option.textContent =
-          item.idOrder +
-          " — " +
-          (
-            item.judulBuku ||
-            item.judul ||
-            ""
-          );
-
-      }
-
-      else{
-
-        option.value =
-          item;
-
-        option.textContent =
-          item;
-
-      }
-
-
-      select.appendChild(
-        option
-      );
-
-    }
-  );
-
 }
 
 
 /* ==================================================
-   AMBIL DETAIL ORDER BUKU
+   CARI DATA ORDER
 ================================================== */
 
-function ambilDetailOrderBuku(){
+function cariDataOrder(){
 
-  const idOrder =
+  const input =
     document.getElementById(
       "idOrder"
-    ).value;
+    );
+
+
+  const judul =
+    document.getElementById(
+      "judulBuku"
+    );
+
+
+  const btn =
+    document.getElementById(
+      "btnCariOrder"
+    );
+
+
+  const status =
+    document.getElementById(
+      "orderStatus"
+    );
+
+
+  const idOrder =
+    String(
+      input.value || ""
+    ).trim();
 
 
   /*
-    Jika belum memilih ID Order,
-    kosongkan judul.
-  */
+   * Bersihkan hasil sebelumnya
+   */
+
+  judul.value = "";
+
+
+  status.textContent = "";
+
+  status.className =
+    "order-status";
+
+
+  /*
+   * Validasi ID Order
+   */
 
   if(!idOrder){
 
-    document.getElementById(
-      "judulBuku"
-    ).value = "";
+    status.textContent =
+      "Silakan ketik ID Order Buku terlebih dahulu.";
+
+    status.className =
+      "order-status show error";
+
+    input.focus();
 
     return;
 
@@ -957,34 +1007,64 @@ function ambilDetailOrderBuku(){
 
 
   /*
-    Loading
-  */
+   * Loading
+   */
 
-  document.getElementById(
-    "judulBuku"
-  ).value =
-    "Memuat...";
+  btn.disabled = true;
+
+  status.textContent =
+    "⏳ Mencari data ID Order...";
+
+  status.className =
+    "order-status show loading";
+
+
+  console.log(
+    "Hasil Buku: mencari ID Order:",
+    idOrder
+  );
 
 
   /*
-    Ambil detail dari Code.gs
-  */
+   * ==================================================
+   * PANGGIL API
+   * ==================================================
+   *
+   * Code.gs:
+   *
+   * ambilDetailOrderBuku(idOrder)
+   *
+   */
 
   google.script.run
 
     .withSuccessHandler(
       function(data){
 
+        btn.disabled = false;
+
+
+        console.log(
+          "Hasil Buku: detail order:",
+          data
+        );
+
+
+        /*
+         * Tidak ditemukan
+         */
+
         if(!data){
 
-          document.getElementById(
-            "judulBuku"
-          ).value = "";
+          judul.value = "";
 
 
-          alert(
-            "Data ID Order Buku tidak ditemukan."
-          );
+          status.textContent =
+            "❌ ID Order Buku tidak ditemukan.";
+
+          status.className =
+            "order-status show error";
+
 
           return;
 
@@ -992,34 +1072,97 @@ function ambilDetailOrderBuku(){
 
 
         /*
-          JUDUL BUKU
-        */
+         * Ambil judul buku
+         */
 
-        document.getElementById(
-          "judulBuku"
-        ).value =
+        const judulBuku =
           data.judulBuku ||
           data.judul ||
+          data.judulArtikel ||
           "";
+
+
+        /*
+         * Jika judul kosong
+         */
+
+        if(!judulBuku){
+
+          judul.value = "";
+
+
+          status.textContent =
+            "⚠️ ID Order ditemukan, tetapi Judul Buku tidak tersedia.";
+
+          status.className =
+            "order-status show error";
+
+
+          return;
+
+        }
+
+
+        /*
+         * Isi judul
+         */
+
+        judul.value =
+          judulBuku;
+
+
+        /*
+         * Berhasil
+         */
+
+        status.innerHTML =
+          "✅ Data ditemukan.<br>" +
+          "<strong>" +
+          escapeHtml(idOrder) +
+          "</strong> berhasil ditemukan.";
+
+        status.className =
+          "order-status show success";
 
       }
     )
+
 
     .withFailureHandler(
       function(error){
 
-        document.getElementById(
-          "judulBuku"
-        ).value = "";
+        btn.disabled = false;
 
 
-        alert(
-          "Gagal mengambil detail order buku:\n" +
-          error.message
+        console.error(
+          "Hasil Buku: gagal mencari order:",
+          error
         );
+
+
+        judul.value = "";
+
+
+        status.textContent =
+          "❌ Gagal mengambil data ID Order: " +
+          (
+            error &&
+            error.message
+              ? error.message
+              : String(error)
+          );
+
+
+        status.className =
+          "order-status show error";
 
       }
     )
+
+
+    /*
+     * METHOD API
+     */
 
     .ambilDetailOrderBuku(
       idOrder
@@ -1046,8 +1189,8 @@ function simpanHasilBuku(
 
 
   /*
-    Validasi HTML
-  */
+   * Validasi HTML
+   */
 
   if(!form.checkValidity()){
 
@@ -1059,27 +1202,29 @@ function simpanHasilBuku(
 
 
   /*
-    Ambil data
-  */
+   * Ambil data
+   */
 
   const data = {
 
     idOrder:
-      document.getElementById(
-        "idOrder"
-      ).value,
+      String(
+        document.getElementById(
+          "idOrder"
+        ).value || ""
+      ).trim(),
 
 
     judulBuku:
       document.getElementById(
         "judulBuku"
-      ).value,
+      ).value.trim(),
 
 
-    timBuku:
+    timRiset:
       document.getElementById(
-        "timBuku"
-      ).value,
+        "timRiset"
+      ).value.trim(),
 
 
     arsip:
@@ -1091,13 +1236,13 @@ function simpanHasilBuku(
 
 
   /* ==================================================
-     VALIDASI TAMBAHAN
+     VALIDASI
   ================================================== */
 
   if(!data.idOrder){
 
     alert(
-      "Silakan pilih ID Order Buku."
+      "Silakan ketik ID Order Buku."
     );
 
     return;
@@ -1108,7 +1253,7 @@ function simpanHasilBuku(
   if(!data.judulBuku){
 
     alert(
-      "Judul buku belum ditemukan."
+      "Silakan cari ID Order terlebih dahulu."
     );
 
     return;
@@ -1116,10 +1261,10 @@ function simpanHasilBuku(
   }
 
 
-  if(!data.timBuku){
+  if(!data.timRiset){
 
     alert(
-      "Silakan pilih Nama Tim Buku."
+      "Silakan ketik Nama Tim Riset."
     );
 
     return;
@@ -1136,6 +1281,38 @@ function simpanHasilBuku(
     return;
 
   }
+
+
+  /*
+   * Pastikan ID Order sudah berhasil dicari.
+   */
+
+  const status =
+    document.getElementById(
+      "orderStatus"
+    );
+
+
+  if(
+    !status.classList.contains(
+      "success"
+    )
+  ){
+
+    alert(
+      "Silakan klik 🔍 Cari Data terlebih dahulu " +
+      "untuk memastikan ID Order Buku benar."
+    );
+
+    return;
+
+  }
+
+
+  console.log(
+    "Hasil Buku: data yang dikirim:",
+    data
+  );
 
 
   /* ==================================================
@@ -1189,9 +1366,15 @@ function simpanHasilBuku(
         );
 
 
+        console.log(
+          "Hasil simpan Hasil Buku:",
+          result
+        );
+
+
         /*
-          Jika berhasil
-        */
+         * BERHASIL
+         */
 
         if(
           result &&
@@ -1205,8 +1388,8 @@ function simpanHasilBuku(
 
 
           /*
-            Reset form
-          */
+           * Reset form
+           */
 
           document.getElementById(
             "bukuForm"
@@ -1214,8 +1397,8 @@ function simpanHasilBuku(
 
 
           /*
-            Kosongkan detail buku
-          */
+           * Kosongkan judul
+           */
 
           document.getElementById(
             "judulBuku"
@@ -1223,10 +1406,19 @@ function simpanHasilBuku(
 
 
           /*
-            Muat ulang daftar order
-          */
+           * Kosongkan status pencarian
+           */
 
-          muatDaftarOrderBuku();
+          const statusOrder =
+            document.getElementById(
+              "orderStatus"
+            );
+
+
+          statusOrder.textContent = "";
+
+          statusOrder.className =
+            "order-status";
 
         }
 
@@ -1235,16 +1427,15 @@ function simpanHasilBuku(
           alert(
             result &&
             result.message
-            ?
-            result.message
-            :
-            "Gagal menyimpan hasil buku."
+              ? result.message
+              : "Gagal menyimpan hasil buku."
           );
 
         }
 
       }
     )
+
 
     .withFailureHandler(
       function(error){
@@ -1262,13 +1453,29 @@ function simpanHasilBuku(
         );
 
 
+        console.error(
+          "Error simpan hasil buku:",
+          error
+        );
+
+
         alert(
-          "Gagal menyimpan hasil buku:\n" +
-          error.message
+          "Gagal menyimpan hasil buku:\n\n" +
+          (
+            error &&
+            error.message
+              ? error.message
+              : String(error)
+          )
         );
 
       }
     )
+
+
+    /*
+     * METHOD CODE.GS
+     */
 
     .simpanHasilBuku(
       data
@@ -1299,9 +1506,9 @@ function tampilkanPopupBerhasil(
 
 
   document.getElementById(
-    "resultTimBuku"
+    "resultTimRiset"
   ).textContent =
-    data.timBuku || "-";
+    data.timRiset || "-";
 
 
   document.getElementById(
@@ -1324,6 +1531,29 @@ function tutupPopup(){
   ).classList.remove(
     "active"
   );
+
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+================================================== */
+
+function escapeHtml(
+  text
+){
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+
+  div.textContent =
+    text;
+
+
+  return div.innerHTML;
 
 }
 
