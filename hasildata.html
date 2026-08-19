@@ -897,11 +897,6 @@ document.addEventListener(
 "DOMContentLoaded",
 function(){
 
-  /*
-    Tidak lagi memuat dropdown ID Order.
-    ID Order sekarang diketik manual.
-  */
-
   kosongkanDetail();
 
 });
@@ -942,18 +937,12 @@ function cariDataOrder(){
     );
 
 
-  const status =
-    document.getElementById(
-      "searchStatus"
-    );
-
-
   const idOrder =
     input.value.trim();
 
 
   /* ==================================================
-     VALIDASI ID ORDER
+     VALIDASI
   ================================================== */
 
   if(!idOrder){
@@ -980,7 +969,7 @@ function cariDataOrder(){
 
 
   /* ==================================================
-     BUTTON LOADING
+     LOADING
   ================================================== */
 
   btnCari.disabled =
@@ -1012,16 +1001,16 @@ function cariDataOrder(){
           "🔍 Cari Data";
 
 
-        /*
-          Data tidak ditemukan
-        */
+        /* ==================================================
+           CEK DATA
+        ================================================== */
 
         if(!data){
 
           kosongkanDetail();
 
           tampilkanStatusCari(
-            "❌ ID Order tidak ditemukan. Periksa kembali ID Order yang diketik.",
+            "❌ ID Order tidak ditemukan. Periksa kembali ID Order.",
             "error"
           );
 
@@ -1030,32 +1019,63 @@ function cariDataOrder(){
         }
 
 
-        /*
-          Nama Pemesan
-        */
+        /* ==================================================
+           DEBUG DATA
+           
+           Tidak ditampilkan kepada pengguna.
+           Membantu melihat struktur data di console
+           jika diperlukan.
+        ================================================== */
+
+        console.log(
+          "Data Order Olah Data:",
+          data
+        );
+
+
+        /* ==================================================
+           AMBIL NAMA PEMESAN
+        ================================================== */
 
         const nama =
-          data.nama ||
-          data.namaPemesan ||
-          "";
+          ambilNilaiField(
+            data,
+            [
+              "nama",
+              "namaPemesan",
+              "nama_pemesan",
+              "Nama Pemesan",
+              "NAMA PEMESAN"
+            ]
+          );
 
 
-        /*
-          Judul Penelitian
-        */
+        /* ==================================================
+           AMBIL JUDUL PENELITIAN
+        ================================================== */
 
         const judul =
-          data.judul ||
-          data.judulPenelitian ||
-          data.judulArtikel ||
-          data.judulArtikelJurnal ||
-          data.namaPenelitian ||
-          "";
+          ambilNilaiField(
+            data,
+            [
+              "judul",
+              "judulPenelitian",
+              "judulData",
+              "judulArtikel",
+              "judulArtikelJurnal",
+              "namaPenelitian",
+              "namaJudul",
+              "title",
+              "Judul",
+              "Judul Penelitian",
+              "JUDUL PENELITIAN"
+            ]
+          );
 
 
-        /*
-          Tampilkan data
-        */
+        /* ==================================================
+           TAMPILKAN DATA
+        ================================================== */
 
         setDetail(
           nama,
@@ -1063,12 +1083,33 @@ function cariDataOrder(){
         );
 
 
-        /*
-          Status berhasil
-        */
+        /* ==================================================
+           CEK JUDUL
+        ================================================== */
+
+        if(!judul){
+
+          tampilkanStatusCari(
+            "⚠ Data order ditemukan, tetapi Judul Penelitian belum ditemukan dari data server.",
+            "error"
+          );
+
+          console.warn(
+            "Field Judul tidak ditemukan. Struktur data:",
+            data
+          );
+
+          return;
+
+        }
+
+
+        /* ==================================================
+           BERHASIL
+        ================================================== */
 
         tampilkanStatusCari(
-          "✓ Data order ditemukan dan informasi berhasil ditampilkan.",
+          "✓ Data order ditemukan. Nama Pemesan dan Judul Penelitian berhasil ditampilkan.",
           "success"
         );
 
@@ -1117,6 +1158,115 @@ function cariDataOrder(){
 
 
 /* ==================================================
+   AMBIL NILAI FIELD
+================================================== */
+
+function ambilNilaiField(
+  data,
+  fieldList
+){
+
+  /*
+    Jika data langsung memiliki field
+  */
+
+  for(
+    let i = 0;
+    i < fieldList.length;
+    i++
+  ){
+
+    const field =
+      fieldList[i];
+
+
+    if(
+      data &&
+      Object.prototype.hasOwnProperty.call(
+        data,
+        field
+      )
+    ){
+
+      const value =
+        data[field];
+
+
+      if(
+        value !== undefined &&
+        value !== null &&
+        String(value).trim() !== ""
+      ){
+
+        return String(value).trim();
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    Coba cari di object nested
+    seperti:
+    
+    data.order
+    data.data
+    data.result
+    data.detail
+    data.orderData
+  */
+
+  const nestedKeys = [
+    "order",
+    "data",
+    "result",
+    "detail",
+    "orderData"
+  ];
+
+
+  for(
+    let i = 0;
+    i < nestedKeys.length;
+    i++
+  ){
+
+    const nestedKey =
+      nestedKeys[i];
+
+
+    if(
+      data &&
+      data[nestedKey] &&
+      typeof data[nestedKey] === "object"
+    ){
+
+      const hasil =
+        ambilNilaiField(
+          data[nestedKey],
+          fieldList
+        );
+
+
+      if(hasil){
+
+        return hasil;
+
+      }
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* ==================================================
    STATUS PENCARIAN
 ================================================== */
 
@@ -1129,6 +1279,19 @@ function tampilkanStatusCari(
     document.getElementById(
       "searchStatus"
     );
+
+
+  if(!message){
+
+    status.textContent =
+      "";
+
+    status.className =
+      "search-status";
+
+    return;
+
+  }
 
 
   status.textContent =
@@ -1392,9 +1555,15 @@ function simpanHasilData(
           );
 
 
-          /*
-            Reset field tim dan arsip.
-          */
+          /* ==================================================
+             RESET FORM
+          ================================================== */
+
+          document.getElementById(
+            "idOrder"
+          ).value =
+            "";
+
 
           document.getElementById(
             "timPengolah"
@@ -1404,17 +1573,6 @@ function simpanHasilData(
 
           document.getElementById(
             "arsip"
-          ).value =
-            "";
-
-
-          /*
-            ID Order dan detail juga dikosongkan
-            agar siap untuk input berikutnya.
-          */
-
-          document.getElementById(
-            "idOrder"
           ).value =
             "";
 
