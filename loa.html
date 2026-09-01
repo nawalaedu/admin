@@ -3,2371 +3,1346 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <title>
-    LOA Generator | Letter of Acceptance
-  </title>
+<title>
+  Nawala Education | Letter of Acceptance
+</title>
 
 
-  <style>
+<style>
 
-    :root {
+/* =========================================================
+   ROOT
+   ========================================================= */
 
-      --navy: #102a43;
-      --navy-2: #173f5f;
+:root {
 
-      --blue: #2563eb;
-      --blue-light: #eff6ff;
+  --navy: #102a43;
+  --navy-2: #173f5f;
 
-      --green: #059669;
-      --green-light: #ecfdf5;
+  --blue: #2563eb;
+  --blue-2: #3b82f6;
+  --blue-light: #eff6ff;
 
-      --orange: #d97706;
-      --red: #dc2626;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
 
-      --bg: #f4f7fb;
-      --card: #ffffff;
+  --cyan: #0891b2;
+  --cyan-light: #ecfeff;
 
-      --border: #e5eaf0;
+  --green: #059669;
+  --green-light: #ecfdf5;
 
-      --text: #172b4d;
-      --muted: #718096;
+  --orange: #d97706;
+  --orange-light: #fff7ed;
 
-      --radius: 18px;
+  --red: #dc2626;
 
-      --shadow:
-        0 12px 35px rgba(16, 42, 67, .08);
+  --bg: #f4f7fb;
+  --card: #ffffff;
 
-    }
+  --border: #e5eaf0;
 
+  --text: #172b4d;
+  --muted: #718096;
 
-    * {
-      box-sizing: border-box;
-    }
+  --radius: 18px;
 
+  --shadow:
+    0 12px 35px rgba(16,42,67,.08);
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-
-    body {
-
-      margin: 0;
-
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      background:
-
-        radial-gradient(
-          circle at top left,
-          rgba(37, 99, 235, .08),
-          transparent 35%
-        ),
-
-        var(--bg);
-
-      color: var(--text);
-
-    }
-
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-
-    /* =====================================================
-       TOPBAR
-       ===================================================== */
-
-    .topbar {
-
-      height: 76px;
-
-      background:
-        rgba(255,255,255,.94);
-
-      border-bottom:
-        1px solid
-        var(--border);
-
-      backdrop-filter:
-        blur(12px);
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      padding:
-        0 42px;
-
-      position:
-        sticky;
-
-      top: 0;
-
-      z-index: 50;
-
-    }
-
-
-    .brand {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        13px;
-
-    }
-
-
-    .brand-icon {
-
-      width: 42px;
-      height: 42px;
-
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--navy),
-          var(--blue)
-        );
-
-      color:
-        white;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      font-size:
-        12px;
-
-      font-weight:
-        900;
-
-      box-shadow:
-        0 8px 18px
-        rgba(37,99,235,.2);
-
-    }
-
-
-    .brand-text strong {
-
-      display:
-        block;
-
-      font-size:
-        15px;
-
-      letter-spacing:
-        .2px;
-
-    }
-
-
-    .brand-text span {
-
-      display:
-        block;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-      margin-top:
-        2px;
-
-    }
-
-
-    .status {
-
-      margin-left:
-        auto;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-      padding:
-        8px 13px;
-
-      border-radius:
-        999px;
-
-      background:
-        var(--green-light);
-
-      color:
-        var(--green);
-
-      font-size:
-        12px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    .status-dot {
-
-      width: 7px;
-      height: 7px;
-
-      background:
-        var(--green);
-
-      border-radius:
-        50%;
-
-    }
-
-
-    /* =====================================================
-       PAGE
-       ===================================================== */
-
-    .page {
-
-      width:
-        min(
-          1240px,
-          calc(100% - 40px)
-        );
-
-      margin:
-        38px auto 60px;
-
-    }
-
-
-    .hero {
-
-      margin-bottom:
-        28px;
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        end;
-
-      gap:
-        30px;
-
-    }
-
-
-    .hero h1 {
-
-      margin:
-        0;
-
-      font-size:
-        clamp(
-          27px,
-          3vw,
-          38px
-        );
-
-      line-height:
-        1.15;
-
-      letter-spacing:
-        -.8px;
-
-    }
-
-
-    .hero p {
-
-      margin:
-        10px 0 0;
-
-      color:
-        var(--muted);
-
-      max-width:
-        680px;
-
-      font-size:
-        14px;
-
-      line-height:
-        1.7;
-
-    }
-
-
-    .hero-badge {
-
-      padding:
-        11px 15px;
-
-      background:
-        white;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        12px;
-
-      box-shadow:
-        0 5px 20px
-        rgba(16,42,67,.05);
-
-      font-size:
-        12px;
-
-      font-weight:
-        700;
-
-      white-space:
-        nowrap;
-
-    }
-
-
-    /* =====================================================
-       LAYOUT
-       ===================================================== */
-
-    .layout {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        minmax(0, 1fr);
-
-      gap:
-        24px;
-
-      align-items:
-        start;
-
-    }
-
-
-    .card {
-
-      background:
-        var(--card);
-
-      border:
-        1px solid
-        rgba(229,234,240,.9);
-
-      border-radius:
-        var(--radius);
-
-      box-shadow:
-        var(--shadow);
-
-    }
-
-
-    /* =====================================================
-       FORM
-       ===================================================== */
-
-    .form-card {
-
-      padding:
-        30px;
-
-    }
-
-
-    .section-title {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        12px;
-
-      margin-bottom:
-        24px;
-
-    }
-
-
-    .section-number {
-
-      width:
-        34px;
-
-      height:
-        34px;
-
-      border-radius:
-        10px;
-
-      background:
-        var(--blue-light);
-
-      color:
-        var(--blue);
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      font-weight:
-        800;
-
-      font-size:
-        13px;
-
-    }
-
-
-    .section-title h2 {
-
-      margin:
-        0;
-
-      font-size:
-        17px;
-
-    }
-
-
-    .section-title p {
-
-      margin:
-        3px 0 0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-    }
-
-
-    .form-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap:
-        19px;
-
-    }
-
-
-    .field {
-      min-width: 0;
-    }
-
-
-    .full {
-      grid-column:
-        1 / -1;
-    }
-
-
-    label {
-
-      display:
-        block;
-
-      margin-bottom:
-        7px;
-
-      font-size:
-        12px;
-
-      font-weight:
-        800;
-
-      color:
-        #334e68;
-
-    }
-
-
-    .required {
-      color:
-        var(--red);
-    }
-
-
-    input,
-    select,
-    textarea {
-
-      width:
-        100%;
-
-      border:
-        1px solid
-        #dce3eb;
-
-      background:
-        #fff;
-
-      color:
-        var(--text);
-
-      border-radius:
-        11px;
-
-      padding:
-        12px 13px;
-
-      outline:
-        none;
-
-      transition:
-        border .2s,
-        box-shadow .2s;
-
-      font-size:
-        13px;
-
-    }
-
-
-    input:hover,
-    select:hover,
-    textarea:hover {
-
-      border-color:
-        #b9c5d2;
-
-    }
-
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-
-      border-color:
-        var(--blue);
-
-      box-shadow:
-        0 0 0 4px
-        rgba(37,99,235,.09);
-
-    }
-
-
-    textarea {
-
-      min-height:
-        104px;
-
-      resize:
-        vertical;
-
-      line-height:
-        1.55;
-
-    }
-
-
-    .field-help {
-
-      margin-top:
-        6px;
-
-      color:
-        #8a99aa;
-
-      font-size:
-        11px;
-
-      line-height:
-        1.4;
-
-    }
-
-
-    /* =====================================================
-       JOURNAL
-       ===================================================== */
-
-    .journal-select {
-
-      padding:
-        14px 15px;
-
-      font-size:
-        14px;
-
-      font-weight:
-        600;
-
-    }
-
-
-    .journal-info {
-
-      display:
-        flex;
-
-      gap:
-        8px;
-
-      align-items:
-        center;
-
-      margin-top:
-        8px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-      flex-wrap:
-        wrap;
-
-    }
-
-
-    .journal-info strong {
-
-      color:
-        var(--navy);
-
-    }
-
-
-    /* =====================================================
-       LOA NUMBER
-       ===================================================== */
-
-    .number-preview {
-
-      margin-top:
-        27px;
-
-      padding:
-        20px;
-
-      border-radius:
-        14px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #f7fbff,
-          #eef6ff
-        );
-
-      border:
-        1px solid
-        #d8e9fb;
-
-    }
-
-
-    .number-label {
-
-      color:
-        #64809b;
-
-      text-transform:
-        uppercase;
-
-      letter-spacing:
-        .7px;
-
-      font-size:
-        10px;
-
-      font-weight:
-        800;
-
-      margin-bottom:
-        8px;
-
-    }
-
-
-    .loa-number {
-
-      min-height:
-        36px;
-
-      color:
-        var(--navy);
-
-      font-size:
-        clamp(
-          19px,
-          2vw,
-          26px
-        );
-
-      font-weight:
-        900;
-
-      letter-spacing:
-        -.3px;
-
-      word-break:
-        break-word;
-
-    }
-
-
-    .format-help {
-
-      margin-top:
-        7px;
-
-      color:
-        #718096;
-
-      font-size:
-        10px;
-
-    }
-
-
-    /* =====================================================
-       BUTTON
-       ===================================================== */
-
-    .form-actions {
-
-      margin-top:
-        25px;
-
-      display:
-        flex;
-
-      gap:
-        10px;
-
-    }
-
-
-    .btn {
-
-      border:
-        0;
-
-      border-radius:
-        11px;
-
-      padding:
-        14px 20px;
-
-      cursor:
-        pointer;
-
-      font-size:
-        13px;
-
-      font-weight:
-        800;
-
-      transition:
-        transform .15s,
-        box-shadow .15s,
-        opacity .15s;
-
-    }
-
-
-    .btn:hover {
-
-      transform:
-        translateY(-1px);
-
-    }
-
-
-    .btn-primary {
-
-      flex:
-        1;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--navy),
-          var(--blue)
-        );
-
-      color:
-        white;
-
-      box-shadow:
-        0 10px 22px
-        rgba(37,99,235,.18);
-
-    }
-
-
-    .btn-secondary {
-
-      background:
-        #f3f5f8;
-
-      color:
-        #52677d;
-
-    }
-
-
-    .btn:disabled {
-
-      opacity:
-        .55;
-
-      cursor:
-        not-allowed;
-
-      transform:
-        none;
-
-    }
-
-
-    /* =====================================================
-       SIDEBAR
-       ===================================================== */
-
-    .side {
-
-      display:
-        flex;
-
-      flex-direction:
-        column;
-
-      gap:
-        20px;
-
-    }
-
-
-    .preview-card {
-
-      padding:
-        25px;
-
-    }
-
-
-    .preview-header {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      margin-bottom:
-        18px;
-
-    }
-
-
-    .preview-header h3 {
-
-      margin:
-        0;
-
-      font-size:
-        15px;
-
-    }
-
-
-    .preview-label {
-
-      padding:
-        6px 9px;
-
-      background:
-        #f3f5f8;
-
-      color:
-        #718096;
-
-      border-radius:
-        7px;
-
-      font-size:
-        10px;
-
-      font-weight:
-        800;
-
-      text-transform:
-        uppercase;
-
-    }
-
-
-    .preview-document {
-
-      border:
-        1px solid
-        #e4e9ef;
-
-      border-radius:
-        12px;
-
-      background:
-        #fafbfc;
-
-      padding:
-        18px;
-
-    }
-
-
-    .document-top {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      margin-bottom:
-        18px;
-
-      padding-bottom:
-        12px;
-
-      border-bottom:
-        1px solid
-        #e8edf2;
-
-    }
-
-
-    .document-logo {
-
-      width:
-        35px;
-
-      height:
-        35px;
-
-      border-radius:
-        8px;
-
-      background:
-        var(--navy);
-
-      color:
-        white;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      font-size:
-        11px;
-
-      font-weight:
-        900;
-
-    }
-
-
-    .document-journal {
-
-      text-align:
-        right;
-
-      font-size:
-        9px;
-
-      color:
-        #718096;
-
-      line-height:
-        1.5;
-
-    }
-
-
-    .document-title {
-
-      text-align:
-        center;
-
-      font-size:
-        12px;
-
-      font-weight:
-        900;
-
-      margin:
-        12px 0 15px;
-
-    }
-
-
-    .doc-number {
-
-      text-align:
-        center;
-
-      font-size:
-        9px;
-
-      color:
-        #718096;
-
-      margin-bottom:
-        18px;
-
-      word-break:
-        break-word;
-
-    }
-
-
-    .doc-row {
-
-      margin-bottom:
-        11px;
-
-    }
-
-
-    .doc-line {
-
-      height:
-        6px;
-
-      background:
-        #e7ebef;
-
-      border-radius:
-        20px;
-
-      margin-bottom:
-        5px;
-
-    }
-
-
-    .doc-line.short {
-      width: 58%;
-    }
-
-
-    .doc-line.medium {
-      width: 78%;
-    }
-
-
-    .doc-line.long {
-      width: 94%;
-    }
-
-
-    .doc-author {
-
-      font-size:
-        10px;
-
-      color:
-        var(--navy);
-
-      font-weight:
-        800;
-
-      margin-bottom:
-        8px;
-
-      word-break:
-        break-word;
-
-      white-space:
-        pre-wrap;
-
-    }
-
-
-    /* =====================================================
-       INFO
-       ===================================================== */
-
-    .info-card {
-
-      padding:
-        24px;
-
-    }
-
-
-    .info-card h3 {
-
-      margin:
-        0 0 17px;
-
-      font-size:
-        14px;
-
-    }
-
-
-    .info-item {
-
-      display:
-        flex;
-
-      gap:
-        11px;
-
-      margin-bottom:
-        14px;
-
-    }
-
-
-    .info-item:last-child {
-
-      margin-bottom:
-        0;
-
-    }
-
-
-    .info-icon {
-
-      width:
-        29px;
-
-      height:
-        29px;
-
-      flex-shrink:
-        0;
-
-      border-radius:
-        8px;
-
-      background:
-        #f1f5f9;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      font-size:
-        12px;
-
-    }
-
-
-    .info-item strong {
-
-      display:
-        block;
-
-      font-size:
-        11px;
-
-      margin-bottom:
-        2px;
-
-    }
-
-
-    .info-item span {
-
-      display:
-        block;
-
-      font-size:
-        10px;
-
-      color:
-        var(--muted);
-
-      line-height:
-        1.45;
-
-    }
-
-
-    /* =====================================================
-       LOADING
-       ===================================================== */
-
-    .loading {
-
-      display:
-        none;
-
-      margin-top:
-        17px;
-
-      padding:
-        13px 15px;
-
-      border-radius:
-        10px;
-
-      background:
-        #f8fafc;
-
-      color:
-        #64748b;
-
-      font-size:
-        12px;
-
-      align-items:
-        center;
-
-      gap:
-        9px;
-
-    }
-
-
-    .loading.active {
-
-      display:
-        flex;
-
-    }
-
-
-    .spinner {
-
-      width:
-        15px;
-
-      height:
-        15px;
-
-      border:
-        2px solid
-        #dbe4ee;
-
-      border-top-color:
-        var(--blue);
-
-      border-radius:
-        50%;
-
-      animation:
-        spin .7s linear infinite;
-
-    }
-
-
-    @keyframes spin {
-
-      to {
-        transform:
-          rotate(360deg);
-      }
-
-    }
-
-
-    /* =====================================================
-       ERROR
-       ===================================================== */
-
-    .error {
-
-      display:
-        none;
-
-      margin-top:
-        15px;
-
-      padding:
-        13px 15px;
-
-      border-radius:
-        10px;
-
-      background:
-        #fff5f5;
-
-      border:
-        1px solid
-        #fed7d7;
-
-      color:
-        #b42318;
-
-      font-size:
-        12px;
-
-      line-height:
-        1.5;
-
-    }
-
-
-    .error.active {
-
-      display:
-        block;
-
-    }
-
-
-    /* =====================================================
-       RESULT
-       ===================================================== */
-
-    .result {
-
-      display:
-        none;
-
-      margin-top:
-        20px;
-
-      padding:
-        20px;
-
-      border-radius:
-        14px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ecfdf5,
-          #f3fbf8
-        );
-
-      border:
-        1px solid
-        #bbf7d0;
-
-    }
-
-
-    .result.active {
-
-      display:
-        block;
-
-    }
-
-
-    .success-title {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        10px;
-
-      color:
-        #047857;
-
-      font-size:
-        14px;
-
-      font-weight:
-        900;
-
-      margin-bottom:
-        9px;
-
-    }
-
-
-    .success-icon {
-
-      width:
-        27px;
-
-      height:
-        27px;
-
-      border-radius:
-        50%;
-
-      background:
-        #d1fae5;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-    }
-
-
-    .result-number {
-
-      font-size:
-        20px;
-
-      font-weight:
-        900;
-
-      color:
-        var(--navy);
-
-      word-break:
-        break-word;
-
-      margin-bottom:
-        5px;
-
-    }
-
-
-    .result-journal {
-
-      color:
-        #5d776d;
-
-      font-size:
-        11px;
-
-      margin-bottom:
-        14px;
-
-    }
-
-
-    .result-actions {
-
-      display:
-        flex;
-
-      flex-wrap:
-        wrap;
-
-      gap:
-        9px;
-
-    }
-
-
-    .download-btn,
-    .doc-btn {
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      padding:
-        11px 15px;
-
-      border-radius:
-        9px;
-
-      text-decoration:
-        none;
-
-      font-size:
-        11px;
-
-      font-weight:
-        800;
-
-    }
-
-
-    .download-btn {
-
-      background:
-        var(--navy);
-
-      color:
-        white;
-
-    }
-
-
-    .doc-btn {
-
-      background:
-        white;
-
-      color:
-        var(--navy);
-
-      border:
-        1px solid
-        #d5e2dc;
-
-    }
-
-
-    /* =====================================================
-       FOOTER
-       ===================================================== */
-
-    footer {
-
-      text-align:
-        center;
-
-      margin-top:
-        30px;
-
-      color:
-        #9aa7b5;
-
-      font-size:
-        10px;
-
-    }
-
-
-    /* =====================================================
-       RESPONSIVE
-       ===================================================== */
-
-    @media (max-width: 900px) {
-
-      .layout {
-
-        grid-template-columns:
-          1fr;
-
-      }
-
-      .side {
-
-        display:
-          grid;
-
-        grid-template-columns:
-          1fr 1fr;
-
-      }
-
-    }
-
-
-    @media (max-width: 650px) {
-
-      .topbar {
-
-        padding:
-          0 18px;
-
-      }
-
-      .status {
-
-        display:
-          none;
-
-      }
-
-      .page {
-
-        width:
-          calc(100% - 24px);
-
-        margin-top:
-          22px;
-
-      }
-
-      .hero {
-
-        display:
-          block;
-
-      }
-
-      .hero-badge {
-
-        display:
-          inline-block;
-
-        margin-top:
-          15px;
-
-      }
-
-      .form-card,
-      .preview-card,
-      .info-card {
-
-        padding:
-          20px;
-
-      }
-
-      .form-grid {
-
-        grid-template-columns:
-          1fr;
-
-      }
-
-      .full {
-
-        grid-column:
-          auto;
-
-      }
-
-      .side {
-
-        display:
-          flex;
-
-      }
-
-      .form-actions {
-
-        flex-direction:
-          column;
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       VISUAL ENHANCEMENT — TIDAK MENGUBAH KONTEN/FUNGSI
-       ===================================================== */
-
-    :root {
-      --navy: #0b1f3a;
-      --navy-2: #12355b;
-      --blue: #3b82f6;
-      --blue-light: #eef5ff;
-      --green: #10b981;
-      --green-light: #ecfdf5;
-      --bg: #f6f8fc;
-      --card: rgba(255,255,255,.96);
-      --border: #e7ebf2;
-      --text: #14243a;
-      --muted: #718096;
-      --radius: 20px;
-      --shadow: 0 18px 50px rgba(15, 35, 65, .09);
-    }
-
-    body {
-      background:
-        radial-gradient(circle at 5% 0%, rgba(59,130,246,.12), transparent 28%),
-        radial-gradient(circle at 95% 15%, rgba(16,185,129,.07), transparent 24%),
-        linear-gradient(180deg, #f8faff 0%, #f3f6fb 100%);
-    }
-
-    .topbar {
-      height: 82px;
-      padding: 0 46px;
-      background: rgba(255,255,255,.82);
-      border-bottom: 1px solid rgba(226,232,240,.8);
-      box-shadow: 0 5px 25px rgba(15,35,65,.045);
-    }
-
-    .brand { gap: 14px; }
-
-    .brand-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #0b1f3a 0%, #2563eb 100%);
-      box-shadow: 0 10px 24px rgba(37,99,235,.25);
-      letter-spacing: .5px;
-    }
-
-    .brand-text strong {
-      font-size: 16px;
-      letter-spacing: -.1px;
-    }
-
-    .brand-text span {
-      font-size: 11px;
-      letter-spacing: .2px;
-    }
-
-    .status {
-      padding: 9px 14px;
-      border: 1px solid #ccefe1;
-      box-shadow: 0 5px 16px rgba(16,185,129,.08);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      box-shadow: 0 0 0 4px rgba(16,185,129,.10);
-    }
-
-    .page {
-      width: min(1280px, calc(100% - 48px));
-      margin: 42px auto 65px;
-    }
-
-    .hero {
-      margin-bottom: 30px;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(30px, 3.3vw, 42px);
-      letter-spacing: -1.2px;
-      background: linear-gradient(135deg, #0b1f3a, #2563eb);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero p {
-      margin-top: 12px;
-      font-size: 14px;
-      max-width: 720px;
-    }
-
-    .hero-badge {
-      padding: 12px 16px;
-      border: 1px solid #dce7f5;
-      border-radius: 14px;
-      background: rgba(255,255,255,.9);
-      box-shadow: 0 10px 28px rgba(15,35,65,.07);
-      color: #31506f;
-    }
-
-    .layout {
-      grid-template-columns: minmax(0, 1.55fr) minmax(330px, .72fr);
-      gap: 26px;
-    }
-
-    .card {
-      border: 1px solid rgba(226,232,240,.9);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .form-card {
-      padding: 32px;
-      position: relative;
-    }
-
-    .form-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #0b1f3a, #3b82f6, #60a5fa);
-    }
-
-    .section-title {
-      margin-bottom: 27px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid #edf1f6;
-    }
-
-    .section-number {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #eff6ff, #dbeafe);
-      box-shadow: inset 0 0 0 1px #d7e7fb;
-    }
-
-    .section-title h2 {
-      font-size: 18px;
-      letter-spacing: -.2px;
-    }
-
-    .form-grid {
-      gap: 21px 19px;
-    }
-
-    label {
-      font-size: 11px;
-      letter-spacing: .35px;
-      text-transform: uppercase;
-      color: #40566e;
-    }
-
-    input, select, textarea {
-      border: 1px solid #dfe6ef;
-      border-radius: 12px;
-      padding: 13px 14px;
-      background: #fbfcfe;
-      box-shadow: 0 2px 5px rgba(15,35,65,.025);
-    }
-
-    input:hover, select:hover, textarea:hover {
-      border-color: #b9c9dc;
-      background: #fff;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: #3b82f6;
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(59,130,246,.10), 0 5px 15px rgba(37,99,235,.05);
-    }
-
-    textarea { min-height: 112px; }
-
-    .journal-select {
-      padding: 15px 16px;
-      border-radius: 13px;
-      background: linear-gradient(180deg, #fff, #f9fbff);
-    }
-
-    .journal-info {
-      margin-top: 10px;
-      padding-left: 3px;
-    }
-
-    .journal-info strong {
-      padding: 3px 7px;
-      border-radius: 6px;
-      background: #f1f6fd;
-      color: #214d82;
-    }
-
-    .number-preview {
-      margin-top: 29px;
-      padding: 21px;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%);
-      border: 1px solid #d7e7fa;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
-    }
-
-    .loa-number {
-      font-size: clamp(20px, 2.2vw, 28px);
-      letter-spacing: -.5px;
-    }
-
-    .form-actions {
-      margin-top: 27px;
-      gap: 12px;
-    }
-
-    .btn {
-      border-radius: 12px;
-      padding: 14px 21px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #0b1f3a 0%, #2563eb 100%);
-      box-shadow: 0 12px 26px rgba(37,99,235,.20);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 15px 30px rgba(37,99,235,.27);
-    }
-
-    .btn-secondary {
-      border: 1px solid #e1e7ef;
-      background: #f7f9fc;
-    }
-
-    .side { gap: 22px; }
-
-    .preview-card, .info-card { padding: 26px; }
-
-    .preview-header {
-      margin-bottom: 20px;
-    }
-
-    .preview-header h3, .info-card h3 {
-      font-size: 15px;
-      letter-spacing: -.1px;
-    }
-
-    .preview-label {
-      background: #eef5ff;
-      color: #2563eb;
-      border: 1px solid #d9e8fb;
-      border-radius: 8px;
-    }
-
-    .preview-document {
-      border: 1px solid #e1e8f0;
-      border-radius: 14px;
-      background: linear-gradient(145deg, #fff, #f8fafc);
-      padding: 20px;
-      box-shadow: inset 0 1px 0 #fff, 0 7px 20px rgba(15,35,65,.04);
-    }
-
-    .document-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #0b1f3a, #2563eb);
-      box-shadow: 0 7px 15px rgba(37,99,235,.18);
-    }
-
-    .document-title {
-      font-size: 13px;
-      letter-spacing: .4px;
-    }
-
-    .doc-number {
-      font-size: 10px;
-      color: #58708a;
-    }
-
-    .doc-line {
-      background: #e5eaf0;
-    }
-
-    .doc-author {
-      color: #183b61;
-    }
-
-    .info-card {
-      background: linear-gradient(145deg, #ffffff, #fbfcfe);
-    }
-
-    .info-item {
-      padding: 10px 0;
-      margin-bottom: 6px;
-      border-bottom: 1px solid #f0f3f7;
-    }
-
-    .info-item:last-child {
-      border-bottom: 0;
-    }
-
-    .info-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
-      background: #f0f5fb;
-      color: #315d8b;
-      font-weight: 800;
-    }
-
-    .loading {
-      border: 1px solid #e2eaf3;
-      background: #f8fbff;
-    }
-
-    .result {
-      box-shadow: 0 10px 25px rgba(16,185,129,.07);
-    }
-
-    .download-btn, .doc-btn {
-      border-radius: 10px;
-      transition: transform .15s, box-shadow .15s;
-    }
-
-    .download-btn:hover, .doc-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 7px 16px rgba(15,35,65,.08);
-    }
-
-    footer {
-      margin-top: 36px;
-      font-size: 10px;
-      letter-spacing: .2px;
-    }
-
-    @media (max-width: 900px) {
-      .topbar { padding: 0 28px; }
-      .page { width: min(900px, calc(100% - 32px)); }
-      .layout { gap: 20px; }
-    }
-
-    @media (max-width: 650px) {
-      .topbar { height: 70px; padding: 0 16px; }
-      .brand-icon { width: 40px; height: 40px; border-radius: 11px; }
-      .brand-text strong { font-size: 14px; }
-      .page { width: calc(100% - 20px); margin-top: 22px; }
-      .hero h1 { font-size: 29px; }
-      .form-card, .preview-card, .info-card { padding: 20px; }
-    }
-
-  </style>
-
-
-<style id="colorful-theme">
-/* ===== COLORFUL MODERN THEME — VISUAL ONLY ===== */
-:root{
-  --navy:#172554;
-  --navy-2:#1e3a8a;
-  --blue:#4f46e5;
-  --blue-light:#eef2ff;
-  --green:#059669;
-  --green-light:#ecfdf5;
-  --orange:#f59e0b;
-  --red:#ef4444;
-  --bg:#f6f7ff;
-  --card:#ffffff;
-  --border:#e5e7eb;
-  --text:#172554;
-  --muted:#64748b;
-  --radius:20px;
-  --shadow:0 18px 45px rgba(49,46,129,.10);
 }
 
-body{
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+
+  margin: 0;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
   background:
-    radial-gradient(circle at 8% 8%,rgba(99,102,241,.16),transparent 28%),
-    radial-gradient(circle at 92% 12%,rgba(14,165,233,.13),transparent 25%),
-    radial-gradient(circle at 78% 90%,rgba(16,185,129,.10),transparent 24%),
-    linear-gradient(135deg,#f8faff 0%,#f5f3ff 48%,#f0f9ff 100%);
+
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(37,99,235,.12),
+      transparent 32%
+    ),
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124,58,237,.10),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      180deg,
+      #f8fbff 0%,
+      var(--bg) 100%
+    );
+
+  color: var(--text);
+
 }
 
-.topbar{
-  height:78px;
-  padding:0 42px;
-  background:rgba(255,255,255,.88);
-  border-bottom:1px solid rgba(99,102,241,.12);
-  box-shadow:0 5px 25px rgba(30,41,59,.05);
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
-.brand-icon{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#172554 0%,#4f46e5 52%,#06b6d4 100%);
-  box-shadow:0 10px 25px rgba(79,70,229,.25);
-}
 
-.brand-text strong{color:#172554;font-size:16px}
-.brand-text span{color:#64748b}
+/* =========================================================
+   TOPBAR
+   ========================================================= */
 
-.status{
-  background:linear-gradient(135deg,#ecfdf5,#dffaf0);
-  border:1px solid #bbf7d0;
-  box-shadow:0 5px 16px rgba(5,150,105,.08);
-}
+.topbar {
 
-.page{margin:42px auto 65px}
+  min-height: 76px;
 
-.hero{
-  padding:30px 34px;
-  margin-bottom:28px;
-  border-radius:24px;
   background:
-    linear-gradient(135deg,rgba(255,255,255,.97),rgba(238,242,255,.92));
-  border:1px solid rgba(99,102,241,.13);
-  box-shadow:0 18px 45px rgba(49,46,129,.08);
-  position:relative;
-  overflow:hidden;
+    rgba(255,255,255,.94);
+
+  border-bottom:
+    1px solid
+    var(--border);
+
+  backdrop-filter:
+    blur(14px);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  padding:
+    0 42px;
+
+  position:
+    sticky;
+
+  top: 0;
+
+  z-index: 50;
+
 }
 
-.hero:after{
-  content:"";
-  position:absolute;
-  width:190px;height:190px;
-  right:-65px;top:-85px;
-  border-radius:50%;
-  background:linear-gradient(135deg,rgba(79,70,229,.14),rgba(6,182,212,.10));
+
+.brand {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    13px;
+
 }
 
-.hero h1{
-  color:#172554;
-  font-weight:900;
-}
 
-.hero p{color:#64748b}
+.brand-icon {
 
-.hero-badge{
-  position:relative;
-  z-index:1;
-  background:linear-gradient(135deg,#eef2ff,#e0f2fe);
-  color:#3730a3;
-  border:1px solid #c7d2fe;
-  box-shadow:0 8px 20px rgba(79,70,229,.09);
-}
+  width: 44px;
+  height: 44px;
 
-.card{
-  border:1px solid rgba(99,102,241,.11);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
+  border-radius: 13px;
 
-.form-card{
-  background:rgba(255,255,255,.96);
-  position:relative;
-}
-
-.form-card:before{
-  content:"";
-  display:block;
-  height:5px;
-  margin:-30px -30px 27px;
-  background:linear-gradient(90deg,#4f46e5,#06b6d4,#10b981,#f59e0b);
-}
-
-.section-number{
-  background:linear-gradient(135deg,#eef2ff,#e0e7ff);
-  color:#4338ca;
-  border:1px solid #c7d2fe;
-  box-shadow:0 7px 15px rgba(79,70,229,.08);
-}
-
-.section-title h2{color:#172554}
-.section-title p{color:#64748b}
-
-label{color:#334155}
-
-input,select,textarea{
-  border:1px solid #dbe3ef;
-  background:#fbfdff;
-  border-radius:13px;
-}
-
-input:hover,select:hover,textarea:hover{
-  border-color:#a5b4fc;
-  background:#fff;
-}
-
-input:focus,select:focus,textarea:focus{
-  border-color:#6366f1;
-  box-shadow:0 0 0 4px rgba(99,102,241,.10);
-  background:#fff;
-}
-
-.journal-select{
   background:
-    linear-gradient(135deg,#ffffff,#f5f7ff);
-  border-color:#c7d2fe;
+
+    linear-gradient(
+      135deg,
+      var(--navy),
+      var(--blue),
+      var(--purple)
+    );
+
+  color:
+    white;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .4px;
+
+  box-shadow:
+    0 9px 22px
+    rgba(37,99,235,.25);
+
 }
 
-.journal-info strong{color:#4338ca}
 
-.number-preview{
+.brand-text strong {
+
+  display:
+    block;
+
+  font-size:
+    16px;
+
+  letter-spacing:
+    .2px;
+
+}
+
+
+.brand-text span {
+
+  display:
+    block;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+  margin-top:
+    3px;
+
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page {
+
+  width:
+    min(
+      1240px,
+      calc(100% - 40px)
+    );
+
+  margin:
+    38px auto 60px;
+
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+
+  margin-bottom:
+    28px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    30px;
+
+}
+
+
+.hero h1 {
+
+  margin:
+    0;
+
+  font-size:
+    clamp(
+      27px,
+      3vw,
+      38px
+    );
+
+  line-height:
+    1.15;
+
+  letter-spacing:
+    -.8px;
+
   background:
-    linear-gradient(135deg,#eef2ff 0%,#eff6ff 50%,#ecfeff 100%);
-  border:1px solid #c7d2fe;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+
+    linear-gradient(
+      90deg,
+      var(--navy),
+      var(--blue),
+      var(--purple)
+    );
+
+  -webkit-background-clip:
+    text;
+
+  -webkit-text-fill-color:
+    transparent;
+
 }
 
-.number-label{color:#4f46e5}
-.loa-number{color:#172554}
 
-.btn-primary{
-  background:linear-gradient(135deg,#172554 0%,#4f46e5 55%,#0891b2 100%);
-  box-shadow:0 12px 25px rgba(79,70,229,.22);
-}
+.hero p {
 
-.btn-primary:hover{
-  box-shadow:0 15px 30px rgba(79,70,229,.30);
-}
+  margin:
+    10px 0 0;
 
-.btn-secondary{
-  background:#f1f5f9;
-  color:#475569;
-  border:1px solid #e2e8f0;
-}
+  color:
+    var(--muted);
 
-.btn-secondary:hover{
-  background:#e0e7ff;
-  color:#3730a3;
+  max-width:
+    700px;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.7;
+
 }
 
-.preview-card{
-  background:linear-gradient(145deg,#ffffff,#f8faff);
-}
 
-.preview-header h3{color:#172554}
+.hero-badge {
 
-.preview-label{
-  background:linear-gradient(135deg,#eef2ff,#e0f2fe);
-  color:#4338ca;
-  border:1px solid #c7d2fe;
-}
+  padding:
+    12px 17px;
 
-.preview-document{
-  background:linear-gradient(145deg,#ffffff,#f8fafc);
-  border-color:#dbe3ef;
-  box-shadow:inset 0 1px 0 white;
-}
-
-.document-logo{
-  background:linear-gradient(135deg,#172554,#4f46e5,#06b6d4);
-  box-shadow:0 7px 16px rgba(79,70,229,.18);
-}
-
-.document-title{color:#172554}
-.doc-author{color:#3730a3}
-
-.info-card{
-  background:linear-gradient(145deg,#ffffff,#f8faff);
-}
-
-.info-card h3{color:#172554}
-
-.info-icon{
-  background:linear-gradient(135deg,#eef2ff,#e0f2fe);
-  color:#4338ca;
-  border:1px solid #c7d2fe;
-}
-
-.result{
-  background:linear-gradient(135deg,#ecfdf5,#effcf7,#ecfeff);
-  border:1px solid #a7f3d0;
-  box-shadow:0 10px 25px rgba(5,150,105,.08);
-}
-
-.success-title{color:#047857}
-.download-btn{
-  background:linear-gradient(135deg,#172554,#4f46e5);
-  box-shadow:0 8px 18px rgba(79,70,229,.18);
-}
-.doc-btn{
-  border-color:#c7d2fe;
-  color:#3730a3;
-  background:#fff;
-}
-
-.loading{
-  background:linear-gradient(135deg,#f8fafc,#eef2ff);
-  border:1px solid #e0e7ff;
-}
-
-footer{color:#94a3b8}
-
-@media(max-width:650px){
-  .topbar{padding:0 16px}
-  .hero{padding:24px 20px}
-  .form-card:before{margin:-20px -20px 20px}
-}
-</style>
-
-
-<style id="nawala-final-theme">
-/* ===== NAWALA EDUCATION — FINAL VISUAL OVERRIDES ===== */
-.topbar{
-  justify-content:space-between;
-}
-.status{
-  margin-left:auto;
-  background:linear-gradient(135deg,#eef2ff,#e0f2fe);
-  color:#3730a3;
-  border:1px solid #c7d2fe;
-}
-.status-dot{
-  background:#4f46e5;
-}
-.layout{
-  grid-template-columns:minmax(0,1fr) !important;
-}
-.side{
-  display:none !important;
-}
-.form-card{
-  max-width:100%;
-}
-.hero{
   background:
-    linear-gradient(135deg,rgba(255,255,255,.98),rgba(238,242,255,.96) 55%,rgba(236,254,255,.92));
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f5f3ff
+    );
+
+  border:
+    1px solid
+    #dbeafe;
+
+  border-radius:
+    12px;
+
+  color:
+    var(--blue);
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+
 }
-.hero h1{
-  background:linear-gradient(90deg,#172554,#4f46e5,#0891b2);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
+.layout {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1fr);
+
+  gap:
+    24px;
+
+  align-items:
+    start;
+
 }
-.brand-text strong{
-  color:#172554;
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+
+  background:
+    rgba(255,255,255,.97);
+
+  border:
+    1px solid
+    rgba(229,234,240,.9);
+
+  border-radius:
+    var(--radius);
+
+  box-shadow:
+    var(--shadow);
+
 }
-@media(max-width:650px){
-  .status{
-    display:flex;
-    padding:7px 10px;
-    font-size:10px;
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-card {
+
+  padding:
+    32px;
+
+}
+
+
+.section-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  margin-bottom:
+    24px;
+
+}
+
+
+.section-number {
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  border-radius:
+    11px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      var(--blue-light),
+      var(--purple-light)
+    );
+
+  color:
+    var(--blue);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  font-weight:
+    900;
+
+  font-size:
+    12px;
+
+}
+
+
+.section-title h2 {
+
+  margin:
+    0;
+
+  font-size:
+    18px;
+
+}
+
+
+.section-title p {
+
+  margin:
+    3px 0 0;
+
+  color:
+    var(--muted);
+
+  font-size:
+    12px;
+
+}
+
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.form-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    19px;
+
+}
+
+
+.field {
+  min-width: 0;
+}
+
+
+.full {
+
+  grid-column:
+    1 / -1;
+
+}
+
+
+label {
+
+  display:
+    block;
+
+  margin-bottom:
+    7px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  color:
+    #334e68;
+
+}
+
+
+.required {
+
+  color:
+    var(--red);
+
+}
+
+
+input,
+select,
+textarea {
+
+  width:
+    100%;
+
+  border:
+    1px solid
+    #dce3eb;
+
+  background:
+    #fff;
+
+  color:
+    var(--text);
+
+  border-radius:
+    11px;
+
+  padding:
+    12px 13px;
+
+  outline:
+    none;
+
+  transition:
+    border .2s,
+    box-shadow .2s,
+    transform .2s;
+
+  font-size:
+    13px;
+
+}
+
+
+input:hover,
+select:hover,
+textarea:hover {
+
+  border-color:
+    #aebdcd;
+
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+
+  border-color:
+    var(--blue);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(37,99,235,.09);
+
+}
+
+
+textarea {
+
+  min-height:
+    104px;
+
+  resize:
+    vertical;
+
+  line-height:
+    1.55;
+
+}
+
+
+.field-help {
+
+  margin-top:
+    6px;
+
+  color:
+    #8a99aa;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.4;
+
+}
+
+
+/* =========================================================
+   JOURNAL
+   ========================================================= */
+
+.journal-select {
+
+  padding:
+    14px 15px;
+
+  font-size:
+    14px;
+
+  font-weight:
+    600;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f9fbff
+    );
+
+}
+
+
+.journal-info {
+
+  display:
+    flex;
+
+  gap:
+    8px;
+
+  align-items:
+    center;
+
+  margin-top:
+    9px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+  flex-wrap:
+    wrap;
+
+}
+
+
+.journal-info strong {
+
+  color:
+    var(--navy);
+
+}
+
+
+/* =========================================================
+   LOA NUMBER
+   ========================================================= */
+
+.number-preview {
+
+  margin-top:
+    27px;
+
+  padding:
+    20px;
+
+  border-radius:
+    14px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #f7fbff,
+      #eef6ff,
+      #f5f3ff
+    );
+
+  border:
+    1px solid
+    #d8e9fb;
+
+}
+
+
+.number-label {
+
+  color:
+    #64809b;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .7px;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  margin-bottom:
+    8px;
+
+}
+
+
+.loa-number {
+
+  min-height:
+    36px;
+
+  color:
+    var(--navy);
+
+  font-size:
+    clamp(
+      19px,
+      2vw,
+      26px
+    );
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -.3px;
+
+  word-break:
+    break-word;
+
+}
+
+
+.format-help {
+
+  margin-top:
+    7px;
+
+  color:
+    #718096;
+
+  font-size:
+    10px;
+
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.form-actions {
+
+  margin-top:
+    25px;
+
+  display:
+    flex;
+
+  gap:
+    10px;
+
+}
+
+
+.btn {
+
+  border:
+    0;
+
+  border-radius:
+    11px;
+
+  padding:
+    14px 20px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
+  transition:
+    transform .15s,
+    box-shadow .15s,
+    opacity .15s;
+
+}
+
+
+.btn:hover {
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.btn-primary {
+
+  flex:
+    1;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      var(--navy),
+      var(--blue),
+      var(--purple)
+    );
+
+  color:
+    white;
+
+  box-shadow:
+    0 10px 24px
+    rgba(37,99,235,.22);
+
+}
+
+
+.btn-secondary {
+
+  background:
+    #f3f5f8;
+
+  color:
+    #52677d;
+
+}
+
+
+.btn:disabled {
+
+  opacity:
+    .55;
+
+  cursor:
+    not-allowed;
+
+  transform:
+    none;
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading {
+
+  display:
+    none;
+
+  margin-top:
+    17px;
+
+  padding:
+    13px 15px;
+
+  border-radius:
+    10px;
+
+  background:
+    #f8fafc;
+
+  color:
+    #64748b;
+
+  font-size:
+    12px;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+}
+
+
+.loading.active {
+
+  display:
+    flex;
+
+}
+
+
+.spinner {
+
+  width:
+    15px;
+
+  height:
+    15px;
+
+  border:
+    2px solid
+    #dbe4ee;
+
+  border-top-color:
+    var(--blue);
+
+  border-radius:
+    50%;
+
+  animation:
+    spin .7s linear infinite;
+
+}
+
+
+@keyframes spin {
+
+  to {
+
+    transform:
+      rotate(360deg);
+
   }
+
 }
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error {
+
+  display:
+    none;
+
+  margin-top:
+    15px;
+
+  padding:
+    13px 15px;
+
+  border-radius:
+    10px;
+
+  background:
+    #fff5f5;
+
+  border:
+    1px solid
+    #fed7d7;
+
+  color:
+    #b42318;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.error.active {
+
+  display:
+    block;
+
+}
+
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.result {
+
+  display:
+    none;
+
+  margin-top:
+    20px;
+
+  padding:
+    20px;
+
+  border-radius:
+    14px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #ecfdf5,
+      #f3fbf8
+    );
+
+  border:
+    1px solid
+    #bbf7d0;
+
+}
+
+
+.result.active {
+
+  display:
+    block;
+
+}
+
+
+.success-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  color:
+    #047857;
+
+  font-size:
+    14px;
+
+  font-weight:
+    900;
+
+  margin-bottom:
+    9px;
+
+}
+
+
+.success-icon {
+
+  width:
+    27px;
+
+  height:
+    27px;
+
+  border-radius:
+    50%;
+
+  background:
+    #d1fae5;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+}
+
+
+.result-number {
+
+  font-size:
+    20px;
+
+  font-weight:
+    900;
+
+  color:
+    var(--navy);
+
+  word-break:
+    break-word;
+
+  margin-bottom:
+    5px;
+
+}
+
+
+.result-journal {
+
+  color:
+    #5d776d;
+
+  font-size:
+    11px;
+
+  margin-bottom:
+    14px;
+
+}
+
+
+.result-actions {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    9px;
+
+}
+
+
+.download-btn,
+.doc-btn {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    11px 15px;
+
+  border-radius:
+    9px;
+
+  text-decoration:
+    none;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+.download-btn {
+
+  background:
+    var(--navy);
+
+  color:
+    white;
+
+}
+
+
+.doc-btn {
+
+  background:
+    white;
+
+  color:
+    var(--navy);
+
+  border:
+    1px solid
+    #d5e2dc;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+
+  text-align:
+    center;
+
+  margin-top:
+    30px;
+
+  color:
+    #9aa7b5;
+
+  font-size:
+    10px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .topbar {
+
+    padding:
+      0 18px;
+
+  }
+
+
+  .page {
+
+    width:
+      calc(100% - 24px);
+
+    margin-top:
+      22px;
+
+  }
+
+
+  .hero {
+
+    display:
+      block;
+
+  }
+
+
+  .hero-badge {
+
+    display:
+      inline-block;
+
+    margin-top:
+      15px;
+
+  }
+
+
+  .form-card {
+
+    padding:
+      20px;
+
+  }
+
+
+  .form-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .full {
+
+    grid-column:
+      auto;
+
+  }
+
+
+  .form-actions {
+
+    flex-direction:
+      column;
+
+  }
+
+}
+
 </style>
 
 </head>
@@ -2376,30 +1351,30 @@ footer{color:#94a3b8}
 <body>
 
 
+<!-- =========================================================
+     TOPBAR
+     ========================================================= -->
+
 <header class="topbar">
 
   <div class="brand">
 
     <div class="brand-icon">
-      LOA
+      NE
     </div>
 
     <div class="brand-text">
 
       <strong>
-        Letter of Acceptance
+        Nawala Education
       </strong>
 
       <span>
-        Editorial Management System
+        Letter of Acceptance Generator
       </span>
 
     </div>
 
-  </div>
-  <div class="status">
-    <span class="status-dot"></span>
-    Nawala Education
   </div>
 
 </header>
@@ -2409,552 +1384,627 @@ footer{color:#94a3b8}
 <main class="page">
 
 
-  <section class="hero">
-
-    <div>
-
-      <h1>
-        Generate Letter of Acceptance
-      </h1>
-
-      <p>
-        Lengkapi data artikel, pilih jurnal,
-        kemudian sistem akan membuat Google Docs
-        dan PDF LOA secara otomatis.
-      </p>
-
-    </div>
-
-
-    <div class="hero-badge">
-      PDF Generator
-    </div>
-
-  </section>
-
-
-
-  <div class="layout">
-
-
-    <!-- =================================================
-         FORM
-         ================================================= -->
-
-    <section class="card form-card">
-
-
-      <div class="section-title">
-
-        <div class="section-number">
-          01
-        </div>
-
-        <div>
-
-          <h2>
-            Article Information
-          </h2>
-
-          <p>
-            Masukkan informasi utama artikel.
-          </p>
-
-        </div>
-
-      </div>
-
-
-
-      <form
-        id="loaForm"
-        onsubmit="return generateLOA(event)"
-      >
-
-
-        <div class="form-grid">
-
-
-          <!-- JOURNAL -->
-
-          <div class="field full">
-
-            <label>
-              Journal
-              <span class="required">*</span>
-            </label>
-
-
-            <select
-              id="sheetName"
-              class="journal-select"
-              required
-              onchange="updateJournal()"
-            >
-
-              <option value="">
-                Mengambil daftar jurnal...
-              </option>
-
-            </select>
-
-
-            <div class="journal-info">
-
-              <span>
-                Journal Code:
-              </span>
-
-              <strong id="journalCode">
-                -
-              </strong>
-
-              <span>
-                •
-              </span>
-
-              <span>
-                E-ISSN:
-              </span>
-
-              <strong id="journalEissn">
-                -
-              </strong>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- MANUSCRIPT -->
-
-          <div class="field">
-
-            <label>
-              Manuscript ID
-              <span class="required">*</span>
-            </label>
-
-            <input
-              type="text"
-              id="manuscriptId"
-              placeholder="Contoh: 2805"
-              autocomplete="off"
-              required
-              oninput="updatePreview()"
-            >
-
-            <div class="field-help">
-              Masukkan ID manuscript.
-            </div>
-
-          </div>
-
-
-
-          <!-- DATE -->
-
-          <div class="field">
-
-            <label>
-              Date of LOA
-            </label>
-
-            <input
-              type="date"
-              id="date"
-              onchange="updatePreview()"
-            >
-
-            <div class="field-help">
-              Tanggal pada surat LOA.
-            </div>
-
-          </div>
-
-
-
-          <!-- TITLE -->
-
-          <div class="field full">
-
-            <label>
-              Article Title
-              <span class="required">*</span>
-            </label>
-
-            <textarea
-              id="title"
-              placeholder="Masukkan judul artikel lengkap..."
-              required
-              oninput="updatePreview()"
-            ></textarea>
-
-          </div>
-
-
-
-          <!-- AUTHOR -->
-
-          <div class="field full">
-
-            <label>
-              Author
-              <span class="required">*</span>
-            </label>
-
-            <textarea
-              id="author"
-              placeholder="Contoh: Fransiska1, Salsa2, Naya3"
-              required
-              oninput="updatePreview()"
-            ></textarea>
-
-            <div class="field-help">
-              Gunakan angka setelah nama untuk menunjukkan afiliasi.
-              Contoh: Fransiska1, Salsa2, Naya3.
-              Angka akan otomatis ditampilkan sebagai pangkat.
-            </div>
-
-          </div>
-
-
-
-          <!-- VOLUME -->
-
-          <div class="field">
-
-            <label>
-              Volume
-              <span class="required">*</span>
-            </label>
-
-            <input
-              type="text"
-              id="volume"
-              placeholder="Contoh: 3"
-              required
-              oninput="updatePreview()"
-            >
-
-          </div>
-
-
-
-          <!-- ISSUE -->
-
-          <div class="field">
-
-            <label>
-              Issue
-              <span class="required">*</span>
-            </label>
-
-            <input
-              type="text"
-              id="issue"
-              placeholder="Contoh: 4"
-              required
-              oninput="updatePreview()"
-            >
-
-          </div>
-
-
-
-          <!-- MONTH -->
-
-          <div class="field">
-
-            <label>
-              Publication Month
-              <span class="required">*</span>
-            </label>
-
-            <select
-              id="publicationMonth"
-              required
-              onchange="updatePreview()"
-            >
-
-              <option value="">
-                Pilih bulan
-              </option>
-
-              <option value="January">
-                January
-              </option>
-
-              <option value="February">
-                February
-              </option>
-
-              <option value="March">
-                March
-              </option>
-
-              <option value="April">
-                April
-              </option>
-
-              <option value="May">
-                May
-              </option>
-
-              <option value="June">
-                June
-              </option>
-
-              <option value="July">
-                July
-              </option>
-
-              <option value="August">
-                August
-              </option>
-
-              <option value="September">
-                September
-              </option>
-
-              <option value="October">
-                October
-              </option>
-
-              <option value="November">
-                November
-              </option>
-
-              <option value="December">
-                December
-              </option>
-
-            </select>
-
-          </div>
-
-
-
-          <!-- YEAR -->
-
-          <div class="field">
-
-            <label>
-              Publication Year
-              <span class="required">*</span>
-            </label>
-
-            <input
-              type="number"
-              id="publicationYear"
-              min="2000"
-              max="2100"
-              placeholder="2026"
-              required
-              oninput="updatePreview()"
-            >
-
-          </div>
-
-
-
-          <!-- EMAIL -->
-
-          <div class="field full">
-
-            <label>
-
-              Author Email
-
-              <span
-                style="
-                  font-weight:400;
-                  color:#8a99aa;
-                "
-              >
-                (optional)
-              </span>
-
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              placeholder="author@example.com"
-            >
-
-            <div class="field-help">
-              Email tidak digunakan untuk mengirim email.
-            </div>
-
-          </div>
-
-
-        </div>
-
-
-
-        <!-- LOA NUMBER -->
-
-        <div class="number-preview">
-
-          <div class="number-label">
-            LOA Number Preview
-          </div>
-
-          <div
-            class="loa-number"
-            id="loaNumber"
-          >
-            -
-          </div>
-
-          <div class="format-help">
-
-            Format:
-
-            Volume-Issue-Manuscript ID /
-            Journal Code /
-            Publication Year
-
-          </div>
-
-        </div>
-
-
-
-        <!-- ACTION -->
-
-        <div class="form-actions">
-
-          <button
-            type="button"
-            class="btn btn-secondary"
-            onclick="resetForm()"
-          >
-            RESET
-          </button>
-
-
-          <button
-            type="submit"
-            class="btn btn-primary"
-            id="generateButton"
-          >
-            GENERATE PDF LOA
-          </button>
-
-        </div>
-
-
-
-        <!-- LOADING -->
-
-        <div
-          class="loading"
-          id="loading"
-        >
-
-          <span class="spinner"></span>
-
-          <span id="loadingText">
-            Sedang membuat Google Docs dan PDF...
-          </span>
-
-        </div>
-
-
-
-        <!-- ERROR -->
-
-        <div
-          class="error"
-          id="error"
-        ></div>
-
-
-
-        <!-- RESULT -->
-
-        <div
-          class="result"
-          id="result"
-        >
-
-          <div class="success-title">
-
-            <span class="success-icon">
-              ✓
-            </span>
-
-            LOA berhasil dibuat
-
-          </div>
-
-
-          <div
-            class="result-number"
-            id="resultNumber"
-          >
-            -
-          </div>
-
-
-          <div
-            class="result-journal"
-            id="resultJournal"
-          >
-            -
-          </div>
-
-
-          <div class="result-actions">
-
-            <a
-              id="downloadPdf"
-              class="download-btn"
-              target="_blank"
-              rel="noopener"
-              download
-            >
-              ↓ &nbsp; DOWNLOAD PDF
-            </a>
-
-
-            <a
-              id="googleDoc"
-              class="doc-btn"
-              target="_blank"
-              rel="noopener"
-            >
-              OPEN GOOGLE DOC
-            </a>
-
-          </div>
-
-        </div>
-
-
-      </form>
-
-    </section>
-
-
-
-    <!-- =================================================
-         SIDEBAR
-         ================================================= -->
-    <aside class="side" aria-hidden="true"></aside>
-
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+
+<section class="hero">
+
+  <div>
+
+    <h1>
+      Generate Letter of Acceptance
+    </h1>
+
+    <p>
+      Lengkapi data artikel, pilih jurnal,
+      kemudian sistem akan membuat Google Docs
+      dan PDF LOA secara otomatis.
+    </p>
 
   </div>
 
 
+  <div class="hero-badge">
+    Nawala Education
+  </div>
 
-  <footer>
-    LOA Generator • Editorial Management System
-  </footer>
+</section>
+
+
+
+<div class="layout">
+
+
+<!-- =========================================================
+     FORM
+     ========================================================= -->
+
+<section class="card form-card">
+
+
+<div class="section-title">
+
+  <div class="section-number">
+    01
+  </div>
+
+  <div>
+
+    <h2>
+      Article Information
+    </h2>
+
+    <p>
+      Masukkan informasi utama artikel.
+    </p>
+
+  </div>
+
+</div>
+
+
+
+<form
+  id="loaForm"
+  onsubmit="return generateLOA(event)"
+>
+
+
+<div class="form-grid">
+
+
+<!-- =======================================================
+     JOURNAL
+     ======================================================= -->
+
+<div class="field full">
+
+<label>
+
+  Journal
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+
+<select
+  id="sheetName"
+  class="journal-select"
+  required
+  onchange="updateJournal()"
+>
+
+<option value="">
+  Pilih jurnal
+</option>
+
+</select>
+
+
+<div class="journal-info">
+
+  <span>
+    Journal Code:
+  </span>
+
+  <strong id="journalCode">
+    -
+  </strong>
+
+  <span>
+    •
+  </span>
+
+  <span>
+    E-ISSN:
+  </span>
+
+  <strong id="journalEissn">
+    -
+  </strong>
+
+</div>
+
+</div>
+
+
+
+<!-- =======================================================
+     MANUSCRIPT
+     ======================================================= -->
+
+<div class="field">
+
+<label>
+
+  Manuscript ID
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<input
+  type="text"
+  id="manuscriptId"
+  placeholder="Contoh: 2805"
+  autocomplete="off"
+  required
+  oninput="updatePreview()"
+>
+
+<div class="field-help">
+  Masukkan ID manuscript.
+</div>
+
+</div>
+
+
+
+<!-- =======================================================
+     DATE
+     ======================================================= -->
+
+<div class="field">
+
+<label>
+  Date of LOA
+</label>
+
+<input
+  type="date"
+  id="date"
+  onchange="updatePreview()"
+>
+
+<div class="field-help">
+  Tanggal pada surat LOA.
+</div>
+
+</div>
+
+
+
+<!-- =======================================================
+     TITLE
+     ======================================================= -->
+
+<div class="field full">
+
+<label>
+
+  Article Title
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<textarea
+  id="title"
+  placeholder="Masukkan judul artikel lengkap..."
+  required
+  oninput="updatePreview()"
+></textarea>
+
+</div>
+
+
+
+<!-- =======================================================
+     AUTHOR
+     ======================================================= -->
+
+<div class="field full">
+
+<label>
+
+  Author
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<textarea
+  id="author"
+  placeholder="Contoh: Fransiska1, Salsa2"
+  required
+  oninput="updatePreview()"
+></textarea>
+
+<div class="field-help">
+
+  Masukkan semua author sesuai format jurnal.
+  Contoh: Fransiska1, Salsa2, Ahmad3.
+
+</div>
+
+</div>
+
+
+
+<!-- =======================================================
+     VOLUME
+     ======================================================= -->
+
+<div class="field">
+
+<label>
+
+  Volume
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<input
+  type="text"
+  id="volume"
+  placeholder="Contoh: 3"
+  required
+  oninput="updatePreview()"
+>
+
+</div>
+
+
+
+<!-- =======================================================
+     ISSUE
+     ======================================================= -->
+
+<div class="field">
+
+<label>
+
+  Issue
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<input
+  type="text"
+  id="issue"
+  placeholder="Contoh: 4"
+  required
+  oninput="updatePreview()"
+>
+
+</div>
+
+
+
+<!-- =======================================================
+     MONTH
+     ======================================================= -->
+
+<div class="field">
+
+<label>
+
+  Publication Month
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<select
+  id="publicationMonth"
+  required
+  onchange="updatePreview()"
+>
+
+<option value="">
+  Pilih bulan
+</option>
+
+<option value="January">
+  January
+</option>
+
+<option value="February">
+  February
+</option>
+
+<option value="March">
+  March
+</option>
+
+<option value="April">
+  April
+</option>
+
+<option value="May">
+  May
+</option>
+
+<option value="June">
+  June
+</option>
+
+<option value="July">
+  July
+</option>
+
+<option value="August">
+  August
+</option>
+
+<option value="September">
+  September
+</option>
+
+<option value="October">
+  October
+</option>
+
+<option value="November">
+  November
+</option>
+
+<option value="December">
+  December
+</option>
+
+</select>
+
+</div>
+
+
+
+<!-- =======================================================
+     YEAR
+     ======================================================= -->
+
+<div class="field">
+
+<label>
+
+  Publication Year
+
+  <span class="required">
+    *
+  </span>
+
+</label>
+
+<input
+  type="number"
+  id="publicationYear"
+  min="2000"
+  max="2100"
+  placeholder="2026"
+  required
+  oninput="updatePreview()"
+>
+
+</div>
+
+
+
+<!-- =======================================================
+     EMAIL
+     ======================================================= -->
+
+<div class="field full">
+
+<label>
+
+  Author Email
+
+  <span
+    style="
+      font-weight:400;
+      color:#8a99aa;
+    "
+  >
+    (optional)
+  </span>
+
+</label>
+
+<input
+  type="email"
+  id="email"
+  placeholder="author@example.com"
+>
+
+<div class="field-help">
+  Email tidak digunakan untuk mengirim email.
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =======================================================
+     LOA NUMBER
+     ======================================================= -->
+
+<div class="number-preview">
+
+<div class="number-label">
+  LOA Number Preview
+</div>
+
+
+<div
+  class="loa-number"
+  id="loaNumber"
+>
+  -
+</div>
+
+
+<div class="format-help">
+
+  Format:
+
+  Volume-Issue-Manuscript ID /
+  Journal Code /
+  Publication Year
+
+</div>
+
+</div>
+
+
+
+<!-- =======================================================
+     ACTION
+     ======================================================= -->
+
+<div class="form-actions">
+
+
+<button
+  type="button"
+  class="btn btn-secondary"
+  onclick="resetForm()"
+>
+  RESET
+</button>
+
+
+<button
+  type="submit"
+  class="btn btn-primary"
+  id="generateButton"
+>
+  GENERATE PDF LOA
+</button>
+
+
+</div>
+
+
+
+<!-- =======================================================
+     LOADING
+     ======================================================= -->
+
+<div
+  class="loading"
+  id="loading"
+>
+
+<span class="spinner"></span>
+
+<span id="loadingText">
+  Sedang membuat Google Docs dan PDF...
+</span>
+
+</div>
+
+
+
+<!-- =======================================================
+     ERROR
+     ======================================================= -->
+
+<div
+  class="error"
+  id="error"
+></div>
+
+
+
+<!-- =======================================================
+     RESULT
+     ======================================================= -->
+
+<div
+  class="result"
+  id="result"
+>
+
+<div class="success-title">
+
+<span class="success-icon">
+  ✓
+</span>
+
+LOA berhasil dibuat
+
+</div>
+
+
+<div
+  class="result-number"
+  id="resultNumber"
+>
+  -
+</div>
+
+
+<div
+  class="result-journal"
+  id="resultJournal"
+>
+  -
+</div>
+
+
+<div class="result-actions">
+
+
+<a
+  id="downloadPdf"
+  class="download-btn"
+  target="_blank"
+  rel="noopener"
+  download
+>
+  ↓ &nbsp; DOWNLOAD PDF
+</a>
+
+
+<a
+  id="googleDoc"
+  class="doc-btn"
+  target="_blank"
+  rel="noopener"
+>
+  OPEN GOOGLE DOC
+</a>
+
+
+</div>
+
+</div>
+
+
+</form>
+
+</section>
+
+
+</div>
+
+
+<footer>
+
+  Nawala Education • Letter of Acceptance Generator
+
+</footer>
 
 
 </main>
@@ -2964,144 +2014,287 @@ footer{color:#94a3b8}
 <script>
 
 
-/* ===========================================================
-   CONFIGURATION
-   =========================================================== */
+/* =========================================================
+   APPS SCRIPT API
+   ========================================================= */
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbynuP6IlVLQx2icXIqakfTGS-Rq6BmdCETHE2W-NHm-9WFx_-elh2J66LCqUTnggggQ/exec';
 
 
 
-/* ===========================================================
-   GLOBAL
-   =========================================================== */
+/* =========================================================
+   DAFTAR JURNAL FIX
+   =========================================================
 
-let journals = [];
+   PENTING:
 
+   Daftar jurnal TIDAK lagi diambil dari Apps Script.
 
+   Data ini langsung disimpan di HTML sehingga halaman
+   tidak perlu melakukan request "journals" setiap kali
+   dibuka.
 
-/* ===========================================================
-   AUTHOR SUPERSCRIPT
-   ===========================================================
+   Apps Script hanya dipanggil ketika GENERATE.
 
-   Contoh:
+   ========================================================= */
 
-   Fransiska1
-   menjadi:
+const journals = [
 
-   Fransiska¹
+  {
+    sheetName: 'JLL',
+    journalName: 'Journal of Ludi Litterarri',
+    code: 'JLL',
+    eissn: '3047-9983',
+    templateId:
+      '1GZLHJdWP0d-f8-62CpgOVLH_9HL3SeV-oxzHmwlQ7to'
+  },
 
-   Fransiska1, Salsa2
-   menjadi:
+  {
+    sheetName: 'JD',
+    journalName: 'DHANA',
+    code: 'JD',
+    eissn: '3047-0803',
+    templateId:
+      '1M9QPHFTeQjbY35SW4UQ1rsh8UbP16Gl-eOTWKjg9P6Y'
+  },
 
-   Fransiska¹, Salsa²
+  {
+    sheetName: 'JOP',
+    journalName: 'Journal of Pedagogi',
+    code: 'JOP',
+    eissn: '3046-9554',
+    templateId:
+      '1aj455As2-OtQPOJQWed8fbvHX9CSd7mxehEfHaaKXtM'
+  },
 
-   Mendukung angka:
-   0 1 2 3 4 5 6 7 8 9
+  {
+    sheetName: 'AI',
+    journalName: 'AL-ILMU',
+    code: 'AI',
+    eissn: '3048-3204',
+    templateId:
+      '1wAqjfHa5N74VCHl66fTbtgCwROSgUavD6r4bkcchJjo'
+  },
 
-   =========================================================== */
+  {
+    sheetName: 'JE',
+    journalName: 'EduTech Journal',
+    code: 'JE',
+    eissn: '3063-0959',
+    templateId:
+      '1A74zqYMxEycfnxrfwfnM8BIIxF_RT3P_k-REoXggiYc'
+  },
 
-function formatAuthorSuperscript(author) {
+  {
+    sheetName: 'JOAR',
+    journalName: 'Journal of Adat Recht',
+    code: 'JOAR',
+    eissn: '3048-1074',
+    templateId:
+      '19zkNpbXL8wWEFoj1u9N2E4DRb1Stu5xSujqm6ujRzzs'
+  },
 
-  if (!author) {
-    return '';
+  {
+    sheetName: 'PJ',
+    journalName: 'Journal of Dialogos',
+    code: 'PJ',
+    eissn: '3046-6318',
+    templateId:
+      '1bN93kAuHMQNiMtW4DB2nKa0vgWieENzLdEgH1ovXMsA'
+  },
+
+  {
+    sheetName: 'JOIE',
+    journalName: 'Journal of Islamic Economy',
+    code: 'JOIE',
+    eissn: '3048-2520',
+    templateId:
+      '1up0rf52aKOTXxNUa8PhVLSdQlDosJpQ4Toq2j_Rw9vE'
+  },
+
+  {
+    sheetName: 'JORE',
+    journalName: 'Journal of Renewable Engineering',
+    code: 'JORE',
+    eissn: '3046-7624',
+    templateId:
+      '1FDUUZ1uyYDyLMxiCGoFYnASOcYZ-Nd7jQXBeG-LuRe0'
+  },
+
+  {
+    sheetName: 'JOSI',
+    journalName: 'Journal of Strafvordering',
+    code: 'JOSI',
+    eissn: '3046-8620',
+    templateId:
+      '1gNtoaqpmGAYIqxeiJFIFRGanA99uxokSrb6djahlCuA'
+  },
+
+  {
+    sheetName: 'JPHI',
+    journalName: 'Journal of Public Health Indonesian',
+    code: 'JPHI',
+    eissn: '3048-1139',
+    templateId:
+      '1J4MzpB_V6UIkJNeYhFQwISIdqpjl08T-SEPMJHX8TC8'
+  },
+
+  {
+    sheetName: 'JOY',
+    journalName: 'LEGES PRIVATAE',
+    code: 'JOY',
+    eissn: '3032-7644',
+    templateId:
+      '1bpjHPW1hYLlyPwPmLsbKdxZzoai2dieoaDCVRD8Q0ps'
+  },
+
+  {
+    sheetName: 'MSJ',
+    journalName: 'Majority Science Journal',
+    code: 'MSJ',
+    eissn: '3025-1990',
+    templateId:
+      '1J7bFj8pci5S8rW2eMNslxfbPztqQ8ncwBpqo5J6ltOk'
+  },
+
+  {
+    sheetName: 'NOMICO',
+    journalName: 'NOMICO',
+    code: 'NOMICO',
+    eissn: '3046-6318',
+    templateId:
+      '1H4FA_BZIDy-0evlw5QQmubbkq69mMWijTn0OTbUWeUg'
+  },
+
+  {
+    sheetName: 'OIKONOMIA',
+    journalName:
+      'OIKONOMIA: Journal of Management Economics and Accounting',
+    code: 'OIKONOMIA',
+    eissn: '3047-602X',
+    templateId:
+      '10BoefV8vIaMERJdKvZH-Sa2Sd8fVdTLlkCR39bjgntA'
+  },
+
+  {
+    sheetName: 'SYNERGISIA',
+    journalName: 'SYNERGISIA',
+    code: 'SYNERGISIA',
+    eissn: '3047-9339',
+    templateId:
+      '1mhnBwhRBCgvpuvvaU8IYqmYeRw8Gnhuuzie6pm8RY8M'
+  },
+
+  {
+    sheetName: 'JOG',
+    journalName: 'GEMILANG',
+    code: 'JOG',
+    eissn: '3047-6259',
+    templateId:
+      '1vYV__coRr1ywd_GZ47gxu1HamDu7S3NLT_tXiD1uw_I'
+  },
+
+  {
+    sheetName: 'GE',
+    journalName: 'GESTION EDUCATIVA',
+    code: 'GE',
+    eissn: '3062-7524',
+    templateId:
+      '1RZKxdj-0ADeyAe2VpsUYgE16dw8dg-6ZdM14DKaR3vk'
+  },
+
+  {
+    sheetName: 'IJJ',
+    journalName: 'IPSO JURE',
+    code: 'IJJ',
+    eissn: '3032-7644',
+    templateId:
+      '1v-toSEPnjxZN5pB4TwscUYEGvwWBgwPeZZp1MueE7ZU'
+  },
+
+  {
+    sheetName: 'JHK',
+    journalName: 'Law and Justice Journal',
+    code: 'JHK',
+    eissn: '3031-6782',
+    templateId:
+      '16ziIjj7-3yvpE8y1HJG0wWJd7HpADZEpXLJtnODyckw'
+  },
+
+  {
+    sheetName: 'JOPG',
+    journalName: 'Journal of Politica Governo',
+    code: 'JOPG',
+    eissn: '3046-6881',
+    templateId:
+      '1n7HNvb4LrsWtNpH9BLi0oap5PZ5rp8BTNcRxb30i5bw'
+  },
+
+  {
+    sheetName: 'MJ',
+    journalName: 'Maneggio Journal',
+    code: 'MJ',
+    eissn: '3032-7652',
+    templateId:
+      '1xPWMeO36X9LapGSONzF_9K6-J5YFJ4z4XV-BuSW59ls'
+  },
+
+  {
+    sheetName: 'SJ',
+    journalName: 'Socius Education Journal',
+    code: 'SJ',
+    eissn: '3032-677X',
+    templateId:
+      '1EMGUMw4IXjNY-3kdoqfJSlBDr3CHM83uws_TI2FkTtg'
+  },
+
+  {
+    sheetName: 'TJ',
+    journalName: 'Technologia',
+    code: 'TJ',
+    eissn: '3046-9163',
+    templateId:
+      '19HKbSmN6wjwI4pJb-AxXwe-bpiTPgZAW-hA5TxEXg68'
   }
 
-
-  const superscriptMap = {
-
-    '0': '⁰',
-    '1': '¹',
-    '2': '²',
-    '3': '³',
-    '4': '⁴',
-    '5': '⁵',
-    '6': '⁶',
-    '7': '⁷',
-    '8': '⁸',
-    '9': '⁹'
-
-  };
-
-
-  /*
-   * Angka hanya diubah menjadi superscript
-   * jika berada di bagian akhir nama/kata.
-   *
-   * Contoh:
-   *
-   * Fransiska1 -> Fransiska¹
-   * Salsa2 -> Salsa²
-   *
-   * Tetapi:
-   *
-   * Fransiska 2026
-   *
-   * tidak akan otomatis mengubah seluruh 2026
-   * karena angka tersebut bukan bagian afiliasi
-   */
-
-
-  return author.replace(
-
-    /([A-Za-zÀ-ÖØ-öø-ÿ.'’-]+)(\d+)/g,
-
-    function(match, name, numbers) {
-
-      const converted =
-        numbers
-          .split('')
-          .map(
-            function(number) {
-
-              return (
-                superscriptMap[number] ||
-                number
-              );
-
-            }
-          )
-          .join('');
-
-
-      return name + converted;
-
-    }
-
-  );
-
-}
+];
 
 
 
-/* ===========================================================
-   API URL VALIDATION
-   =========================================================== */
+/* =========================================================
+   API VALIDATION
+   ========================================================= */
 
 function isApiConfigured() {
 
   return (
+
     typeof API_URL === 'string' &&
+
     API_URL.trim() !== '' &&
+
     API_URL.startsWith(
       'https://script.google.com/macros/s/'
     ) &&
+
     API_URL.endsWith('/exec')
+
   );
 
 }
 
 
 
-/* ===========================================================
-   LOAD JOURNALS
-   =========================================================== */
+/* =========================================================
+   INITIALIZE JOURNAL DROPDOWN
+   =========================================================
 
-function loadJournals() {
+   TIDAK ADA REQUEST KE APPS SCRIPT.
 
-  clearError();
+   ========================================================= */
 
+function initializeJournals() {
 
   const select =
     document.getElementById(
@@ -3109,108 +2302,31 @@ function loadJournals() {
     );
 
 
-  if (!isApiConfigured()) {
-
-    select.innerHTML =
-      '<option value="">API belum dikonfigurasi</option>';
-
-    showError(
-      'URL Web App Apps Script belum benar. Periksa API_URL.'
-    );
-
-    return;
-
-  }
-
-
   select.innerHTML =
-    '<option value="">Menghubungkan ke Spreadsheet...</option>';
+    '<option value="">Pilih jurnal</option>';
 
 
-  jsonp(
+  journals.forEach(
+    function(journal) {
 
-    'journals',
-
-    {},
-
-    function(response) {
-
-      journals =
-        response &&
-        Array.isArray(response.journals)
-          ? response.journals
-          : [];
-
-
-      select.innerHTML =
-        '<option value="">Pilih jurnal</option>';
-
-
-      if (
-        journals.length === 0
-      ) {
-
-        select.innerHTML =
-          '<option value="">Tidak ada jurnal aktif</option>';
-
-        showError(
-          'Daftar jurnal kosong. Pastikan Apps Script memiliki action "journals" dan Spreadsheet jurnal sudah tersedia.'
+      const option =
+        document.createElement(
+          'option'
         );
 
-        return;
 
-      }
-
-
-      journals.forEach(
-        function(journal) {
-
-          const option =
-            document.createElement(
-              'option'
-            );
+      option.value =
+        journal.sheetName;
 
 
-          option.value =
-            journal.sheetName || '';
+      option.textContent =
+        journal.code +
+        ' — ' +
+        journal.journalName;
 
 
-          option.textContent =
-            (
-              journal.code ||
-              journal.sheetName ||
-              'JOURNAL'
-            ) +
-            ' — ' +
-            (
-              journal.journalName ||
-              journal.sheetName ||
-              ''
-            );
-
-
-          select.appendChild(
-            option
-          );
-
-        }
-      );
-
-
-      updateJournal();
-
-    },
-
-    function(error) {
-
-      select.innerHTML =
-        '<option value="">Gagal mengambil jurnal</option>';
-
-
-      showError(
-        error && error.message
-          ? error.message
-          : 'Gagal mengambil daftar jurnal.'
+      select.appendChild(
+        option
       );
 
     }
@@ -3221,9 +2337,9 @@ function loadJournals() {
 
 
 
-/* ===========================================================
+/* =========================================================
    GET SELECTED JOURNAL
-   =========================================================== */
+   ========================================================= */
 
 function getSelectedJournal() {
 
@@ -3248,9 +2364,9 @@ function getSelectedJournal() {
 
 
 
-/* ===========================================================
+/* =========================================================
    UPDATE JOURNAL
-   =========================================================== */
+   ========================================================= */
 
 function updateJournal() {
 
@@ -3270,12 +2386,6 @@ function updateJournal() {
     );
 
 
-  const documentJournal =
-    document.getElementById(
-      'documentJournal'
-    );
-
-
   if (!journal) {
 
     code.textContent =
@@ -3284,21 +2394,15 @@ function updateJournal() {
     eissn.textContent =
       '-';
 
-    documentJournal.textContent =
-      'JOURNAL';
+  }
 
-  } else {
+  else {
 
     code.textContent =
       journal.code || '-';
 
     eissn.textContent =
       journal.eissn || '-';
-
-    documentJournal.textContent =
-      journal.code ||
-      journal.journalName ||
-      'JOURNAL';
 
   }
 
@@ -3309,9 +2413,9 @@ function updateJournal() {
 
 
 
-/* ===========================================================
+/* =========================================================
    BUILD LOA NUMBER
-   =========================================================== */
+   ========================================================= */
 
 function buildLOANumber() {
 
@@ -3356,11 +2460,17 @@ function buildLOANumber() {
 
 
   if (
+
     !journal ||
+
     !manuscriptId ||
+
     !volume ||
+
     !issue ||
+
     !year
+
   ) {
 
     return '-';
@@ -3369,24 +2479,83 @@ function buildLOANumber() {
 
 
   return (
+
     volume +
+
     '-' +
+
     issue +
+
     '-' +
+
     manuscriptId +
+
     '/' +
+
     journal.code +
+
     '/' +
+
     year
+
   );
 
 }
 
 
 
-/* ===========================================================
+/* =========================================================
+   AUTHOR PREVIEW
+   =========================================================
+
+   Contoh:
+
+   Fransiska1, Salsa2
+
+   akan ditampilkan di halaman sebagai:
+
+   Fransiska¹, Salsa²
+
+   Catatan:
+   Ini hanya tampilan HTML.
+
+   Agar Google Docs hasil generate juga memiliki
+   angka superscript, Apps Script bagian generator
+   harus mengatur TextStyle baselineOffset.
+
+   ========================================================= */
+
+function formatAuthorSuperscript(text) {
+
+  if (!text) {
+    return 'Author Name';
+  }
+
+
+  return text.replace(
+
+    /([A-Za-zÀ-ÿ'’-]+)(\d+)/g,
+
+    function(match, name, number) {
+
+      return (
+        name +
+        '<sup>' +
+        number +
+        '</sup>'
+      );
+
+    }
+
+  );
+
+}
+
+
+
+/* =========================================================
    UPDATE PREVIEW
-   =========================================================== */
+   ========================================================= */
 
 function updatePreview() {
 
@@ -3412,16 +2581,6 @@ function updatePreview() {
       .trim();
 
 
-  /*
-   * AUTHOR DITAMPILKAN DALAM BENTUK SUPERSCRIPT
-   */
-
-  const formattedAuthor =
-    formatAuthorSuperscript(
-      author
-    );
-
-
   const loaNumber =
     buildLOANumber();
 
@@ -3433,69 +2592,32 @@ function updatePreview() {
 
 
   document.getElementById(
-    'documentNumber'
-  ).textContent =
-    loaNumber === '-'
-      ? 'No. -'
-      : 'No. ' + loaNumber;
-
-
-  document.getElementById(
     'documentAuthor'
-  ).textContent =
-    formattedAuthor ||
-    'Author Name';
+  );
 
 
-  document.getElementById(
-    'documentJournal'
-  ).textContent =
-    journal
-      ? (
-          journal.code ||
-          journal.journalName
-        )
-      : 'JOURNAL';
+  if (journal) {
 
-
-  const titleLine =
     document.getElementById(
-      'titleLine'
-    );
+      'journalCode'
+    ).textContent =
+      journal.code || '-';
 
-
-  if (
-    title.length > 70
-  ) {
-
-    titleLine.style.width =
-      '100%';
+    document.getElementById(
+      'journalEissn'
+    ).textContent =
+      journal.eissn || '-';
 
   }
 
-  else if (
-    title.length > 30
-  ) {
-
-    titleLine.style.width =
-      '85%';
-
-  }
-
-  else {
-
-    titleLine.style.width =
-      '65%';
-
-  }
 
 }
 
 
 
-/* ===========================================================
+/* =========================================================
    GENERATE LOA
-   =========================================================== */
+   ========================================================= */
 
 function generateLOA(event) {
 
@@ -3511,9 +2633,7 @@ function generateLOA(event) {
     );
 
 
-  if (
-    !form.checkValidity()
-  ) {
+  if (!form.checkValidity()) {
 
     form.reportValidity();
 
@@ -3548,44 +2668,22 @@ function generateLOA(event) {
   }
 
 
-  /*
-   * ========================================================
-   * AUTHOR
-   * ========================================================
-   *
-   * User mengetik:
-   *
-   * Fransiska1, Salsa2, Naya3
-   *
-   * Yang dikirim ke Apps Script:
-   *
-   * Fransiska¹, Salsa², Naya³
-   *
-   * Jadi backend menerima karakter superscript
-   * secara langsung.
-   *
-   * ========================================================
-   */
-
-  const originalAuthor =
-    document
-      .getElementById(
-        'author'
-      )
-      .value
-      .trim();
-
-
-  const formattedAuthor =
-    formatAuthorSuperscript(
-      originalAuthor
-    );
-
-
   const data = {
 
     sheetName:
       journal.sheetName,
+
+    journalName:
+      journal.journalName,
+
+    journalCode:
+      journal.code,
+
+    eissn:
+      journal.eissn,
+
+    templateId:
+      journal.templateId,
 
     manuscriptId:
       document
@@ -3603,13 +2701,13 @@ function generateLOA(event) {
         .value
         .trim(),
 
-    /*
-     * AUTHOR YANG DIKIRIM ADALAH
-     * YANG SUDAH MENJADI SUPERSCRIPT
-     */
-
     author:
-      formattedAuthor,
+      document
+        .getElementById(
+          'author'
+        )
+        .value
+        .trim(),
 
     date:
       document
@@ -3731,15 +2829,22 @@ function generateLOA(event) {
 
 
       if (
+
         !response ||
+
         response.success !== true
+
       ) {
 
         showError(
+
           response &&
           response.message
+
             ? response.message
+
             : 'Gagal membuat LOA.'
+
         );
 
         return;
@@ -3750,18 +2855,25 @@ function generateLOA(event) {
       document.getElementById(
         'resultNumber'
       ).textContent =
+
         response.loaNumber ||
+
         buildLOANumber();
 
 
       document.getElementById(
         'resultJournal'
       ).textContent =
+
         (
           response.journal ||
+
           journal.journalName ||
+
           journal.code
+
         ) +
+
         ' • PDF berhasil dibuat';
 
 
@@ -3777,9 +2889,7 @@ function generateLOA(event) {
         );
 
 
-      if (
-        response.pdfUrl
-      ) {
+      if (response.pdfUrl) {
 
         pdfButton.href =
           response.pdfUrl;
@@ -3801,9 +2911,7 @@ function generateLOA(event) {
       }
 
 
-      if (
-        response.googleDocUrl
-      ) {
+      if (response.googleDocUrl) {
 
         docButton.href =
           response.googleDocUrl;
@@ -3858,10 +2966,14 @@ function generateLOA(event) {
 
 
       showError(
+
         error &&
         error.message
+
           ? error.message
+
           : 'Terjadi kesalahan saat menghubungi Apps Script.'
+
       );
 
     }
@@ -3875,9 +2987,9 @@ function generateLOA(event) {
 
 
 
-/* ===========================================================
+/* =========================================================
    JSONP
-   =========================================================== */
+   ========================================================= */
 
 function jsonp(
   action,
@@ -3901,9 +3013,13 @@ function jsonp(
 
 
   const callbackName =
+
     'loaCallback_' +
+
     Date.now() +
+
     '_' +
+
     Math.floor(
       Math.random() * 100000
     );
@@ -3921,11 +3037,10 @@ function jsonp(
 
   const timeout =
     setTimeout(
+
       function() {
 
-        if (
-          finished
-        ) {
+        if (finished) {
           return;
         }
 
@@ -3938,22 +3053,28 @@ function jsonp(
 
 
         failure(
+
           new Error(
+
             'Request timeout. Pastikan Web App Apps Script sudah di-deploy dan aksesnya dapat digunakan oleh pengguna web.'
+
           )
+
         );
 
       },
+
       30000
+
     );
 
 
   window[callbackName] =
+
     function(response) {
 
-      if (
-        finished
-      ) {
+
+      if (finished) {
         return;
       }
 
@@ -3971,15 +3092,23 @@ function jsonp(
 
 
       if (
+
         response &&
+
         response.success === false
+
       ) {
 
         failure(
+
           new Error(
+
             response.message ||
+
             'Apps Script mengembalikan error.'
+
           )
+
         );
 
         return;
@@ -4013,9 +3142,7 @@ function jsonp(
     }
 
 
-    if (
-      script.parentNode
-    ) {
+    if (script.parentNode) {
 
       script.parentNode.removeChild(
         script
@@ -4029,9 +3156,7 @@ function jsonp(
   script.onerror =
     function() {
 
-      if (
-        finished
-      ) {
+      if (finished) {
         return;
       }
 
@@ -4049,9 +3174,13 @@ function jsonp(
 
 
       failure(
+
         new Error(
+
           'Tidak dapat menghubungi Google Apps Script. Periksa URL Web App dan deployment Apps Script.'
+
         )
+
       );
 
     };
@@ -4076,6 +3205,7 @@ function jsonp(
   Object.keys(
     params || {}
   ).forEach(
+
     function(key) {
 
       query.set(
@@ -4084,6 +3214,7 @@ function jsonp(
       );
 
     }
+
   );
 
 
@@ -4101,9 +3232,9 @@ function jsonp(
 
 
 
-/* ===========================================================
+/* =========================================================
    RESET
-   =========================================================== */
+   ========================================================= */
 
 function resetForm() {
 
@@ -4139,9 +3270,9 @@ function resetForm() {
 
 
 
-/* ===========================================================
+/* =========================================================
    DEFAULT DATE
-   =========================================================== */
+   ========================================================= */
 
 function setDefaultDate() {
 
@@ -4174,6 +3305,7 @@ function setDefaultDate() {
   document.getElementById(
     'date'
   ).value =
+
     year +
     '-' +
     month +
@@ -4190,9 +3322,9 @@ function setDefaultDate() {
 
 
 
-/* ===========================================================
+/* =========================================================
    ERROR
-   =========================================================== */
+   ========================================================= */
 
 function showError(message) {
 
@@ -4215,9 +3347,9 @@ function showError(message) {
 
 
 
-/* ===========================================================
+/* =========================================================
    CLEAR ERROR
-   =========================================================== */
+   ========================================================= */
 
 function clearError() {
 
@@ -4239,23 +3371,37 @@ function clearError() {
 
 
 
-/* ===========================================================
+/* =========================================================
    INITIALIZE
-   =========================================================== */
+   ========================================================= */
 
 document.addEventListener(
+
   'DOMContentLoaded',
+
   function() {
+
+    /*
+     * TIDAK ADA:
+     *
+     * loadJournals()
+     *
+     * Karena jurnal sudah FIX.
+     *
+     * Dropdown langsung dibuat dari array journals.
+     */
+
+    initializeJournals();
 
     setDefaultDate();
 
+    updateJournal();
+
     updatePreview();
 
-    loadJournals();
-
   }
-);
 
+);
 
 </script>
 
