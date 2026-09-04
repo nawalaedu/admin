@@ -4,7 +4,10 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 
 <title>Order Buku</title>
 
@@ -190,31 +193,24 @@ small{
 }
 
 /* =========================
-   DRIVE LINK
-   SATU UNTUK ORDER M
+   LINK DRIVE
 ========================= */
 
-.drive-link-box{
-  background:#eef7ee;
-  border:1px solid #c6e3c6;
-  border-radius:12px;
-  padding:20px;
-  margin-bottom:25px;
+.link-drive-box{
+  background:#fff8e6;
+  border:1px solid #f1d48a;
+  border-left:4px solid #d69e2e;
+  border-radius:9px;
+  padding:15px;
+  margin-bottom:20px;
 }
 
-.drive-link-title{
-  font-weight:bold;
-  color:#285c2b;
-  font-size:15px;
-  margin-bottom:8px;
+.link-drive-box label{
+  color:#744210;
 }
 
-.drive-link-box input{
-  background:white;
-}
-
-.drive-link-box small{
-  color:#557255;
+.link-drive-box small{
+  color:#975a16;
 }
 
 /* =========================
@@ -334,30 +330,6 @@ small{
 }
 
 /* =========================
-   INPUT BAB MANUAL
-========================= */
-
-.manual-bab-box{
-  margin-top:15px;
-  padding:15px;
-  background:#fffaf0;
-  border:1px solid #f0dfb5;
-  border-radius:9px;
-}
-
-.manual-bab-box label{
-  color:#805b16;
-}
-
-.manual-bab-box input{
-  background:white;
-}
-
-.manual-bab-box small{
-  color:#806f4a;
-}
-
-/* =========================
    AUTO BAB
 ========================= */
 
@@ -420,55 +392,24 @@ small{
   background:#2f6f95;
 }
 
-.btn-load{
-  width:100%;
-  border:0;
-  padding:13px;
-  border-radius:9px;
-  background:#2f6f95;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-.btn-load:hover{
-  background:#183b56;
-}
-
-.btn-load:disabled{
-  background:#9ca3af;
+.btn-save:disabled{
+  opacity:.65;
   cursor:not-allowed;
 }
 
 /* =========================
-   STATUS ORDER
+   LOADING
 ========================= */
 
-.order-status{
+.loading{
   display:none;
-  margin-top:10px;
-  padding:12px 15px;
-  border-radius:8px;
-  font-size:14px;
+  text-align:center;
+  margin-top:15px;
+  color:#718096;
 }
 
-.order-status.loading{
+.loading.active{
   display:block;
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.order-status.success{
-  display:block;
-  background:#ecfdf5;
-  color:#166534;
-}
-
-.order-status.error{
-  display:block;
-  background:#fef2f2;
-  color:#991b1b;
 }
 
 /* =========================
@@ -580,6 +521,21 @@ small{
 }
 
 /* =========================
+   ERROR
+========================= */
+
+.api-error{
+  background:#fff5f5;
+  border-left:4px solid #e53e3e;
+  color:#742a2a;
+  padding:14px;
+  border-radius:8px;
+  margin-top:15px;
+  display:none;
+  line-height:1.5;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -613,8 +569,6 @@ small{
 
 </style>
 
-<script src="api.js"></script>
-
 </head>
 
 
@@ -646,11 +600,11 @@ small{
 ================================================== -->
 
 <button
-type="button"
-class="back"
-onclick="kembali()">
+  type="button"
+  class="back"
+  onclick="kembali()">
 
-← Kembali ke Buku
+  ← Kembali ke Buku
 
 </button>
 
@@ -665,12 +619,12 @@ onclick="kembali()">
 <div class="form-title">
 
 <h1>
-📚 Order Buku
+  📚 Order Buku
 </h1>
 
 <p>
-Kelola order buku dan penambahan author kolaborasi
-dalam satu form.
+  Kelola order buku dan penambahan author kolaborasi
+  dalam satu form.
 </p>
 
 </div>
@@ -683,27 +637,27 @@ dalam satu form.
 <div class="input-type">
 
 <div
-class="form-group"
-style="margin-bottom:0;">
+  class="form-group"
+  style="margin-bottom:0;">
 
 <label>
-Jenis Input
+  Jenis Input
 </label>
 
 <select
-id="jenisInput"
-onchange="ubahJenisInput()">
+  id="jenisInput"
+  onchange="ubahJenisInput()">
 
 <option value="">
-Pilih jenis input
+  Pilih jenis input
 </option>
 
 <option value="order">
-Order Buku
+  Order Buku
 </option>
 
 <option value="tambahAuthor">
-Tambah Author (Kolaborasi)
+  Tambah Author (Kolaborasi)
 </option>
 
 </select>
@@ -731,13 +685,14 @@ yang sudah ada.
 ================================================== -->
 
 <div
-id="formOrder"
-class="section">
+  id="formOrder"
+  class="section">
 
 
 <div class="info-box">
 
-<strong>📖 Order Buku Baru</strong><br>
+<strong>📖 Order Buku Baru</strong>
+<br>
 
 ID Order akan dibuat otomatis setelah data berhasil
 disimpan.
@@ -752,87 +707,95 @@ disimpan.
 
 
 <form
-id="orderForm"
-onsubmit="simpanOrder(event)">
+  id="orderForm"
+  onsubmit="simpanOrder(event)">
 
 
-<!-- ==================================================
-     TANGGAL
-================================================== -->
+<!-- TANGGAL -->
 
 <div class="form-group">
 
 <label>
-Tanggal
+  Tanggal
 </label>
 
 <input
-type="date"
-id="tanggal"
-name="tanggal"
-required>
+  type="date"
+  id="tanggal"
+  name="tanggal"
+  required>
 
 </div>
 
 
-<!-- ==================================================
-     MARKETING
-================================================== -->
+<!-- MARKETING -->
 
 <div class="form-group">
 
 <label>
-Marketing
+  Marketing
 </label>
 
-<input
-type="text"
-id="marketing"
-name="marketing"
-placeholder="Masukkan nama marketing"
-required>
+<select
+  id="marketing"
+  name="marketing"
+  required>
 
-<small>
-Isi nama marketing secara manual.
-</small>
+<option value="">
+  Pilih Marketing
+</option>
+
+<option value="Marketing 1">
+  Marketing 1
+</option>
+
+<option value="Marketing 2">
+  Marketing 2
+</option>
+
+<option value="Marketing 3">
+  Marketing 3
+</option>
+
+<option value="Marketing 4">
+  Marketing 4
+</option>
+
+</select>
 
 </div>
 
 
-<!-- ==================================================
-     JUDUL
-================================================== -->
+<!-- JUDUL -->
 
 <div class="form-group">
 
 <label>
-Judul Buku
+  Judul Buku
 </label>
 
 <input
-type="text"
-id="judulBuku"
-name="judulBuku"
-placeholder="Masukkan judul buku"
-required>
+  type="text"
+  id="judulBuku"
+  name="judulBuku"
+  placeholder="Masukkan judul buku"
+  required>
 
 </div>
 
 
-<!-- ==================================================
-     RINCIAN BAB
-================================================== -->
+<!-- RINCIAN BAB -->
 
 <div class="form-group">
 
 <label>
-Rincian Bab
+  Rincian Bab
 </label>
 
 <textarea
-id="rincianBab"
-name="rincianBab"
-placeholder="Contoh:
+  id="rincianBab"
+  name="rincianBab"
+  placeholder="Contoh:
 
 Bab 1: Pendahuluan
 Bab 2: Landasan Teori
@@ -842,7 +805,7 @@ Bab 5: Pembahasan
 Bab 6: Kesimpulan
 Bab 7: Saran
 Bab 8: Daftar Pustaka"
-required></textarea>
+  required></textarea>
 
 <small>
 
@@ -854,36 +817,34 @@ untuk author Mandiri dan author Kolaborasi.
 </div>
 
 
-<!-- ==================================================
-     K M T
-================================================== -->
+<!-- K M T -->
 
 <div class="form-group">
 
 <label>
-K / M / T
+  K / M / T
 </label>
 
 <select
-id="kmt"
-name="kmt"
-onchange="ubahKMT()"
-required>
+  id="kmt"
+  name="kmt"
+  onchange="ubahKMT()"
+  required>
 
 <option value="">
-Pilih
+  Pilih
 </option>
 
 <option value="K">
-K - Kolaborasi
+  K - Kolaborasi
 </option>
 
 <option value="M">
-M - Mandiri
+  M - Mandiri
 </option>
 
 <option value="T">
-T - Tunggal
+  T - Tunggal
 </option>
 
 </select>
@@ -892,30 +853,59 @@ T - Tunggal
 
 
 <!-- ==================================================
-     JENIS PENULISAN
+     LINK DRIVE
 ================================================== -->
+
+<div
+  id="linkDriveSection"
+  class="link-drive-box"
+  style="display:none;">
+
+<label>
+  🔗 Link Google Drive
+</label>
+
+<input
+  type="url"
+  id="linkDrive"
+  name="linkDrive"
+  placeholder="https://drive.google.com/...">
+
+<small>
+
+Link Google Drive hasil/naskah buku.
+<br>
+
+<strong>Wajib diisi apabila K/Mandiri dipilih.</strong>
+
+</small>
+
+</div>
+
+
+<!-- JENIS PENULISAN -->
 
 <div class="form-group">
 
 <label>
-Jenis Penulisan
+  Jenis Penulisan
 </label>
 
 <select
-id="jenisPenulisan"
-name="jenisPenulisan"
-required>
+  id="jenisPenulisan"
+  name="jenisPenulisan"
+  required>
 
 <option value="">
-Pilih jenis penulisan
+  Pilih jenis penulisan
 </option>
 
 <option value="Naskah Dibuatkan">
-Naskah Dibuatkan
+  Naskah Dibuatkan
 </option>
 
 <option value="Naskah Mandiri">
-Naskah Mandiri
+  Naskah Mandiri
 </option>
 
 </select>
@@ -928,50 +918,13 @@ Naskah Mandiri
 ================================================== -->
 
 <div
-id="authorMTSection"
-style="display:none;">
+  id="authorMTSection"
+  style="display:none;">
+
 
 <div
-id="infoAuthorMT"
-class="info-box">
-</div>
-
-
-<!-- ==================================================
-     LINK DRIVE SATU UNTUK ORDER M
-================================================== -->
-
-<div
-id="driveLinkOrderBox"
-class="drive-link-box"
-style="display:none;">
-
-<div class="drive-link-title">
-🔗 Link Google Drive Naskah
-</div>
-
-<label>
-Link Drive
-</label>
-
-<input
-type="url"
-id="driveLink"
-name="driveLink"
-placeholder="https://drive.google.com/..."
->
-
-<small>
-
-Link Drive hanya diisi <strong>satu kali</strong>
-untuk seluruh Order Buku Mandiri.
-
-<br>
-
-Link ini tidak perlu diisi ulang untuk setiap author.
-
-</small>
-
+  id="infoAuthorMT"
+  class="info-box">
 </div>
 
 
@@ -979,27 +932,44 @@ Link ini tidak perlu diisi ulang untuk setiap author.
 
 
 <button
-type="button"
-class="btn-add"
-id="btnTambahAuthorMT"
-onclick="tambahAuthorMT()">
+  type="button"
+  class="btn-add"
+  id="btnTambahAuthorMT"
+  onclick="tambahAuthorMT()">
 
-＋ TAMBAH AUTHOR
+  ＋ TAMBAH AUTHOR
 
 </button>
+
 
 </div>
 
 
-<!-- ==================================================
-     SIMPAN
-================================================== -->
+<!-- LOADING -->
+
+<div
+  id="loadingOrder"
+  class="loading">
+
+  ⏳ Menyimpan order ke Spreadsheet...
+
+</div>
+
+
+<div
+  id="apiError"
+  class="api-error">
+</div>
+
+
+<!-- SIMPAN -->
 
 <button
-type="submit"
-class="btn-save">
+  type="submit"
+  class="btn-save"
+  id="btnSimpanOrder">
 
-SIMPAN ORDER BUKU
+  SIMPAN ORDER BUKU
 
 </button>
 
@@ -1014,23 +984,17 @@ SIMPAN ORDER BUKU
 ================================================== -->
 
 <div
-id="formTambahAuthor"
-class="section">
+  id="formTambahAuthor"
+  class="section">
 
 
 <div class="info-box">
 
-<strong>🤝 Tambah Author (Kolaborasi)</strong><br>
+<strong>🤝 Tambah Author (Kolaborasi)</strong>
+<br>
 
 Digunakan untuk menambahkan <strong>1 author</strong>
 pada buku yang sudah memiliki ID Order.
-
-<br><br>
-
-Ketik <strong>ID Order</strong> secara manual.
-Setelah ID Order dimasukkan, klik tombol
-<strong>AMBIL DATA ORDER</strong> untuk mengambil
-judul dan daftar bab.
 
 <br><br>
 
@@ -1042,121 +1006,121 @@ seterusnya, lakukan input kembali menggunakan
 
 
 <form
-id="authorForm"
-onsubmit="simpanAuthor(event)">
+  id="authorForm"
+  onsubmit="simpanAuthor(event)">
 
 
-<!-- ==================================================
-     ID ORDER MANUAL
-================================================== -->
+<!-- ID ORDER -->
 
 <div class="form-group">
 
 <label>
-ID Order Buku
+  ID Order Buku
 </label>
 
-<input
-type="text"
-id="idOrder"
-name="idOrder"
-placeholder="Contoh: ORD/BUK/001"
-autocomplete="off"
-required>
+<select
+  id="idOrder"
+  name="idOrder"
+  onchange="ambilDetailOrder()"
+  required>
+
+<option value="">
+  Pilih ID Order
+</option>
+
+</select>
 
 <small>
-Ketik ID Order buku yang sudah ada.
-</small>
-
-<button
-type="button"
-id="btnAmbilOrder"
-class="btn-load"
-onclick="ambilDetailOrder()">
-
-🔍 AMBIL DATA ORDER
-
-</button>
-
-<div
-id="orderStatus"
-class="order-status">
-</div>
-
-</div>
-
-
-<!-- ==================================================
-     JUDUL
-================================================== -->
-
-<div class="form-group">
-
-<label>
-Judul Buku
-</label>
-
-<input
-type="text"
-id="judulBukuAuthor"
-class="readonly"
-placeholder="Akan muncul setelah ID Order ditemukan"
-readonly>
-
-</div>
-
-
-<!-- ==================================================
-     MARKETING INPUT
-================================================== -->
-
-<div class="form-group">
-
-<label>
-Marketing Input
-</label>
-
-<input
-type="text"
-id="marketingAuthor"
-name="marketingAuthor"
-placeholder="Masukkan nama marketing"
-required>
-
-<small>
-Isi nama marketing yang melakukan input author kolaborasi.
+  ID Order menjadi identitas utama buku.
 </small>
 
 </div>
 
 
-<!-- ==================================================
-     TANGGAL
-================================================== -->
+<!-- JUDUL -->
 
 <div class="form-group">
 
 <label>
-Tanggal Penambahan Author
+  Judul Buku
 </label>
 
 <input
-type="date"
-id="tanggalTambah"
-name="tanggalTambah"
-required>
+  type="text"
+  id="judulBukuAuthor"
+  class="readonly"
+  placeholder="Otomatis berdasarkan ID Order"
+  readonly>
 
 </div>
 
 
-<!-- ==================================================
-     SATU AUTHOR
-================================================== -->
+<!-- MARKETING -->
 
 <div class="form-group">
 
 <label>
-Author Kolaborasi
+  Marketing Input
+</label>
+
+<select
+  id="marketingAuthor"
+  name="marketingAuthor"
+  required>
+
+<option value="">
+  Pilih Marketing
+</option>
+
+<option value="Marketing 1">
+  Marketing 1
+</option>
+
+<option value="Marketing 2">
+  Marketing 2
+</option>
+
+<option value="Marketing 3">
+  Marketing 3
+</option>
+
+<option value="Marketing 4">
+  Marketing 4
+</option>
+
+</select>
+
+<small>
+  Marketing yang melakukan input author kolaborasi
+  dipilih di sini.
+</small>
+
+</div>
+
+
+<!-- TANGGAL -->
+
+<div class="form-group">
+
+<label>
+  Tanggal Penambahan Author
+</label>
+
+<input
+  type="date"
+  id="tanggalTambah"
+  name="tanggalTambah"
+  required>
+
+</div>
+
+
+<!-- AUTHOR -->
+
+<div class="form-group">
+
+<label>
+  Author Kolaborasi
 </label>
 
 <small style="margin-bottom:15px;">
@@ -1169,12 +1133,14 @@ dalam satu kali input.
 
 <div id="authorContainer">
 
+
 <div class="author-card">
+
 
 <div class="author-header">
 
 <div class="author-number">
-Author
+  Author
 </div>
 
 </div>
@@ -1182,17 +1148,18 @@ Author
 
 <div class="author-grid">
 
+
 <div>
 
 <label>
-Nama Author
+  Nama Author
 </label>
 
 <input
-type="text"
-name="authorNama"
-placeholder="Nama lengkap author"
-required>
+  type="text"
+  name="authorNama"
+  placeholder="Nama lengkap author"
+  required>
 
 </div>
 
@@ -1200,14 +1167,14 @@ required>
 <div>
 
 <label>
-Email Author
+  Email Author
 </label>
 
 <input
-type="email"
-name="authorEmail"
-placeholder="Email author"
-required>
+  type="email"
+  name="authorEmail"
+  placeholder="Email author"
+  required>
 
 </div>
 
@@ -1215,54 +1182,72 @@ required>
 <div>
 
 <label>
-No. Telp Author
+  No. Telp Author
 </label>
 
 <input
-type="text"
-name="authorTelp"
-placeholder="Nomor telepon author"
-required>
+  type="text"
+  name="authorTelp"
+  placeholder="Nomor telepon author"
+  required>
 
 </div>
+
 
 </div>
 
 
 <div
-class="authorBabContainer"
-style="margin-top:20px;">
+  class="authorBabContainer"
+  style="margin-top:20px;">
+
 
 <label>
-Bab yang Ditulis
+  Bab yang Ditulis
 </label>
+
 
 <div class="bab-list">
 
 <div
-class="info-box"
-style="grid-column:1/-1;margin:0;">
+  class="info-box"
+  style="grid-column:1/-1;margin:0;">
 
-Ketik ID Order kemudian klik
-<strong>AMBIL DATA ORDER</strong>.
-Daftar bab akan muncul otomatis.
-
-</div>
+  Pilih ID Order terlebih dahulu.
+  Daftar bab akan muncul otomatis.
 
 </div>
 
 </div>
 
+
 </div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div
+  id="loadingAuthor"
+  class="loading">
+
+  ⏳ Menyimpan author ke Spreadsheet...
 
 </div>
 
 
 <button
-type="submit"
-class="btn-save">
+  type="submit"
+  class="btn-save"
+  id="btnSimpanAuthor">
 
-SIMPAN AUTHOR KOLABORASI
+  SIMPAN AUTHOR KOLABORASI
 
 </button>
 
@@ -1271,8 +1256,6 @@ SIMPAN AUTHOR KOLABORASI
 
 </div>
 
-
-</div>
 </div>
 
 
@@ -1281,22 +1264,28 @@ SIMPAN AUTHOR KOLABORASI
 ================================================== -->
 
 <div
-id="orderModal"
-class="modal">
+  id="orderModal"
+  class="modal">
+
 
 <div class="modal-box">
 
+
 <div class="modal-icon">
-✅
+  ✅
 </div>
 
+
 <h2>
-Order Buku Berhasil
+  Order Buku Berhasil
 </h2>
+
 
 <p>
 
 Order telah berhasil dicatat.
+
+<br>
 
 Simpan ID Order berikut untuk proses
 Tambah Author, Invoice, ISBN, dan HKI.
@@ -1306,64 +1295,69 @@ Tambah Author, Invoice, ISBN, dan HKI.
 
 <div class="order-result">
 
-<div class="result-row">
-
-<div class="result-label">
-ID ORDER
-</div>
-
-<div
-id="resultIdOrder"
-class="result-value id-order">
-
--
-
-</div>
-
-</div>
-
 
 <div class="result-row">
 
 <div class="result-label">
-JUDUL BUKU
+  ID ORDER
 </div>
 
 <div
-id="resultJudul"
-class="result-value">
+  id="resultIdOrder"
+  class="result-value id-order">
 
--
+  -
+
+</div>
+
+</div>
+
+
+<div class="result-row">
+
+<div class="result-label">
+  JUDUL BUKU
+</div>
+
+<div
+  id="resultJudul"
+  class="result-value">
+
+  -
 
 </div>
 
 </div>
+
 
 </div>
 
 
 <div class="modal-buttons">
 
-<button
-type="button"
-class="btn-modal btn-copy"
-onclick="salinIdOrder()">
 
-📋 SALIN ID
+<button
+  type="button"
+  class="btn-modal btn-copy"
+  onclick="salinIdOrder()">
+
+  📋 SALIN ID
 
 </button>
 
 
 <button
-type="button"
-class="btn-modal btn-close"
-onclick="tutupModal()">
+  type="button"
+  class="btn-modal btn-close"
+  onclick="tutupModal()">
 
-TUTUP
+  TUTUP
 
 </button>
+
 
 </div>
+
 
 </div>
 
@@ -1373,15 +1367,91 @@ TUTUP
 <script>
 
 /* ==================================================
+   API CONFIGURATION
+================================================== */
+
+/*
+   API APPS SCRIPT MODUL BUKU
+*/
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwZycMn2AtI0pWLmw9vIuid3Wrmoz3fAZDN7GFseq-YQkr9BdwvdkHPcaEqHhF58H-EGw/exec";
+
+
+/* ==================================================
+   API HELPER
+================================================== */
+
+async function apiPost(
+  action,
+  data = {}
+){
+
+  const response =
+    await fetch(
+      API_URL,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body:JSON.stringify({
+          action:action,
+          data:data
+        })
+      }
+    );
+
+  const text =
+    await response.text();
+
+  let result;
+
+  try{
+
+    result =
+      JSON.parse(text);
+
+  }catch(error){
+
+    throw new Error(
+      "Respons API bukan JSON.\n\n" +
+      text.substring(0,500)
+    );
+
+  }
+
+  if(!result){
+
+    throw new Error(
+      "API tidak mengembalikan data."
+    );
+
+  }
+
+  if(result.success === false){
+
+    throw new Error(
+      result.message ||
+      "API mengembalikan status gagal."
+    );
+
+  }
+
+  return result;
+
+}
+
+
+/* ==================================================
    INIT
 ================================================== */
 
 let jumlahAuthorMT = 0;
 
-
-/* ==================================================
-   DOM READY
-================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -1393,44 +1463,45 @@ document.addEventListener(
         .split("T")[0];
 
 
-    document.getElementById(
-      "tanggal"
-    ).value = today;
+    const tanggal =
+      document.getElementById(
+        "tanggal"
+      );
+
+    if(tanggal){
+      tanggal.value =
+        today;
+    }
 
 
-    document.getElementById(
-      "tanggalTambah"
-    ).value = today;
+    const tanggalTambah =
+      document.getElementById(
+        "tanggalTambah"
+      );
+
+    if(tanggalTambah){
+      tanggalTambah.value =
+        today;
+    }
 
 
-    document.getElementById(
-      "rincianBab"
-    ).addEventListener(
-      "input",
-      function(){
+    const rincianBab =
+      document.getElementById(
+        "rincianBab"
+      );
 
-        refreshSemuaBabAuthorMT();
+    if(rincianBab){
 
-      }
-    );
+      rincianBab.addEventListener(
+        "input",
+        function(){
 
-
-    document.getElementById(
-      "idOrder"
-    ).addEventListener(
-      "keydown",
-      function(event){
-
-        if(event.key === "Enter"){
-
-          event.preventDefault();
-
-          ambilDetailOrder();
+          refreshSemuaBabAuthorMT();
 
         }
+      );
 
-      }
-    );
+    }
 
   }
 );
@@ -1440,7 +1511,7 @@ document.addEventListener(
    JENIS INPUT
 ================================================== */
 
-function ubahJenisInput(){
+async function ubahJenisInput(){
 
   const jenis =
     document.getElementById(
@@ -1449,41 +1520,54 @@ function ubahJenisInput(){
 
 
   document
-    .getElementById("formOrder")
-    .classList.remove("active");
+    .getElementById(
+      "formOrder"
+    )
+    .classList.remove(
+      "active"
+    );
 
 
   document
-    .getElementById("formTambahAuthor")
-    .classList.remove("active");
+    .getElementById(
+      "formTambahAuthor"
+    )
+    .classList.remove(
+      "active"
+    );
 
 
-  if(jenis === "order"){
+  if(
+    jenis === "order"
+  ){
 
     document
-      .getElementById("formOrder")
-      .classList.add("active");
+      .getElementById(
+        "formOrder"
+      )
+      .classList.add(
+        "active"
+      );
+
+    return;
 
   }
 
 
-  if(jenis === "tambahAuthor"){
+  if(
+    jenis === "tambahAuthor"
+  ){
 
     document
-      .getElementById("formTambahAuthor")
-      .classList.add("active");
+      .getElementById(
+        "formTambahAuthor"
+      )
+      .classList.add(
+        "active"
+      );
 
 
-    setTimeout(
-      function(){
-
-        document
-          .getElementById("idOrder")
-          .focus();
-
-      },
-      100
-    );
+    await muatDaftarOrder();
 
   }
 
@@ -1526,84 +1610,108 @@ function ubahKMT(){
     );
 
 
-  const driveBox =
+  const linkSection =
     document.getElementById(
-      "driveLinkOrderBox"
+      "linkDriveSection"
     );
 
 
-  const driveInput =
+  const linkInput =
     document.getElementById(
-      "driveLink"
+      "linkDrive"
     );
 
 
-  container.innerHTML = "";
+  /*
+     RESET AUTHOR
+  */
 
-  jumlahAuthorMT = 0;
+  container.innerHTML =
+    "";
 
-
-  /* RESET DRIVE */
-
-  driveInput.value = "";
-
-  driveInput.required = false;
-
-  driveBox.style.display = "none";
+  jumlahAuthorMT =
+    0;
 
 
-  /* =========================
-     K - KOLABORASI
-  ========================= */
+  /*
+     RESET LINK DRIVE
+  */
 
-  if(kmt === "K"){
+  linkSection.style.display =
+    "none";
 
-    section.style.display = "none";
+  linkInput.required =
+    false;
+
+  linkInput.value =
+    "";
+
+
+  /*
+     K = KOLABORASI
+  */
+
+  if(
+    kmt === "K"
+  ){
+
+    section.style.display =
+      "none";
 
     return;
 
   }
 
 
-  /* =========================
-     M - MANDIRI
-  ========================= */
+  /*
+     M = MANDIRI
+  */
 
-  if(kmt === "M"){
+  if(
+    kmt === "M"
+  ){
 
-    section.style.display = "block";
+    section.style.display =
+      "block";
 
-    btnTambah.style.display = "block";
+    btnTambah.style.display =
+      "block";
 
 
-    driveBox.style.display = "block";
+    /*
+       LINK DRIVE HANYA M
+    */
 
-    driveInput.required = true;
+    linkSection.style.display =
+      "block";
+
+    linkInput.required =
+      true;
 
 
     info.innerHTML = `
 
-      <strong>👤 M - Mandiri</strong><br>
+      <strong>👤 M - Mandiri</strong>
+      <br>
 
       Anda dapat memasukkan beberapa author.
 
       <br><br>
 
-      <strong>Link Google Drive hanya satu</strong>
-      untuk seluruh order dan diisi pada bagian
-      Link Drive di atas.
+      Contoh pembagian:
+
+      <br>
+
+      • Author 1 → Bab 1–5
+
+      <br>
+
+      • Author 2 → Bab 6–8
 
       <br><br>
 
-      Setiap author dapat menentukan babnya
-      masing-masing.
-
-      <br><br>
-
-      Jika memilih <strong>Pilih Bab</strong>,
-      Anda dapat mencentang bab yang tersedia
-      dan juga menulis bab secara manual pada
-      textbox.
+      Atau masing-masing author dapat memilih
+      <strong>Semua Bab</strong>.
 
     `;
 
@@ -1615,20 +1723,25 @@ function ubahKMT(){
   }
 
 
-  /* =========================
-     T - TUNGGAL
-  ========================= */
+  /*
+     T = TUNGGAL
+  */
 
-  if(kmt === "T"){
+  if(
+    kmt === "T"
+  ){
 
-    section.style.display = "block";
+    section.style.display =
+      "block";
 
-    btnTambah.style.display = "none";
+    btnTambah.style.display =
+      "none";
 
 
     info.innerHTML = `
 
-      <strong>👤 T - Tunggal</strong><br>
+      <strong>👤 T - Tunggal</strong>
+      <br>
 
       Hanya satu author.
 
@@ -1651,7 +1764,8 @@ function ubahKMT(){
   }
 
 
-  section.style.display = "none";
+  section.style.display =
+    "none";
 
 }
 
@@ -1667,6 +1781,10 @@ function tambahAuthorMT(){
       "kmt"
     ).value;
 
+
+  /*
+     T hanya satu author
+  */
 
   if(
     kmt === "T" &&
@@ -1703,14 +1821,17 @@ function tambahAuthorMT(){
   );
 
 
-  let bagianBab = "";
+  let bagianBab =
+    "";
 
 
-  /* ==================================================
-     T - TUNGGAL
-  ================================================== */
+  /*
+     T = SEMUA BAB
+  */
 
-  if(kmt === "T"){
+  if(
+    kmt === "T"
+  ){
 
     bagianBab = `
 
@@ -1739,11 +1860,6 @@ function tambahAuthorMT(){
           name="mtBab[]"
           value="SEMUA BAB">
 
-        <input
-          type="hidden"
-          name="mtBabManual[]"
-          value="">
-
       </div>
 
     `;
@@ -1751,11 +1867,13 @@ function tambahAuthorMT(){
   }
 
 
-  /* ==================================================
-     M - MANDIRI
-  ================================================== */
+  /*
+     M = PILIH SEMUA / PILIH BAB
+  */
 
-  if(kmt === "M"){
+  if(
+    kmt === "M"
+  ){
 
     bagianBab = `
 
@@ -1767,8 +1885,6 @@ function tambahAuthorMT(){
           Bab yang Dikerjakan
         </label>
 
-
-        <!-- PILIH MODE -->
 
         <div class="author-mode-box">
 
@@ -1805,45 +1921,12 @@ function tambahAuthorMT(){
         </div>
 
 
-        <!-- CHECKBOX BAB -->
-
         <div
           class="bab-author-container"
           style="display:none;">
 
-          <div class="bab-list"></div>
-
-        </div>
-
-
-        <!-- TEXTBOX BAB MANUAL -->
-
-        <div
-          class="manual-bab-box"
-          style="display:none;">
-
-          <label>
-            ✏️ Tulis Bab yang Dikerjakan
-          </label>
-
-          <input
-            type="text"
-            name="mtBabManual[]"
-            placeholder="Contoh: Bab 1, Bab 3, Bab 5">
-
-          <small>
-
-            Jika diperlukan, tulis nomor atau
-            rincian bab secara manual.
-
-            <br>
-
-            Contoh:
-            <strong>Bab 1, Bab 3, Bab 5</strong>
-            atau
-            <strong>Bab 2–4</strong>.
-
-          </small>
+          <div class="bab-list">
+          </div>
 
         </div>
 
@@ -1860,22 +1943,25 @@ function tambahAuthorMT(){
   }
 
 
-  /* ==================================================
-     HTML AUTHOR
-  ================================================== */
-
   card.innerHTML = `
 
     <div class="author-header">
 
       <div class="author-number">
+
         Author ${jumlahAuthorMT}
+
       </div>
 
+
       ${
-        kmt === "M" && jumlahAuthorMT > 1
+        kmt === "M" &&
+        jumlahAuthorMT > 1
+
         ?
+
         `
+
         <button
           type="button"
           class="btn-remove"
@@ -1884,15 +1970,20 @@ function tambahAuthorMT(){
           Hapus
 
         </button>
+
         `
+
         :
+
         ""
+
       }
 
     </div>
 
 
     <div class="author-grid">
+
 
       <div>
 
@@ -1938,6 +2029,7 @@ function tambahAuthorMT(){
 
       </div>
 
+
     </div>
 
 
@@ -1951,7 +2043,9 @@ function tambahAuthorMT(){
   );
 
 
-  if(kmt === "M"){
+  if(
+    kmt === "M"
+  ){
 
     isiBabUntukAuthorMT(
       card
@@ -1966,7 +2060,9 @@ function tambahAuthorMT(){
    ISI BAB AUTHOR M
 ================================================== */
 
-function isiBabUntukAuthorMT(card){
+function isiBabUntukAuthorMT(
+  card
+){
 
   const rincian =
     document.getElementById(
@@ -1985,7 +2081,8 @@ function isiBabUntukAuthorMT(card){
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   if(!rincian){
@@ -2077,7 +2174,9 @@ function refreshSemuaBabAuthorMT(){
         );
 
 
-      if(checkboxContainer){
+      if(
+        checkboxContainer
+      ){
 
         isiBabUntukAuthorMT(
           card
@@ -2095,7 +2194,9 @@ function refreshSemuaBabAuthorMT(){
    MODE BAB MANDIRI
 ================================================== */
 
-function ubahModeBab(radio){
+function ubahModeBab(
+  radio
+){
 
   const card =
     radio.closest(
@@ -2107,21 +2208,9 @@ function ubahModeBab(radio){
     radio.value;
 
 
-  const checkboxBox =
-    card.querySelector(
-      ".bab-author-container .bab-list"
-    );
-
-
-  const checkboxContainer =
+  const pilihanBab =
     card.querySelector(
       ".bab-author-container"
-    );
-
-
-  const manualBox =
-    card.querySelector(
-      ".manual-bab-box"
     );
 
 
@@ -2131,23 +2220,11 @@ function ubahModeBab(radio){
     );
 
 
-  const manualInput =
-    card.querySelector(
-      'input[name="mtBabManual[]"]'
-    );
+  if(
+    mode === "semua"
+  ){
 
-
-  /* ==================================================
-     SEMUA BAB
-  ================================================== */
-
-  if(mode === "semua"){
-
-    checkboxContainer.style.display =
-      "none";
-
-
-    manualBox.style.display =
+    pilihanBab.style.display =
       "none";
 
 
@@ -2155,34 +2232,27 @@ function ubahModeBab(radio){
       "SEMUA BAB";
 
 
-    manualInput.value =
-      "";
-
-
     card.querySelectorAll(
       ".checkbox-bab-mt"
     ).forEach(
       function(cb){
 
-        cb.checked = false;
+        cb.checked =
+          false;
 
       }
     );
 
+    return;
+
   }
 
 
-  /* ==================================================
-     PILIH BAB
-  ================================================== */
+  if(
+    mode === "pilih"
+  ){
 
-  if(mode === "pilih"){
-
-    checkboxContainer.style.display =
-      "block";
-
-
-    manualBox.style.display =
+    pilihanBab.style.display =
       "block";
 
 
@@ -2235,7 +2305,9 @@ function updateBabAuthorMT(
 
 
   hiddenBab.value =
-    daftar.join(" | ");
+    daftar.join(
+      " | "
+    );
 
 }
 
@@ -2279,12 +2351,16 @@ function perbaruiNomorAuthorMT(){
 
 
   cards.forEach(
-    function(card,index){
+    function(
+      card,
+      index
+    ){
 
       card.querySelector(
         ".author-number"
       ).textContent =
-        "Author " + (index + 1);
+        "Author " +
+        (index + 1);
 
     }
   );
@@ -2292,624 +2368,6 @@ function perbaruiNomorAuthorMT(){
 
   jumlahAuthorMT =
     cards.length;
-
-}
-
-
-/* ==================================================
-   DETAIL ORDER TAMBAH AUTHOR
-================================================== */
-
-function ambilDetailOrder(){
-
-  const input =
-    document.getElementById(
-      "idOrder"
-    );
-
-
-  const idOrder =
-    input.value.trim();
-
-
-  const judul =
-    document.getElementById(
-      "judulBukuAuthor"
-    );
-
-
-  const status =
-    document.getElementById(
-      "orderStatus"
-    );
-
-
-  const button =
-    document.getElementById(
-      "btnAmbilOrder"
-    );
-
-
-  const container =
-    document.querySelector(
-      "#authorContainer .authorBabContainer .bab-list"
-    );
-
-
-  judul.value = "";
-
-
-  if(container){
-
-    container.innerHTML = `
-
-      <div
-        class="info-box"
-        style="grid-column:1/-1;margin:0;">
-
-        Menunggu data order.
-
-      </div>
-
-    `;
-
-  }
-
-
-  status.className =
-    "order-status";
-
-
-  status.textContent =
-    "";
-
-
-  if(!idOrder){
-
-    status.className =
-      "order-status error";
-
-    status.textContent =
-      "Silakan ketik ID Order terlebih dahulu.";
-
-    input.focus();
-
-    return;
-
-  }
-
-
-  if(
-    typeof google === "undefined" ||
-    !google.script ||
-    !google.script.run
-  ){
-
-    status.className =
-      "order-status error";
-
-    status.textContent =
-      "Google Apps Script tidak tersedia.";
-
-    return;
-
-  }
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "⏳ MENGAMBIL DATA...";
-
-
-  status.className =
-    "order-status loading";
-
-  status.textContent =
-    "Sedang mencari ID Order: " + idOrder;
-
-
-  google.script.run
-
-    .withSuccessHandler(
-      function(data){
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "🔍 AMBIL DATA ORDER";
-
-
-        if(!data){
-
-          status.className =
-            "order-status error";
-
-          status.textContent =
-            "ID Order tidak ditemukan.";
-
-          judul.value =
-            "";
-
-          if(container){
-
-            container.innerHTML = `
-
-              <div
-                class="info-box"
-                style="grid-column:1/-1;margin:0;">
-
-                ID Order tidak ditemukan.
-                Pastikan ID Order sudah benar.
-
-              </div>
-
-            `;
-
-          }
-
-          return;
-
-        }
-
-
-        judul.value =
-          data.judulBuku ||
-          data.judul ||
-          "";
-
-
-        status.className =
-          "order-status success";
-
-        status.textContent =
-          "✓ ID Order ditemukan. Data order berhasil dimuat.";
-
-
-        tampilkanBabKolaborasi(
-          data.rincianBab || ""
-        );
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error){
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "🔍 AMBIL DATA ORDER";
-
-
-        status.className =
-          "order-status error";
-
-        status.textContent =
-          "Gagal mengambil data order.";
-
-
-        if(container){
-
-          container.innerHTML = `
-
-            <div
-              class="info-box"
-              style="grid-column:1/-1;margin:0;">
-
-              Gagal mengambil data order.
-              Silakan periksa ID Order atau hubungi administrator.
-
-            </div>
-
-          `;
-
-        }
-
-
-        console.error(
-          "Gagal mengambil detail order:",
-          error
-        );
-
-
-        alert(
-          "Gagal mengambil detail order:\n" +
-          (
-            error && error.message
-            ?
-            error.message
-            :
-            error
-          )
-        );
-
-      }
-    )
-
-    .ambilDetailOrder(
-      idOrder
-    );
-
-}
-
-
-/* ==================================================
-   TAMPILKAN BAB KOLABORASI
-================================================== */
-
-function tampilkanBabKolaborasi(
-  rincianBab
-){
-
-  const container =
-    document.querySelector(
-      "#authorContainer .authorBabContainer .bab-list"
-    );
-
-
-  if(!container){
-    return;
-  }
-
-
-  container.innerHTML = "";
-
-
-  if(!rincianBab){
-
-    container.innerHTML = `
-
-      <div
-        class="info-box"
-        style="grid-column:1/-1;margin:0;">
-
-        Rincian bab belum tersedia
-        untuk ID Order ini.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  const daftarBab =
-    rincianBab
-      .split(/\n/)
-      .map(
-        x => x.trim()
-      )
-      .filter(
-        x => x
-      );
-
-
-  if(
-    daftarBab.length === 0
-  ){
-
-    container.innerHTML = `
-
-      <div
-        class="info-box"
-        style="grid-column:1/-1;margin:0;">
-
-        Rincian bab belum tersedia
-        untuk ID Order ini.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  daftarBab.forEach(
-    function(bab){
-
-      const label =
-        document.createElement(
-          "label"
-        );
-
-
-      label.className =
-        "bab-item";
-
-
-      label.innerHTML = `
-
-        <input
-          type="checkbox"
-          name="authorBab"
-          value="${escapeHtml(bab)}">
-
-        <span>
-          ${escapeHtml(bab)}
-        </span>
-
-      `;
-
-
-      container.appendChild(
-        label
-      );
-
-    }
-  );
-
-}
-
-
-/* ==================================================
-   SIMPAN ORDER
-================================================== */
-
-function simpanOrder(
-  event
-){
-
-  event.preventDefault();
-
-
-  const form =
-    document.getElementById(
-      "orderForm"
-    );
-
-
-  if(!form.checkValidity()){
-
-    form.reportValidity();
-
-    return;
-
-  }
-
-
-  const kmt =
-    document.getElementById(
-      "kmt"
-    ).value;
-
-
-  const authors =
-    ambilAuthorMT();
-
-
-  if(
-    kmt === "T" &&
-    authors.length !== 1
-  ){
-
-    alert(
-      "Jenis T (Tunggal) harus memiliki tepat 1 author."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    kmt === "M" &&
-    authors.length < 1
-  ){
-
-    alert(
-      "Jenis M (Mandiri) minimal harus memiliki 1 author."
-    );
-
-    return;
-
-  }
-
-
-  /* ==================================================
-     LINK DRIVE HANYA UNTUK M
-  ================================================== */
-
-  let driveLink = "";
-
-
-  if(kmt === "M"){
-
-    driveLink =
-      document.getElementById(
-        "driveLink"
-      ).value.trim();
-
-
-    if(!driveLink){
-
-      alert(
-        "Link Google Drive wajib diisi untuk jenis M (Mandiri)."
-      );
-
-      document
-        .getElementById("driveLink")
-        .focus();
-
-      return;
-
-    }
-
-  }
-
-
-  /* ==================================================
-     VALIDASI AUTHOR
-  ================================================== */
-
-  for(
-    let i = 0;
-    i < authors.length;
-    i++
-  ){
-
-    if(!authors[i].bab){
-
-      /*
-      Jika ada input manual, ambil juga
-      */
-
-      if(authors[i].babManual){
-
-        authors[i].bab =
-          authors[i].babManual;
-
-      }
-
-    }
-
-
-    if(!authors[i].bab){
-
-      alert(
-        "Bab untuk Author " +
-        (i + 1) +
-        " belum ditentukan."
-      );
-
-      return;
-
-    }
-
-  }
-
-
-  /* ==================================================
-     DATA ORDER
-  ================================================== */
-
-  const data = {
-
-    tanggal:
-      document.getElementById(
-        "tanggal"
-      ).value,
-
-    marketing:
-      document.getElementById(
-        "marketing"
-      ).value.trim(),
-
-    judulBuku:
-      document.getElementById(
-        "judulBuku"
-      ).value.trim(),
-
-    rincianBab:
-      document.getElementById(
-        "rincianBab"
-      ).value,
-
-    kmt:
-      kmt,
-
-    jenisPenulisan:
-      document.getElementById(
-        "jenisPenulisan"
-      ).value,
-
-    /*
-    SATU LINK DRIVE UNTUK SELURUH ORDER
-    */
-
-    driveLink:
-      driveLink,
-
-    authors:
-      authors
-
-  };
-
-
-  /* ==================================================
-     GOOGLE APPS SCRIPT
-  ================================================== */
-
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
-
-    google.script.run
-
-      .withSuccessHandler(
-        function(result){
-
-          if(
-            result &&
-            result.idOrder
-          ){
-
-            tampilkanPopupOrder(
-              result.idOrder,
-              result.judulBuku ||
-              data.judulBuku
-            );
-
-          }
-          else{
-
-            alert(
-              "Order berhasil disimpan."
-            );
-
-          }
-
-        }
-      )
-
-      .withFailureHandler(
-        function(error){
-
-          alert(
-            "Gagal menyimpan order: " +
-            (
-              error && error.message
-              ?
-              error.message
-              :
-              error
-            )
-          );
-
-        }
-      )
-
-      .simpanOrder(data);
-
-
-    return;
-
-  }
-
-
-  /* ==================================================
-     MODE TEST
-  ================================================== */
-
-  console.log(
-    "DATA ORDER:",
-    data
-  );
-
-
-  tampilkanPopupOrder(
-    "ORD/BUK/001",
-    data.judulBuku
-  );
 
 }
 
@@ -2950,78 +2408,21 @@ function ambilAuthorMT(){
         ).value.trim();
 
 
-      const babInput =
+      const bab =
         card.querySelector(
           '[name="mtBab[]"]'
-        );
-
-
-      const manualInput =
-        card.querySelector(
-          '[name="mtBabManual[]"]'
-        );
-
-
-      const bab =
-        babInput
-        ?
-        babInput.value.trim()
-        :
-        "";
-
-
-      const babManual =
-        manualInput
-        ?
-        manualInput.value.trim()
-        :
-        "";
-
-
-      /*
-      Jika ada bab manual, gabungkan dengan
-      bab yang dicentang.
-      */
-
-      let babFinal =
-        bab;
-
-
-      if(babManual){
-
-        if(babFinal){
-
-          babFinal +=
-            " | " +
-            babManual;
-
-        }
-        else{
-
-          babFinal =
-            babManual;
-
-        }
-
-      }
+        ).value.trim();
 
 
       result.push({
 
-        nama:
-          nama,
+        nama:nama,
 
-        email:
-          email,
+        email:email,
 
-        telp:
-          telp,
+        telp:telp,
 
-        bab:
-          babFinal,
-
-        babManual:
-          babManual
+        bab:bab
 
       });
 
@@ -3035,10 +2436,704 @@ function ambilAuthorMT(){
 
 
 /* ==================================================
+   SIMPAN ORDER BUKU
+================================================== */
+
+async function simpanOrder(
+  event
+){
+
+  event.preventDefault();
+
+
+  const form =
+    document.getElementById(
+      "orderForm"
+    );
+
+
+  if(
+    !form.checkValidity()
+  ){
+
+    form.reportValidity();
+
+    return;
+
+  }
+
+
+  const kmt =
+    document.getElementById(
+      "kmt"
+    ).value;
+
+
+  const authors =
+    ambilAuthorMT();
+
+
+  /*
+     T = TEPAT 1 AUTHOR
+  */
+
+  if(
+    kmt === "T" &&
+    authors.length !== 1
+  ){
+
+    alert(
+      "Jenis T (Tunggal) harus memiliki tepat 1 author."
+    );
+
+    return;
+
+  }
+
+
+  /*
+     M = MINIMAL 1 AUTHOR
+  */
+
+  if(
+    kmt === "M" &&
+    authors.length < 1
+  ){
+
+    alert(
+      "Jenis M (Mandiri) minimal harus memiliki 1 author."
+    );
+
+    return;
+
+  }
+
+
+  /*
+     VALIDASI BAB
+  */
+
+  for(
+    let i = 0;
+    i < authors.length;
+    i++
+  ){
+
+    if(
+      !authors[i].bab
+    ){
+
+      alert(
+        "Bab untuk Author " +
+        (i + 1) +
+        " belum ditentukan."
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  /*
+     LINK DRIVE
+     HANYA M
+  */
+
+  const linkDrive =
+    document.getElementById(
+      "linkDrive"
+    ).value.trim();
+
+
+  if(
+    kmt === "M" &&
+    !linkDrive
+  ){
+
+    alert(
+      "Link Google Drive wajib diisi untuk K - M - Mandiri."
+    );
+
+    document.getElementById(
+      "linkDrive"
+    ).focus();
+
+    return;
+
+  }
+
+
+  /*
+     DATA
+  */
+
+  const data = {
+
+    tanggal:
+      document.getElementById(
+        "tanggal"
+      ).value,
+
+    marketingInput:
+      document.getElementById(
+        "marketing"
+      ).value,
+
+    marketing:
+      document.getElementById(
+        "marketing"
+      ).value,
+
+    judulBuku:
+      document.getElementById(
+        "judulBuku"
+      ).value.trim(),
+
+    rincianBab:
+      document.getElementById(
+        "rincianBab"
+      ).value.trim(),
+
+    kmt:
+      kmt,
+
+    jenisPenulisan:
+      document.getElementById(
+        "jenisPenulisan"
+      ).value,
+
+    authors:
+      authors,
+
+    linkDrive:
+      kmt === "M"
+        ? linkDrive
+        : ""
+
+  };
+
+
+  /*
+     BUTTON
+  */
+
+  const button =
+    document.getElementById(
+      "btnSimpanOrder"
+    );
+
+
+  const loading =
+    document.getElementById(
+      "loadingOrder"
+    );
+
+
+  const errorBox =
+    document.getElementById(
+      "apiError"
+    );
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "MENYIMPAN...";
+
+
+  loading.classList.add(
+    "active"
+  );
+
+
+  errorBox.style.display =
+    "none";
+
+
+  try{
+
+    /*
+       KIRIM KE API
+    */
+
+    const result =
+      await apiPost(
+        "simpanOrderBuku",
+        data
+      );
+
+
+    /*
+       BERHASIL
+    */
+
+    if(
+      result &&
+      result.success !== false &&
+      result.idOrder
+    ){
+
+      tampilkanPopupOrder(
+        result.idOrder,
+        result.judulBuku ||
+        data.judulBuku
+      );
+
+
+      form.reset();
+
+
+      document.getElementById(
+        "tanggal"
+      ).value =
+        new Date()
+          .toISOString()
+          .split("T")[0];
+
+
+      document.getElementById(
+        "linkDriveSection"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "linkDrive"
+      ).required =
+        false;
+
+
+      document.getElementById(
+        "authorMTContainer"
+      ).innerHTML =
+        "";
+
+
+      jumlahAuthorMT =
+        0;
+
+    }else{
+
+      throw new Error(
+        result.message ||
+        "Order gagal disimpan."
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "API ORDER BUKU:",
+      error
+    );
+
+
+    errorBox.innerHTML =
+
+      "<strong>Gagal menyimpan order.</strong><br>" +
+
+      escapeHtml(
+        error.message ||
+        String(error)
+      );
+
+
+    errorBox.style.display =
+      "block";
+
+
+    alert(
+      "Gagal menyimpan order:\n\n" +
+      (
+        error.message ||
+        error
+      )
+    );
+
+  }finally{
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      "SIMPAN ORDER BUKU";
+
+
+    loading.classList.remove(
+      "active"
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   MUAT DAFTAR ORDER
+================================================== */
+
+async function muatDaftarOrder(){
+
+  const select =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Memuat ID Order...
+    </option>
+
+  `;
+
+
+  try{
+
+    const result =
+      await apiPost(
+        "ambilDaftarOrderBuku",
+        {}
+      );
+
+
+    /*
+       Backend mengembalikan array langsung.
+    */
+
+    isiDropdownOrder(
+      Array.isArray(result)
+        ? result
+        : (
+            result.data ||
+            result.orders ||
+            []
+          )
+    );
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+
+    select.innerHTML = `
+
+      <option value="">
+        Gagal memuat ID Order
+      </option>
+
+    `;
+
+
+    alert(
+      "Gagal mengambil daftar ID Order:\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   ISI DROPDOWN ORDER
+================================================== */
+
+function isiDropdownOrder(
+  data
+){
+
+  const select =
+    document.getElementById(
+      "idOrder"
+    );
+
+
+  select.innerHTML = `
+
+    <option value="">
+      Pilih ID Order
+    </option>
+
+  `;
+
+
+  if(
+    !Array.isArray(data) ||
+    data.length === 0
+  ){
+
+    select.innerHTML = `
+
+      <option value="">
+        Belum ada Order Buku
+      </option>
+
+    `;
+
+    return;
+
+  }
+
+
+  data.forEach(
+    function(item){
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      if(
+        typeof item === "object" &&
+        item !== null
+      ){
+
+        option.value =
+          item.idOrder ||
+          "";
+
+        option.textContent =
+
+          (
+            item.idOrder ||
+            ""
+          ) +
+
+          " — " +
+
+          (
+            item.judulBuku ||
+            item.judul ||
+            ""
+          );
+
+      }else{
+
+        option.value =
+          item;
+
+        option.textContent =
+          item;
+
+      }
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   DETAIL ORDER KOLABORASI
+================================================== */
+
+async function ambilDetailOrder(){
+
+  const idOrder =
+    document.getElementById(
+      "idOrder"
+    ).value;
+
+
+  const judul =
+    document.getElementById(
+      "judulBukuAuthor"
+    );
+
+
+  if(!idOrder){
+
+    judul.value =
+      "";
+
+    tampilkanBabKolaborasi(
+      ""
+    );
+
+    return;
+
+  }
+
+
+  judul.value =
+    "Memuat...";
+
+
+  try{
+
+    const result =
+      await apiPost(
+        "ambilDetailOrderBuku",
+        {
+          idOrder:idOrder
+        }
+      );
+
+
+    const data =
+      result &&
+      result.success !== false
+        ? result
+        : (
+            result.data ||
+            result
+          );
+
+
+    if(!data){
+
+      judul.value =
+        "";
+
+      alert(
+        "Data ID Order Buku tidak ditemukan."
+      );
+
+      return;
+
+    }
+
+
+    judul.value =
+      data.judulBuku ||
+      data.judul ||
+      "";
+
+
+    tampilkanBabKolaborasi(
+      data.rincianBab ||
+      ""
+    );
+
+
+  }catch(error){
+
+    judul.value =
+      "";
+
+
+    alert(
+      "Gagal mengambil detail order:\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   TAMPILKAN BAB KOLABORASI
+================================================== */
+
+function tampilkanBabKolaborasi(
+  rincianBab
+){
+
+  const container =
+    document.querySelector(
+      "#authorContainer .authorBabContainer .bab-list"
+    );
+
+
+  if(!container){
+    return;
+  }
+
+
+  container.innerHTML =
+    "";
+
+
+  if(!rincianBab){
+
+    container.innerHTML = `
+
+      <div
+        class="info-box"
+        style="grid-column:1/-1;margin:0;">
+
+        Rincian bab belum tersedia.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const daftarBab =
+    rincianBab
+      .split(/\n/)
+      .map(
+        x => x.trim()
+      )
+      .filter(
+        x => x
+      );
+
+
+  daftarBab.forEach(
+    function(bab){
+
+      const label =
+        document.createElement(
+          "label"
+        );
+
+
+      label.className =
+        "bab-item";
+
+
+      label.innerHTML = `
+
+        <input
+          type="checkbox"
+          name="authorBab"
+          value="${escapeHtml(bab)}">
+
+        <span>
+          ${escapeHtml(bab)}
+        </span>
+
+      `;
+
+
+      container.appendChild(
+        label
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
    SIMPAN AUTHOR KOLABORASI
 ================================================== */
 
-function simpanAuthor(
+async function simpanAuthor(
   event
 ){
 
@@ -3051,7 +3146,9 @@ function simpanAuthor(
     );
 
 
-  if(!form.checkValidity()){
+  if(
+    !form.checkValidity()
+  ){
 
     form.reportValidity();
 
@@ -3063,49 +3160,19 @@ function simpanAuthor(
   const idOrder =
     document.getElementById(
       "idOrder"
-    ).value.trim();
-
-
-  if(!idOrder){
-
-    alert(
-      "ID Order wajib diisi."
-    );
-
-    document
-      .getElementById("idOrder")
-      .focus();
-
-    return;
-
-  }
+    ).value;
 
 
   const judulBuku =
     document.getElementById(
       "judulBukuAuthor"
-    ).value.trim();
-
-
-  if(!judulBuku){
-
-    alert(
-      "Silakan klik AMBIL DATA ORDER terlebih dahulu."
-    );
-
-    document
-      .getElementById("idOrder")
-      .focus();
-
-    return;
-
-  }
+    ).value;
 
 
   const marketing =
     document.getElementById(
       "marketingAuthor"
-    ).value.trim();
+    ).value;
 
 
   const tanggal =
@@ -3203,69 +3270,89 @@ function simpanAuthor(
   };
 
 
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
-
-    google.script.run
-
-      .withSuccessHandler(
-        function(result){
-
-          alert(
-            "Author kolaborasi berhasil disimpan."
-          );
+  const button =
+    document.getElementById(
+      "btnSimpanAuthor"
+    );
 
 
-          resetFormAuthor();
-
-        }
-      )
-
-      .withFailureHandler(
-        function(error){
-
-          alert(
-            "Gagal menyimpan author: " +
-            (
-              error && error.message
-              ?
-              error.message
-              :
-              error
-            )
-          );
-
-        }
-      )
-
-      .simpanAuthor(data);
+  const loading =
+    document.getElementById(
+      "loadingAuthor"
+    );
 
 
-    return;
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "MENYIMPAN...";
+
+
+  loading.classList.add(
+    "active"
+  );
+
+
+  try{
+
+    const result =
+      await apiPost(
+        "simpanAuthorBuku",
+        data
+      );
+
+
+    if(
+      result &&
+      result.success !== false
+    ){
+
+      alert(
+        "Author kolaborasi berhasil disimpan."
+      );
+
+
+      resetFormAuthor();
+
+    }else{
+
+      throw new Error(
+        result.message ||
+        "Author gagal disimpan."
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "API AUTHOR BUKU:",
+      error
+    );
+
+
+    alert(
+      "Gagal menyimpan author:\n\n" +
+      error.message
+    );
+
+  }finally{
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      "SIMPAN AUTHOR KOLABORASI";
+
+
+    loading.classList.remove(
+      "active"
+    );
 
   }
-
-
-  console.log(
-    "DATA AUTHOR KOLABORASI:",
-    data
-  );
-
-
-  alert(
-    "Data Author Kolaborasi siap disimpan.\n\n" +
-    "ID Order: " +
-    data.idOrder +
-    "\nJudul: " +
-    data.judulBuku +
-    "\nAuthor: " +
-    data.author.nama +
-    "\nJumlah Bab: " +
-    data.author.bab.length
-  );
 
 }
 
@@ -3276,25 +3363,16 @@ function simpanAuthor(
 
 function resetFormAuthor(){
 
-  document.getElementById(
-    "authorForm"
-  ).reset();
+  document
+    .getElementById(
+      "authorForm"
+    )
+    .reset();
 
 
   document.getElementById(
     "judulBukuAuthor"
-  ).value = "";
-
-
-  document.getElementById(
-    "orderStatus"
-  ).className =
-    "order-status";
-
-
-  document.getElementById(
-    "orderStatus"
-  ).textContent =
+  ).value =
     "";
 
 
@@ -3312,8 +3390,8 @@ function resetFormAuthor(){
         class="info-box"
         style="grid-column:1/-1;margin:0;">
 
-        Ketik ID Order kemudian klik
-        <strong>AMBIL DATA ORDER</strong>.
+        Pilih ID Order terlebih dahulu.
+        Daftar bab akan muncul otomatis.
 
       </div>
 
@@ -3330,12 +3408,11 @@ function resetFormAuthor(){
 
   document.getElementById(
     "tanggalTambah"
-  ).value = today;
+  ).value =
+    today;
 
 
-  document
-    .getElementById("idOrder")
-    .focus();
+  muatDaftarOrder();
 
 }
 
@@ -3388,7 +3465,9 @@ function salinIdOrder(){
   ){
 
     navigator.clipboard
-      .writeText(id)
+      .writeText(
+        id
+      )
       .then(
         function(){
 
@@ -3399,6 +3478,13 @@ function salinIdOrder(){
 
         }
       );
+
+  }else{
+
+    alert(
+      "ID Order: " +
+      id
+    );
 
   }
 
@@ -3411,48 +3497,12 @@ function salinIdOrder(){
 
 function tutupModal(){
 
-  document.getElementById(
-    "orderModal"
-  ).classList.remove(
-    "show"
-  );
-
-}
-
-
-/* ==================================================
-   ESCAPE HTML
-================================================== */
-
-function escapeHtml(
-  text
-){
-
-  return String(text)
-
-    .replace(
-      /&/g,
-      "&amp;"
+  document
+    .getElementById(
+      "orderModal"
     )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
+    .classList.remove(
+      "show"
     );
 
 }
@@ -3469,10 +3519,69 @@ function kembali(){
 
 }
 
-</script>
 
+/* ==================================================
+   ESCAPE HTML
+================================================== */
+
+function escapeHtml(
+  text
+){
+
+  return String(
+    text || ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ==================================================
+   KLIK DI LUAR MODAL
+================================================== */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const modal =
+      document.getElementById(
+        "orderModal"
+      );
+
+
+    if(
+      event.target === modal
+    ){
+
+      tutupModal();
+
+    }
+
+  }
+);
+
+</script>
 
 </body>
 
 </html>
-```
