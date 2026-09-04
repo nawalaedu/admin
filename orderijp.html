@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="id">
 
 <head>
@@ -430,9 +431,7 @@ small{
 
 </head>
 
-
 <body>
-
 
 <!-- ==================================================
      HEADER
@@ -450,9 +449,7 @@ small{
 
 </header>
 
-
 <div class="container">
-
 
 <!-- ==================================================
      BACK
@@ -467,9 +464,7 @@ onclick="kembali()">
 
 </button>
 
-
 <div class="form-card">
-
 
 <!-- ==================================================
      TITLE
@@ -488,7 +483,6 @@ dalam satu form.
 
 </div>
 
-
 <!-- ==================================================
      JENIS INPUT
 ================================================== -->
@@ -496,8 +490,8 @@ dalam satu form.
 <div class="input-type">
 
 <div
-class="form-group"
-style="margin-bottom:0;">
+  class="form-group"
+  style="margin-bottom:0;">
 
 <label>
 Jenis Input
@@ -537,15 +531,13 @@ untuk menambahkan author pada order IJP yang sudah ada.
 
 </div>
 
-
 <!-- ==================================================
      FORM ORDER IJP
 ================================================== -->
 
 <div
-id="formOrder"
-class="section">
-
+  id="formOrder"
+  class="section">
 
 <div class="info-box">
 
@@ -556,17 +548,13 @@ disimpan.
 
 <br><br>
 
-<strong>K</strong> = Kolaborasi,
-<strong>M</strong> = Mandiri,
-<strong>T</strong> = Tunggal.
+<strong>K</strong> = Kolaborasi, <strong>M</strong> = Mandiri, <strong>T</strong> = Tunggal.
 
 </div>
 
-
 <form
-id="orderForm"
-onsubmit="simpanOrderIJP(event)">
-
+  id="orderForm"
+  onsubmit="simpanOrderIJP(event)">
 
 <!-- ==================================================
      TANGGAL
@@ -585,7 +573,6 @@ name="tanggal"
 required>
 
 </div>
-
 
 <!-- ==================================================
      MARKETING
@@ -611,7 +598,6 @@ Masukkan nama marketing yang melakukan input order.
 
 </div>
 
-
 <!-- ==================================================
      KODE JURNAL
 ================================================== -->
@@ -634,7 +620,6 @@ Masukkan kode jurnal tempat IJP akan diterbitkan.
 </small>
 
 </div>
-
 
 <!-- ==================================================
      BULAN TERBIT
@@ -672,7 +657,6 @@ Pilih Bulan Terbit
 
 </div>
 
-
 <!-- ==================================================
      JUDUL
 ================================================== -->
@@ -691,7 +675,6 @@ placeholder="Masukkan judul IJP"
 required>
 
 </div>
-
 
 <!-- ==================================================
      K / M / T
@@ -729,6 +712,32 @@ T - Tunggal
 
 </div>
 
+<!-- ==================================================
+     LINK DRIVE - KHUSUS M
+================================================== -->
+
+<div
+  id="linkDriveSection"
+  class="form-group"
+  style="display:none;">
+
+<label>
+Link Drive Naskah
+</label>
+
+<input
+type="url"
+id="linkDrive"
+name="linkDrive"
+placeholder="https://drive.google.com/..."
+autocomplete="off">
+
+<small>
+Masukkan link Google Drive naskah IJP.
+Link ini <strong>wajib diisi untuk M - Mandiri</strong>.
+</small>
+
+</div>
 
 <!-- ==================================================
      JENIS PENULISAN
@@ -761,25 +770,20 @@ Naskah Mandiri
 
 </div>
 
-
 <!-- ==================================================
      AUTHOR M / T
 ================================================== -->
 
 <div
-id="authorMTSection"
-style="display:none;">
-
+  id="authorMTSection"
+  style="display:none;">
 
 <div
-id="infoAuthorMT"
-class="info-box">
-
+  id="infoAuthorMT"
+  class="info-box">
 </div>
 
-
 <div id="authorMTContainer"></div>
-
 
 <button
 type="button"
@@ -791,9 +795,7 @@ onclick="tambahAuthorMT()">
 
 </button>
 
-
 </div>
-
 
 <!-- ==================================================
      SIMPAN
@@ -807,20 +809,17 @@ SIMPAN ORDER IJP
 
 </button>
 
-
 </form>
 
 </div>
-
 
 <!-- ==================================================
      FORM TAMBAH AUTHOR KOLABORASI
 ================================================== -->
 
 <div
-id="formTambahAuthor"
-class="section">
-
+  id="formTambahAuthor"
+  class="section">
 
 <div class="info-box">
 
@@ -838,19 +837,16 @@ untuk mengambil data IJP.
 <br><br>
 
 Jika ingin menambahkan author berikutnya,
-lakukan input kembali menggunakan
-<strong>ID Order yang sama</strong>.
+lakukan input kembali menggunakan <strong>ID Order yang sama</strong>.
 
 </div>
 
-
 <form
-id="authorForm"
-onsubmit="simpanAuthorIJP(event)">
-
+  id="authorForm"
+  onsubmit="simpanAuthorIJP(event)">
 
 <!-- ==================================================
-     ID ORDER - INPUT MANUAL
+     ID ORDER
 ================================================== -->
 
 <div class="form-group">
@@ -883,7 +879,6 @@ Ketik ID Order IJP secara manual, kemudian klik
 
 </div>
 
-
 <!-- ==================================================
      JUDUL
 ================================================== -->
@@ -902,7 +897,6 @@ placeholder="Otomatis berdasarkan ID Order"
 readonly>
 
 </div>
-
 
 <!-- ==================================================
      KODE JURNAL
@@ -923,7 +917,6 @@ readonly>
 
 </div>
 
-
 <!-- ==================================================
      BULAN TERBIT
 ================================================== -->
@@ -942,7 +935,6 @@ placeholder="Otomatis berdasarkan ID Order"
 readonly>
 
 </div>
-
 
 <!-- ==================================================
      MARKETING INPUT
@@ -969,7 +961,6 @@ kolaborasi.
 
 </div>
 
-
 <!-- ==================================================
      TANGGAL
 ================================================== -->
@@ -987,7 +978,6 @@ name="tanggalTambah"
 required>
 
 </div>
-
 
 <!-- ==================================================
      PENULIS KE BERAPA
@@ -1027,7 +1017,6 @@ Tentukan posisi author dalam daftar penulis IJP.
 
 </div>
 
-
 <!-- ==================================================
      SATU AUTHOR
 ================================================== -->
@@ -1043,12 +1032,9 @@ Form ini menerima <strong>1 author</strong>
 dalam satu kali input.
 </small>
 
-
 <div id="authorContainer">
 
-
 <div class="author-card">
-
 
 <div class="author-header">
 
@@ -1058,9 +1044,7 @@ Author
 
 </div>
 
-
 <div class="author-grid">
-
 
 <div>
 
@@ -1076,7 +1060,6 @@ required>
 
 </div>
 
-
 <div>
 
 <label>
@@ -1091,7 +1074,6 @@ required>
 
 </div>
 
-
 <div>
 
 <label>
@@ -1105,7 +1087,6 @@ placeholder="Nomor telepon author"
 required>
 
 </div>
-
 
 <div>
 
@@ -1125,15 +1106,11 @@ Masukkan institusi/afiliasi author.
 
 </div>
 
+</div>
 
 </div>
 
-
 </div>
-
-
-</div>
-
 
 <!-- ==================================================
      SIMPAN AUTHOR
@@ -1147,48 +1124,38 @@ SIMPAN AUTHOR KOLABORASI
 
 </button>
 
-
 </form>
 
 </div>
 
-
 </div>
 </div>
-
 
 <!-- ==================================================
      MODAL ID ORDER IJP
 ================================================== -->
 
 <div
-id="orderModal"
-class="modal">
-
+  id="orderModal"
+  class="modal">
 
 <div class="modal-box">
-
 
 <div class="modal-icon">
 ✅
 </div>
 
-
 <h2>
 Order IJP Berhasil
 </h2>
 
-
 <p>
 Order IJP telah berhasil dicatat.
-
 Simpan ID Order berikut untuk proses
 Tambah Author, Invoice, dan proses berikutnya.
 </p>
 
-
 <div class="order-result">
-
 
 <div class="result-row">
 
@@ -1197,15 +1164,14 @@ ID ORDER IJP
 </div>
 
 <div
-id="resultIdOrder"
-class="result-value id-order">
+  id="resultIdOrder"
+  class="result-value id-order">
 
--
-
-</div>
+*
 
 </div>
 
+</div>
 
 <div class="result-row">
 
@@ -1214,18 +1180,16 @@ JUDUL IJP
 </div>
 
 <div
-id="resultJudul"
-class="result-value">
+  id="resultJudul"
+  class="result-value">
 
--
+*
+
+</div>
 
 </div>
 
 </div>
-
-
-</div>
-
 
 <div class="modal-buttons">
 
@@ -1238,7 +1202,6 @@ onclick="salinIdOrder()">
 
 </button>
 
-
 <button
 type="button"
 class="btn-modal btn-close"
@@ -1250,11 +1213,9 @@ TUTUP
 
 </div>
 
-
 </div>
 
 </div>
-
 
 <script>
 
@@ -1284,7 +1245,6 @@ document.addEventListener(
   }
 );
 
-
 /* ==================================================
    JENIS INPUT
 ================================================== */
@@ -1304,7 +1264,6 @@ function ubahJenisInput(){
     .getElementById("formTambahAuthor")
     .classList.remove("active");
 
-
   if(jenis === "order"){
 
     document
@@ -1312,7 +1271,6 @@ function ubahJenisInput(){
       .classList.add("active");
 
   }
-
 
   if(jenis === "tambahAuthor"){
 
@@ -1323,7 +1281,6 @@ function ubahJenisInput(){
   }
 
 }
-
 
 /* ==================================================
    K / M / T
@@ -1356,11 +1313,31 @@ function ubahKMT(){
       "infoAuthorMT"
     );
 
+  const linkDriveSection =
+    document.getElementById(
+      "linkDriveSection"
+    );
+
+  const linkDrive =
+    document.getElementById(
+      "linkDrive"
+    );
+
+  /* ==================================================
+     RESET AUTHOR
+  ================================================== */
 
   container.innerHTML = "";
 
   jumlahAuthorMT = 0;
 
+  /* ==================================================
+     RESET LINK DRIVE
+  ================================================== */
+
+  linkDrive.value = "";
+  linkDriveSection.style.display = "none";
+  linkDrive.required = false;
 
   /* ==================================================
      K = KOLABORASI
@@ -1374,7 +1351,6 @@ function ubahKMT(){
 
   }
 
-
   /* ==================================================
      M = MANDIRI
   ================================================== */
@@ -1384,6 +1360,14 @@ function ubahKMT(){
     section.style.display = "block";
 
     btnTambah.style.display = "block";
+
+    /* =========================
+       LINK DRIVE MUNCUL
+    ========================= */
+
+    linkDriveSection.style.display = "block";
+
+    linkDrive.required = true;
 
     info.innerHTML = `
 
@@ -1419,7 +1403,6 @@ function ubahKMT(){
     return;
 
   }
-
 
   /* ==================================================
      T = TUNGGAL
@@ -1465,11 +1448,13 @@ function ubahKMT(){
 
   }
 
+  /* ==================================================
+     KOSONG
+  ================================================== */
 
   section.style.display = "none";
 
 }
-
 
 /* ==================================================
    TAMBAH AUTHOR M / T
@@ -1482,7 +1467,6 @@ function tambahAuthorMT(){
       "kmt"
     ).value;
 
-
   if(
     kmt === "T" &&
     jumlahAuthorMT >= 1
@@ -1492,31 +1476,25 @@ function tambahAuthorMT(){
 
   }
 
-
   jumlahAuthorMT++;
-
 
   const container =
     document.getElementById(
       "authorMTContainer"
     );
 
-
   const card =
     document.createElement(
       "div"
     );
 
-
   card.className =
     "author-card";
-
 
   card.setAttribute(
     "data-author-index",
     jumlahAuthorMT
   );
-
 
   card.innerHTML = `
 
@@ -1545,9 +1523,7 @@ function tambahAuthorMT(){
 
     </div>
 
-
     <div class="author-grid">
-
 
       <div>
 
@@ -1563,7 +1539,6 @@ function tambahAuthorMT(){
 
       </div>
 
-
       <div>
 
         <label>
@@ -1578,7 +1553,6 @@ function tambahAuthorMT(){
 
       </div>
 
-
       <div>
 
         <label>
@@ -1592,7 +1566,6 @@ function tambahAuthorMT(){
           required>
 
       </div>
-
 
       <div>
 
@@ -1611,7 +1584,6 @@ function tambahAuthorMT(){
         </small>
 
       </div>
-
 
       <div>
 
@@ -1633,18 +1605,15 @@ function tambahAuthorMT(){
 
       </div>
 
-
     </div>
 
   `;
-
 
   container.appendChild(
     card
   );
 
 }
-
 
 /* ==================================================
    OPTION URUTAN PENULIS
@@ -1653,7 +1622,6 @@ function tambahAuthorMT(){
 function buatOptionPenulis(){
 
   let html = "";
-
 
   for(
     let i = 1;
@@ -1671,11 +1639,9 @@ function buatOptionPenulis(){
 
   }
 
-
   return html;
 
 }
-
 
 /* ==================================================
    HAPUS AUTHOR M
@@ -1690,18 +1656,15 @@ function hapusAuthorMT(
       ".author-card"
     );
 
-
   if(card){
 
     card.remove();
 
   }
 
-
   perbaruiNomorAuthorMT();
 
 }
-
 
 /* ==================================================
    NOMOR AUTHOR M
@@ -1714,7 +1677,6 @@ function perbaruiNomorAuthorMT(){
       "#authorMTContainer .author-card"
     );
 
-
   cards.forEach(
     function(card,index){
 
@@ -1726,16 +1688,13 @@ function perbaruiNomorAuthorMT(){
     }
   );
 
-
   jumlahAuthorMT =
     cards.length;
 
 }
 
-
 /* ==================================================
    DETAIL ORDER IJP
-   ID ORDER DIKETIK MANUAL
 ================================================== */
 
 function ambilDetailOrderIJP(){
@@ -1745,14 +1704,8 @@ function ambilDetailOrderIJP(){
       "idOrder"
     );
 
-
   const idOrder =
     input.value.trim();
-
-
-  /* ==================================================
-     VALIDASI ID ORDER
-  ================================================== */
 
   if(!idOrder){
 
@@ -1766,11 +1719,6 @@ function ambilDetailOrderIJP(){
 
   }
 
-
-  /* ==================================================
-     KOSONGKAN DETAIL LAMA
-  ================================================== */
-
   document.getElementById(
     "judulIJPAuthor"
   ).value = "";
@@ -1782,11 +1730,6 @@ function ambilDetailOrderIJP(){
   document.getElementById(
     "bulanTerbitAuthor"
   ).value = "";
-
-
-  /* ==================================================
-     CEK GOOGLE APPS SCRIPT
-  ================================================== */
 
   if(
     typeof google === "undefined" ||
@@ -1801,11 +1744,6 @@ function ambilDetailOrderIJP(){
     return;
 
   }
-
-
-  /* ==================================================
-     AMBIL DATA ORDER
-  ================================================== */
 
   google.script.run
 
@@ -1822,11 +1760,6 @@ function ambilDetailOrderIJP(){
 
         }
 
-
-        /* =========================
-           JUDUL
-        ========================= */
-
         document.getElementById(
           "judulIJPAuthor"
         ).value =
@@ -1834,32 +1767,17 @@ function ambilDetailOrderIJP(){
           data.judulArtikel ||
           "";
 
-
-        /* =========================
-           KODE JURNAL
-        ========================= */
-
         document.getElementById(
           "kodeJurnalAuthor"
         ).value =
           data.kodeJurnal ||
           "";
 
-
-        /* =========================
-           BULAN TERBIT
-        ========================= */
-
         document.getElementById(
           "bulanTerbitAuthor"
         ).value =
           data.bulanTerbit ||
           "";
-
-
-        /* =========================
-           VALIDASI HASIL
-        ========================= */
 
         if(
           !data.judulIJP &&
@@ -1876,14 +1794,12 @@ function ambilDetailOrderIJP(){
 
         }
 
-
         alert(
           "Detail Order IJP berhasil ditemukan."
         );
 
       }
     )
-
 
     .withFailureHandler(
       function(error){
@@ -1903,13 +1819,11 @@ function ambilDetailOrderIJP(){
       }
     )
 
-
     .ambilDetailOrderIJP(
       idOrder
     );
 
 }
-
 
 /* ==================================================
    SIMPAN ORDER IJP
@@ -1921,12 +1835,10 @@ function simpanOrderIJP(
 
   event.preventDefault();
 
-
   const form =
     document.getElementById(
       "orderForm"
     );
-
 
   if(!form.checkValidity()){
 
@@ -1936,16 +1848,13 @@ function simpanOrderIJP(
 
   }
 
-
   const kmt =
     document.getElementById(
       "kmt"
     ).value;
 
-
   const authors =
     ambilAuthorMT();
-
 
   /* ==================================================
      T = TEPAT SATU AUTHOR
@@ -1964,7 +1873,6 @@ function simpanOrderIJP(
 
   }
 
-
   /* ==================================================
      M = MINIMAL SATU AUTHOR
   ================================================== */
@@ -1981,7 +1889,6 @@ function simpanOrderIJP(
     return;
 
   }
-
 
   /* ==================================================
      VALIDASI AUTHOR
@@ -2005,7 +1912,6 @@ function simpanOrderIJP(
 
     }
 
-
     if(!authors[i].afiliasi){
 
       alert(
@@ -2020,6 +1926,76 @@ function simpanOrderIJP(
 
   }
 
+  /* ==================================================
+     LINK DRIVE
+  ================================================== */
+
+  const linkDrive =
+    document.getElementById(
+      "linkDrive"
+    ).value.trim();
+
+  /* ==================================================
+     VALIDASI LINK DRIVE KHUSUS M
+  ================================================== */
+
+  if(
+    kmt === "M" &&
+    !linkDrive
+  ){
+
+    alert(
+      "Link Drive Naskah wajib diisi untuk M - Mandiri."
+    );
+
+    document.getElementById(
+      "linkDrive"
+    ).focus();
+
+    return;
+
+  }
+
+  /* ==================================================
+     VALIDASI FORMAT URL
+  ================================================== */
+
+  if(
+    kmt === "M" &&
+    linkDrive
+  ){
+
+    try{
+
+      const url =
+        new URL(linkDrive);
+
+      if(
+        url.protocol !== "http:" &&
+        url.protocol !== "https:"
+      ){
+
+        throw new Error();
+
+      }
+
+    }
+
+    catch(error){
+
+      alert(
+        "Link Drive tidak valid. Silakan masukkan link Google Drive yang benar."
+      );
+
+      document.getElementById(
+        "linkDrive"
+      ).focus();
+
+      return;
+
+    }
+
+  }
 
   /* ==================================================
      DATA ORDER
@@ -2060,11 +2036,20 @@ function simpanOrderIJP(
         "jenisPenulisan"
       ).value,
 
+    /* ==================================================
+       LINK DRIVE
+       KHUSUS M
+    ================================================== */
+
+    linkDrive:
+      kmt === "M"
+        ? linkDrive
+        : "",
+
     authors:
       authors
 
   };
-
 
   /* ==================================================
      VALIDASI MARKETING
@@ -2083,7 +2068,6 @@ function simpanOrderIJP(
     return;
 
   }
-
 
   /* ==================================================
      KIRIM KE CODE.GS
@@ -2124,28 +2108,31 @@ function simpanOrderIJP(
         }
       )
 
-
       .withFailureHandler(
         function(error){
 
           alert(
             "Gagal menyimpan order IJP: " +
-            error.message
+            (
+              error &&
+              error.message
+              ?
+              error.message
+              :
+              error
+            )
           );
 
         }
       )
 
-
       .simpanOrderIJP(
         data
       );
 
-
     return;
 
   }
-
 
   /* ==================================================
      PREVIEW
@@ -2156,14 +2143,12 @@ function simpanOrderIJP(
     data
   );
 
-
   tampilkanPopupOrder(
     "ORD/IJP/001",
     data.judulIJP
   );
 
 }
-
 
 /* ==================================================
    AMBIL AUTHOR M / T
@@ -2173,12 +2158,10 @@ function ambilAuthorMT(){
 
   const result = [];
 
-
   const cards =
     document.querySelectorAll(
       "#authorMTContainer .author-card"
     );
-
 
   cards.forEach(
     function(card){
@@ -2188,30 +2171,25 @@ function ambilAuthorMT(){
           '[name="mtNama[]"]'
         ).value.trim();
 
-
       const email =
         card.querySelector(
           '[name="mtEmail[]"]'
         ).value.trim();
-
 
       const telp =
         card.querySelector(
           '[name="mtTelp[]"]'
         ).value.trim();
 
-
       const afiliasi =
         card.querySelector(
           '[name="mtAfiliasi[]"]'
         ).value.trim();
 
-
       const urutanPenulis =
         card.querySelector(
           '[name="mtUrutan[]"]'
         ).value;
-
 
       result.push({
 
@@ -2235,11 +2213,9 @@ function ambilAuthorMT(){
     }
   );
 
-
   return result;
 
 }
-
 
 /* ==================================================
    SIMPAN AUTHOR KOLABORASI IJP
@@ -2251,12 +2227,10 @@ function simpanAuthorIJP(
 
   event.preventDefault();
 
-
   const form =
     document.getElementById(
       "authorForm"
     );
-
 
   if(!form.checkValidity()){
 
@@ -2266,16 +2240,10 @@ function simpanAuthorIJP(
 
   }
 
-
   const idOrder =
     document.getElementById(
       "idOrder"
     ).value.trim();
-
-
-  /* ==================================================
-     VALIDASI ID ORDER
-  ================================================== */
 
   if(!idOrder){
 
@@ -2291,46 +2259,35 @@ function simpanAuthorIJP(
 
   }
 
-
   const judulIJP =
     document.getElementById(
       "judulIJPAuthor"
     ).value;
-
 
   const kodeJurnal =
     document.getElementById(
       "kodeJurnalAuthor"
     ).value;
 
-
   const bulanTerbit =
     document.getElementById(
       "bulanTerbitAuthor"
     ).value;
-
 
   const marketing =
     document.getElementById(
       "marketingAuthor"
     ).value.trim();
 
-
   const tanggal =
     document.getElementById(
       "tanggalTambah"
     ).value;
 
-
   const urutanPenulis =
     document.getElementById(
       "urutanPenulis"
     ).value;
-
-
-  /* ==================================================
-     VALIDASI DETAIL ORDER
-  ================================================== */
 
   if(!judulIJP){
 
@@ -2346,11 +2303,6 @@ function simpanAuthorIJP(
 
   }
 
-
-  /* ==================================================
-     VALIDASI MARKETING
-  ================================================== */
-
   if(!marketing){
 
     alert(
@@ -2365,16 +2317,10 @@ function simpanAuthorIJP(
 
   }
 
-
-  /* ==================================================
-     AUTHOR
-  ================================================== */
-
   const card =
     document.querySelector(
       "#authorContainer .author-card"
     );
-
 
   if(!card){
 
@@ -2385,7 +2331,6 @@ function simpanAuthorIJP(
     return;
 
   }
-
 
   const author = {
 
@@ -2414,11 +2359,6 @@ function simpanAuthorIJP(
 
   };
 
-
-  /* ==================================================
-     VALIDASI AFILIASI
-  ================================================== */
-
   if(!author.afiliasi){
 
     alert(
@@ -2428,11 +2368,6 @@ function simpanAuthorIJP(
     return;
 
   }
-
-
-  /* ==================================================
-     DATA AUTHOR
-  ================================================== */
 
   const data = {
 
@@ -2462,11 +2397,6 @@ function simpanAuthorIJP(
 
   };
 
-
-  /* ==================================================
-     KIRIM KE CODE.GS
-  ================================================== */
-
   if(
     typeof google !== "undefined" &&
     google.script &&
@@ -2487,38 +2417,36 @@ function simpanAuthorIJP(
         }
       )
 
-
       .withFailureHandler(
         function(error){
 
           alert(
             "Gagal menyimpan author IJP: " +
-            error.message
+            (
+              error &&
+              error.message
+              ?
+              error.message
+              :
+              error
+            )
           );
 
         }
       )
 
-
       .simpanAuthorIJP(
         data
       );
-
 
     return;
 
   }
 
-
-  /* ==================================================
-     PREVIEW
-  ================================================== */
-
   console.log(
     "DATA AUTHOR KOLABORASI IJP:",
     data
   );
-
 
   alert(
     "Data Author Kolaborasi IJP siap disimpan.\n\n" +
@@ -2542,7 +2470,6 @@ function simpanAuthorIJP(
 
 }
 
-
 /* ==================================================
    RESET FORM AUTHOR
 ================================================== */
@@ -2553,34 +2480,28 @@ function resetFormAuthor(){
     "authorForm"
   ).reset();
 
-
   document.getElementById(
     "judulIJPAuthor"
   ).value = "";
-
 
   document.getElementById(
     "kodeJurnalAuthor"
   ).value = "";
 
-
   document.getElementById(
     "bulanTerbitAuthor"
   ).value = "";
-
 
   const today =
     new Date()
       .toISOString()
       .split("T")[0];
 
-
   document.getElementById(
     "tanggalTambah"
   ).value = today;
 
 }
-
 
 /* ==================================================
    POPUP ORDER IJP
@@ -2596,12 +2517,10 @@ function tampilkanPopupOrder(
   ).textContent =
     idOrder;
 
-
   document.getElementById(
     "resultJudul"
   ).textContent =
     judul;
-
 
   document.getElementById(
     "orderModal"
@@ -2610,7 +2529,6 @@ function tampilkanPopupOrder(
   );
 
 }
-
 
 /* ==================================================
    SALIN ID
@@ -2622,7 +2540,6 @@ function salinIdOrder(){
     document.getElementById(
       "resultIdOrder"
     ).textContent;
-
 
   if(
     navigator.clipboard &&
@@ -2689,7 +2606,6 @@ function salinIdOrder(){
 
 }
 
-
 /* ==================================================
    TUTUP MODAL
 ================================================== */
@@ -2704,7 +2620,6 @@ function tutupModal(){
 
 }
 
-
 /* ==================================================
    KEMBALI
 ================================================== */
@@ -2717,7 +2632,6 @@ function kembali(){
 }
 
 </script>
-
 
 </body>
 
