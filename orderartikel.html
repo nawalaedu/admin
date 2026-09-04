@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="id">
 
 <head>
@@ -180,6 +181,27 @@ small{
 }
 
 /* =========================
+   DRIVE LINK
+========================= */
+
+.drive-link-box{
+  background:#f8fafc;
+  border:1px solid #d6e7f0;
+  border-left:4px solid #2f6f95;
+  padding:18px;
+  border-radius:10px;
+  margin-bottom:25px;
+}
+
+.drive-link-box label{
+  color:#183b56;
+}
+
+.drive-link-box input{
+  background:white;
+}
+
+/* =========================
    READONLY
 ========================= */
 
@@ -217,6 +239,93 @@ small{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:15px;
+}
+
+/* =========================
+   BAB AUTHOR
+========================= */
+
+.bab-section{
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px solid #e2e8f0;
+}
+
+.bab-mode{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+
+.bab-mode label{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-weight:normal;
+  cursor:pointer;
+  margin:0;
+}
+
+.bab-mode input[type="radio"]{
+  width:auto;
+  padding:0;
+}
+
+.manual-bab-box{
+  display:none;
+  background:white;
+  border:1px solid #d6dee6;
+  padding:15px;
+  border-radius:10px;
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
+.manual-bab-box label{
+  margin-bottom:8px;
+}
+
+.bab-author-container{
+  display:none;
+  margin-top:12px;
+}
+
+.bab-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding:12px;
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:9px;
+  max-height:250px;
+  overflow-y:auto;
+}
+
+.bab-item{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  padding:8px;
+  border-radius:7px;
+  background:#f8fafc;
+}
+
+.bab-item:hover{
+  background:#edf7fb;
+}
+
+.bab-item input[type="checkbox"]{
+  width:auto;
+  margin-top:2px;
+}
+
+.bab-item label{
+  margin:0;
+  font-weight:normal;
+  cursor:pointer;
+  line-height:1.4;
 }
 
 /* =========================
@@ -462,6 +571,10 @@ small{
     grid-template-columns:1fr;
   }
 
+  .bab-list{
+    grid-template-columns:1fr;
+  }
+
   .modal-buttons{
     flex-direction:column;
   }
@@ -484,9 +597,7 @@ small{
 
 </head>
 
-
 <body>
-
 
 <!-- ==================================================
      HEADER
@@ -504,9 +615,7 @@ small{
 
 </header>
 
-
 <div class="container">
-
 
 <!-- ==================================================
      BACK
@@ -521,9 +630,7 @@ onclick="kembali()">
 
 </button>
 
-
 <div class="form-card">
-
 
 <!-- ==================================================
      TITLE
@@ -541,7 +648,6 @@ dalam satu form.
 </p>
 
 </div>
-
 
 <!-- ==================================================
      JENIS INPUT
@@ -591,7 +697,6 @@ untuk menambahkan author pada artikel yang sudah ada.
 
 </div>
 
-
 <!-- ==================================================
      FORM ORDER ARTIKEL
 ================================================== -->
@@ -599,7 +704,6 @@ untuk menambahkan author pada artikel yang sudah ada.
 <div
 id="formOrder"
 class="section">
-
 
 <div class="info-box">
 
@@ -610,9 +714,7 @@ disimpan.
 
 <br><br>
 
-<strong>K</strong> = Kolaborasi,
-<strong>M</strong> = Mandiri,
-<strong>T</strong> = Tunggal.
+<strong>K</strong> = Kolaborasi, <strong>M</strong> = Mandiri, <strong>T</strong> = Tunggal.
 
 <br><br>
 
@@ -620,11 +722,9 @@ disimpan.
 
 </div>
 
-
 <form
 id="orderForm"
 onsubmit="simpanOrder(event)">
-
 
 <!-- TANGGAL -->
 
@@ -641,7 +741,6 @@ name="tanggal"
 required>
 
 </div>
-
 
 <!-- MARKETING -->
 
@@ -664,7 +763,6 @@ Masukkan nama marketing yang menangani order.
 
 </div>
 
-
 <!-- KODE JURNAL -->
 
 <div class="form-group">
@@ -685,7 +783,6 @@ Masukkan kode jurnal tempat artikel akan diterbitkan.
 </small>
 
 </div>
-
 
 <!-- BULAN TERBIT -->
 
@@ -721,7 +818,6 @@ Pilih Bulan Terbit
 
 </div>
 
-
 <!-- JUDUL -->
 
 <div class="form-group">
@@ -739,6 +835,33 @@ required>
 
 </div>
 
+<!-- RINCIAN BAB -->
+
+<div class="form-group">
+
+<label>
+Rincian Bab
+</label>
+
+<textarea
+id="rincianBab"
+name="rincianBab"
+placeholder="Masukkan rincian bab artikel.
+
+Contoh:
+Bab 1 - Pendahuluan
+Bab 2 - Tinjauan Pustaka
+Bab 3 - Metode Penelitian
+Bab 4 - Hasil dan Pembahasan
+Bab 5 - Kesimpulan"
+required></textarea>
+
+<small>
+Masukkan daftar bab artikel. Rincian ini akan digunakan
+sebagai referensi ketika author M memilih bab yang dikerjakan.
+</small>
+
+</div>
 
 <!-- K M T -->
 
@@ -774,7 +897,6 @@ T - Tunggal
 
 </div>
 
-
 <!-- JENIS PENULISAN -->
 
 <div class="form-group">
@@ -804,6 +926,32 @@ Naskah Mandiri
 
 </div>
 
+<!-- ==================================================
+     LINK GOOGLE DRIVE - HANYA SATU UNTUK ORDER M
+================================================== -->
+
+<div
+id="driveLinkSection"
+class="drive-link-box"
+style="display:none;">
+
+<label>
+📁 Link Google Drive Naskah
+</label>
+
+<input
+type="url"
+id="linkDrive"
+name="linkDrive"
+placeholder="https://drive.google.com/..."
+disabled>
+
+<small>
+Masukkan <strong>1 link Google Drive untuk seluruh order artikel Mandiri</strong>.
+Link ini tidak perlu dimasukkan ulang untuk setiap author.
+</small>
+
+</div>
 
 <!-- ==================================================
      AUTHOR M / T
@@ -813,15 +961,12 @@ Naskah Mandiri
 id="authorMTSection"
 style="display:none;">
 
-
 <div
 id="infoAuthorMT"
 class="info-box">
 </div>
 
-
 <div id="authorMTContainer"></div>
-
 
 <button
 type="button"
@@ -833,9 +978,7 @@ onclick="tambahAuthorMT()">
 
 </button>
 
-
 </div>
-
 
 <!-- SIMPAN -->
 
@@ -847,11 +990,9 @@ SIMPAN ORDER ARTIKEL
 
 </button>
 
-
 </form>
 
 </div>
-
 
 <!-- ==================================================
      FORM TAMBAH AUTHOR KOLABORASI
@@ -860,7 +1001,6 @@ SIMPAN ORDER ARTIKEL
 <div
 id="formTambahAuthor"
 class="section">
-
 
 <div class="info-box">
 
@@ -888,11 +1028,9 @@ Backend hanya akan mencari ID Order yang diketik.
 
 </div>
 
-
 <form
 id="authorForm"
 onsubmit="simpanAuthor(event)">
-
 
 <!-- ==================================================
      ID ORDER MANUAL
@@ -903,7 +1041,6 @@ onsubmit="simpanAuthor(event)">
 <label>
 ID Order Artikel
 </label>
-
 
 <div class="id-order-row">
 
@@ -919,7 +1056,6 @@ required>
 
 </div>
 
-
 <button
 type="button"
 id="btnCheckId"
@@ -932,12 +1068,10 @@ CEK ID ORDER
 
 </div>
 
-
 <div
 id="idStatus"
 class="id-status">
 </div>
-
 
 <small>
 
@@ -952,7 +1086,6 @@ dari backend.
 </small>
 
 </div>
-
 
 <!-- ==================================================
      JUDUL
@@ -973,7 +1106,6 @@ readonly>
 
 </div>
 
-
 <!-- ==================================================
      KODE JURNAL
 ================================================== -->
@@ -993,7 +1125,6 @@ readonly>
 
 </div>
 
-
 <!-- ==================================================
      BULAN TERBIT
 ================================================== -->
@@ -1012,7 +1143,6 @@ placeholder="Otomatis berdasarkan ID Order"
 readonly>
 
 </div>
-
 
 <!-- ==================================================
      MARKETING
@@ -1038,7 +1168,6 @@ author kolaborasi.
 
 </div>
 
-
 <!-- ==================================================
      TANGGAL
 ================================================== -->
@@ -1056,7 +1185,6 @@ name="tanggalTambah"
 required>
 
 </div>
-
 
 <!-- ==================================================
      PENULIS KE BERAPA
@@ -1105,7 +1233,6 @@ Posisi penulis hanya tersedia sampai penulis ke-5.
 
 </div>
 
-
 <!-- ==================================================
      SATU AUTHOR
 ================================================== -->
@@ -1121,12 +1248,9 @@ Form ini menerima <strong>1 author</strong>
 dalam satu kali input.
 </small>
 
-
 <div id="authorContainer">
 
-
 <div class="author-card">
-
 
 <div class="author-header">
 
@@ -1136,9 +1260,7 @@ Author
 
 </div>
 
-
 <div class="author-grid">
-
 
 <div>
 
@@ -1154,7 +1276,6 @@ required>
 
 </div>
 
-
 <div>
 
 <label>
@@ -1169,7 +1290,6 @@ required>
 
 </div>
 
-
 <div>
 
 <label>
@@ -1183,7 +1303,6 @@ placeholder="Nomor telepon author"
 required>
 
 </div>
-
 
 <div>
 
@@ -1203,15 +1322,11 @@ Masukkan institusi/afiliasi author.
 
 </div>
 
+</div>
 
 </div>
 
-
 </div>
-
-
-</div>
-
 
 <button
 type="submit"
@@ -1221,15 +1336,12 @@ SIMPAN AUTHOR KOLABORASI
 
 </button>
 
-
 </form>
 
 </div>
 
-
 </div>
 </div>
-
 
 <!-- ==================================================
      MODAL ID ORDER
@@ -1239,30 +1351,25 @@ SIMPAN AUTHOR KOLABORASI
 id="orderModal"
 class="modal">
 
-
 <div class="modal-box">
-
 
 <div class="modal-icon">
 ✅
 </div>
 
-
 <h2>
 Order Artikel Berhasil
 </h2>
-
 
 <p>
 Order artikel telah berhasil dicatat.
 
 Simpan ID Order berikut untuk proses
 Tambah Author, Invoice, dan proses berikutnya.
+
 </p>
 
-
 <div class="order-result">
-
 
 <div class="result-row">
 
@@ -1274,12 +1381,11 @@ ID ORDER
 id="resultIdOrder"
 class="result-value id-order">
 
--
+*
 
 </div>
 
 </div>
-
 
 <div class="result-row">
 
@@ -1291,15 +1397,13 @@ JUDUL ARTIKEL
 id="resultJudul"
 class="result-value">
 
--
+*
 
 </div>
 
 </div>
 
-
 </div>
-
 
 <div class="modal-buttons">
 
@@ -1312,7 +1416,6 @@ onclick="salinIdOrder()">
 
 </button>
 
-
 <button
 type="button"
 class="btn-modal btn-close"
@@ -1324,11 +1427,9 @@ TUTUP
 
 </div>
 
-
 </div>
 
 </div>
-
 
 <script>
 
@@ -1363,6 +1464,28 @@ document.addEventListener(
     document.getElementById(
       "tanggalTambah"
     ).value = today;
+
+
+    /*
+     * Kondisi awal link Drive
+     */
+    updateDriveLinkVisibility();
+
+
+    /*
+     * Jika rincian bab berubah,
+     * perbarui daftar bab pada author.
+     */
+    document.getElementById(
+      "rincianBab"
+    ).addEventListener(
+      "input",
+      function(){
+
+        refreshSemuaBabAuthorMT();
+
+      }
+    );
 
 
     /*
@@ -1443,6 +1566,7 @@ function ubahJenisInput(){
       .getElementById("formTambahAuthor")
       .classList.add("active");
 
+
     /*
      * PENTING:
      * Tidak memanggil muatDaftarOrder().
@@ -1467,6 +1591,55 @@ function ubahJenisInput(){
 
 
 /* ==================================================
+   LINK DRIVE
+   HANYA UNTUK M
+================================================== */
+
+function updateDriveLinkVisibility(){
+
+  const kmt =
+    document.getElementById(
+      "kmt"
+    ).value;
+
+
+  const section =
+    document.getElementById(
+      "driveLinkSection"
+    );
+
+
+  const input =
+    document.getElementById(
+      "linkDrive"
+    );
+
+
+  if(kmt === "M"){
+
+    section.style.display = "block";
+
+    input.disabled = false;
+
+    input.required = true;
+
+  }
+  else{
+
+    section.style.display = "none";
+
+    input.disabled = true;
+
+    input.required = false;
+
+    input.value = "";
+
+  }
+
+}
+
+
+/* ==================================================
    K / M / T
 ================================================== */
 
@@ -1476,6 +1649,12 @@ function ubahKMT(){
     document.getElementById(
       "kmt"
     ).value;
+
+
+  /*
+   * Atur Link Drive terlebih dahulu.
+   */
+  updateDriveLinkVisibility();
 
 
   const section =
@@ -1542,18 +1721,30 @@ function ubahKMT(){
 
       <br><br>
 
+      Link Google Drive cukup dimasukkan
+      <strong>satu kali</strong> di atas untuk seluruh order.
+
+      <br><br>
+
       Setiap author wajib dilengkapi dengan:
 
       <br>
       • Nama Author
+
       <br>
       • Email Author
+
       <br>
       • No. Telp Author
+
       <br>
       • Afiliasi Author
+
       <br>
       • Urutan Penulis
+
+      <br>
+      • Pilihan Bab
 
     `;
 
@@ -1586,12 +1777,16 @@ function ubahKMT(){
 
       <br>
       • Nama Author
+
       <br>
       • Email Author
+
       <br>
       • No. Telp Author
+
       <br>
       • Afiliasi Author
+
       <br>
       • Urutan Penulis
 
@@ -1599,6 +1794,11 @@ function ubahKMT(){
 
       Artikel ini hanya memiliki
       <strong>1 penulis</strong>.
+
+      <br><br>
+
+      Semua bab otomatis menjadi tanggung jawab
+      author tunggal.
 
     `;
 
@@ -1670,6 +1870,114 @@ function tambahAuthorMT(){
     "data-author-index",
     jumlahAuthorMT
   );
+
+
+  /*
+   * Untuk T:
+   * otomatis SEMUA BAB.
+   *
+   * Untuk M:
+   * tersedia Semua Bab / Pilih Bab.
+   */
+
+  const bagianBab =
+    kmt === "M"
+
+    ?
+
+    `
+
+      <div class="bab-section">
+
+        <label>
+          Bab yang Dikerjakan
+        </label>
+
+        <div class="bab-mode">
+
+          <label>
+
+            <input
+              type="radio"
+              name="mtBabMode_${jumlahAuthorMT}"
+              value="semua"
+              onchange="ubahModeBab(this)">
+
+            Semua Bab
+
+          </label>
+
+
+          <label>
+
+            <input
+              type="radio"
+              name="mtBabMode_${jumlahAuthorMT}"
+              value="pilih"
+              onchange="ubahModeBab(this)">
+
+            Pilih Bab
+
+          </label>
+
+        </div>
+
+
+        <div
+          class="manual-bab-box">
+
+          <label>
+            Tulis Bab yang Dikerjakan
+          </label>
+
+          <input
+            type="text"
+            class="manual-bab-input"
+            placeholder="Contoh: Bab 1, Bab 3, Bab 5"
+            oninput="updateBabManualMT(this)">
+
+          <small>
+            Tulis nomor atau nama bab secara manual.
+            Contoh: <strong>Bab 1–3</strong>,
+            <strong>Bab 1, Bab 4, Bab 6</strong>,
+            atau <strong>Bab Pendahuluan dan Metode</strong>.
+          </small>
+
+        </div>
+
+
+        <div
+          class="bab-author-container">
+
+          <div class="bab-list"></div>
+
+          <small>
+            Anda juga dapat memilih bab melalui daftar
+            checkbox di atas.
+          </small>
+
+        </div>
+
+
+        <input
+          type="hidden"
+          name="mtBab[]"
+          value="">
+
+      </div>
+
+    `
+
+    :
+
+    `
+
+      <input
+        type="hidden"
+        name="mtBab[]"
+        value="SEMUA BAB">
+
+    `;
 
 
   card.innerHTML = `
@@ -1790,12 +2098,25 @@ function tambahAuthorMT(){
 
     </div>
 
+
+    ${bagianBab}
+
   `;
 
 
   container.appendChild(
     card
   );
+
+
+  /*
+   * Jika M, siapkan daftar bab
+   */
+  if(kmt === "M"){
+
+    isiBabUntukAuthorMT(card);
+
+  }
 
 
   if(jumlahAuthorMT >= MAX_AUTHOR){
@@ -1905,6 +2226,502 @@ function perbaruiNomorAuthorMT(){
 
   jumlahAuthorMT =
     cards.length;
+
+}
+
+
+/* ==================================================
+   ISI DAFTAR BAB AUTHOR
+================================================== */
+
+function isiBabUntukAuthorMT(card){
+
+  if(!card){
+    return;
+  }
+
+
+  const list =
+    card.querySelector(
+      ".bab-list"
+    );
+
+
+  if(!list){
+    return;
+  }
+
+
+  const rincian =
+    document.getElementById(
+      "rincianBab"
+    ).value.trim();
+
+
+  list.innerHTML = "";
+
+
+  if(!rincian){
+
+    list.innerHTML = `
+
+      <div style="
+        grid-column:1/-1;
+        color:#718096;
+        padding:10px;
+      ">
+        Rincian bab belum diisi.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const daftarBab =
+    rincian
+      .split(/\n+/)
+      .map(
+        function(item){
+          return item.trim();
+        }
+      )
+      .filter(
+        function(item){
+          return item !== "";
+        }
+      );
+
+
+  if(daftarBab.length === 0){
+
+    return;
+
+  }
+
+
+  daftarBab.forEach(
+    function(bab,index){
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "bab-item";
+
+
+      const checkbox =
+        document.createElement(
+          "input"
+        );
+
+
+      checkbox.type =
+        "checkbox";
+
+
+      checkbox.className =
+        "bab-checkbox";
+
+
+      checkbox.value =
+        bab;
+
+
+      checkbox.id =
+        "bab_" +
+        card.getAttribute(
+          "data-author-index"
+        ) +
+        "_" +
+        index;
+
+
+      checkbox.addEventListener(
+        "change",
+        function(){
+
+          updateBabAuthorMT(
+            checkbox
+          );
+
+        }
+      );
+
+
+      const label =
+        document.createElement(
+          "label"
+        );
+
+
+      label.htmlFor =
+        checkbox.id;
+
+
+      label.textContent =
+        bab;
+
+
+      item.appendChild(
+        checkbox
+      );
+
+
+      item.appendChild(
+        label
+      );
+
+
+      list.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   REFRESH SEMUA DAFTAR BAB AUTHOR
+================================================== */
+
+function refreshSemuaBabAuthorMT(){
+
+  const cards =
+    document.querySelectorAll(
+      "#authorMTContainer .author-card"
+    );
+
+
+  cards.forEach(
+    function(card){
+
+      const mode =
+        card.querySelector(
+          'input[type="radio"]:checked'
+        );
+
+
+      /*
+       * Hanya refresh daftar bab
+       * jika author sedang menggunakan
+       * mode Pilih Bab.
+       */
+
+      isiBabUntukAuthorMT(card);
+
+
+      if(
+        mode &&
+        mode.value === "pilih"
+      ){
+
+        const manualInput =
+          card.querySelector(
+            ".manual-bab-input"
+          );
+
+
+        /*
+         * Jangan menghapus isi textbox manual.
+         */
+
+        if(manualInput){
+          manualInput.value =
+            manualInput.value;
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   UBAH MODE BAB
+================================================== */
+
+function ubahModeBab(
+  radio
+){
+
+  const card =
+    radio.closest(
+      ".author-card"
+    );
+
+
+  if(!card){
+    return;
+  }
+
+
+  const mode =
+    radio.value;
+
+
+  const manualBox =
+    card.querySelector(
+      ".manual-bab-box"
+    );
+
+
+  const manualInput =
+    card.querySelector(
+      ".manual-bab-input"
+    );
+
+
+  const checkboxBox =
+    card.querySelector(
+      ".bab-author-container"
+    );
+
+
+  const hiddenBab =
+    card.querySelector(
+      'input[name="mtBab[]"]'
+    );
+
+
+  const checkboxes =
+    card.querySelectorAll(
+      ".bab-checkbox"
+    );
+
+
+  /* =========================
+     SEMUA BAB
+  ========================= */
+
+  if(mode === "semua"){
+
+    if(manualBox){
+      manualBox.style.display = "none";
+    }
+
+
+    if(checkboxBox){
+      checkboxBox.style.display = "none";
+    }
+
+
+    if(manualInput){
+
+      manualInput.value = "";
+
+      manualInput.required = false;
+
+    }
+
+
+    checkboxes.forEach(
+      function(checkbox){
+
+        checkbox.checked = false;
+
+      }
+    );
+
+
+    if(hiddenBab){
+
+      hiddenBab.value =
+        "SEMUA BAB";
+
+    }
+
+
+    return;
+
+  }
+
+
+  /* =========================
+     PILIH BAB
+  ========================= */
+
+  if(mode === "pilih"){
+
+    if(manualBox){
+      manualBox.style.display = "block";
+    }
+
+
+    if(checkboxBox){
+      checkboxBox.style.display = "block";
+    }
+
+
+    /*
+     * Textbox dan checkbox bersifat alternatif.
+     * Jadi tidak wajib salah satunya secara HTML.
+     * Validasi dilakukan ketika submit.
+     */
+
+    if(manualInput){
+
+      manualInput.required = false;
+
+    }
+
+
+    if(hiddenBab){
+
+      hiddenBab.value = "";
+
+    }
+
+  }
+
+}
+
+
+/* ==================================================
+   UPDATE BAB DARI TEXTBOX MANUAL
+================================================== */
+
+function updateBabManualMT(
+  input
+){
+
+  const card =
+    input.closest(
+      ".author-card"
+    );
+
+
+  if(!card){
+    return;
+  }
+
+
+  const hiddenBab =
+    card.querySelector(
+      'input[name="mtBab[]"]'
+    );
+
+
+  if(!hiddenBab){
+    return;
+  }
+
+
+  const manual =
+    input.value.trim();
+
+
+  /*
+   * Jika textbox diisi,
+   * gunakan isi textbox sebagai data bab.
+   */
+
+  if(manual){
+
+    hiddenBab.value =
+      manual;
+
+    return;
+
+  }
+
+
+  /*
+   * Jika textbox dikosongkan,
+   * kembali menggunakan checkbox.
+   */
+
+  updateBabAuthorMT(
+    null,
+    card
+  );
+
+}
+
+
+/* ==================================================
+   UPDATE BAB DARI CHECKBOX
+================================================== */
+
+function updateBabAuthorMT(
+  checkbox,
+  cardParameter
+){
+
+  const card =
+    cardParameter ||
+    (
+      checkbox
+      ?
+      checkbox.closest(".author-card")
+      :
+      null
+    );
+
+
+  if(!card){
+    return;
+  }
+
+
+  const hiddenBab =
+    card.querySelector(
+      'input[name="mtBab[]"]'
+    );
+
+
+  const manualInput =
+    card.querySelector(
+      ".manual-bab-input"
+    );
+
+
+  if(!hiddenBab){
+    return;
+  }
+
+
+  /*
+   * Jika textbox manual sudah diisi,
+   * textbox menjadi sumber utama.
+   */
+
+  if(
+    manualInput &&
+    manualInput.value.trim()
+  ){
+
+    hiddenBab.value =
+      manualInput.value.trim();
+
+    return;
+
+  }
+
+
+  const checked =
+    Array.from(
+      card.querySelectorAll(
+        ".bab-checkbox:checked"
+      )
+    ).map(
+      function(item){
+        return item.value;
+      }
+    );
+
+
+  hiddenBab.value =
+    checked.join(" | ");
 
 }
 
@@ -2182,6 +2999,73 @@ function ambilDetailOrder(){
 
 
 /* ==================================================
+   VALIDASI BAB AUTHOR
+================================================== */
+
+function validasiBabAuthor(
+  authors,
+  kmt
+){
+
+  /*
+   * K tidak memiliki author.
+   */
+
+  if(kmt === "K"){
+    return true;
+  }
+
+
+  /*
+   * T otomatis SEMUA BAB.
+   */
+
+  if(kmt === "T"){
+    return true;
+  }
+
+
+  /*
+   * M harus memiliki data bab
+   * untuk setiap author.
+   */
+
+  if(kmt === "M"){
+
+    for(
+      let i = 0;
+      i < authors.length;
+      i++
+    ){
+
+      if(
+        !authors[i].bab ||
+        !authors[i].bab.trim()
+      ){
+
+        alert(
+          "Bab yang dikerjakan untuk Author " +
+          (i + 1) +
+          " belum ditentukan.\n\n" +
+          "Pilih Semua Bab atau Pilih Bab lalu isi textbox " +
+          "atau pilih bab pada daftar."
+        );
+
+        return false;
+
+      }
+
+    }
+
+  }
+
+
+  return true;
+
+}
+
+
+/* ==================================================
    SIMPAN ORDER
 ================================================== */
 
@@ -2211,6 +3095,38 @@ function simpanOrder(
     document.getElementById(
       "kmt"
     ).value;
+
+
+  /*
+   * Pastikan link Drive sesuai KMT.
+   */
+
+  updateDriveLinkVisibility();
+
+
+  const linkDrive =
+    document.getElementById(
+      "linkDrive"
+    ).value.trim();
+
+
+  /*
+   * M wajib mempunyai link Drive.
+   */
+
+  if(kmt === "M" && !linkDrive){
+
+    alert(
+      "Link Google Drive wajib diisi untuk jenis M (Mandiri)."
+    );
+
+    document.getElementById(
+      "linkDrive"
+    ).focus();
+
+    return;
+
+  }
 
 
   const authors =
@@ -2265,6 +3181,22 @@ function simpanOrder(
       return;
 
     }
+
+  }
+
+
+  /*
+   * Validasi bab.
+   */
+
+  if(
+    !validasiBabAuthor(
+      authors,
+      kmt
+    )
+  ){
+
+    return;
 
   }
 
@@ -2341,33 +3273,56 @@ function simpanOrder(
         "tanggal"
       ).value,
 
+
     marketing:
       document.getElementById(
         "marketing"
       ).value.trim(),
+
 
     kodeJurnal:
       document.getElementById(
         "kodeJurnal"
       ).value.trim(),
 
+
     bulanTerbit:
       document.getElementById(
         "bulanTerbit"
       ).value,
+
 
     judulArtikel:
       document.getElementById(
         "judulArtikel"
       ).value.trim(),
 
+
+    rincianBab:
+      document.getElementById(
+        "rincianBab"
+      ).value.trim(),
+
+
     kmt:
       kmt,
+
 
     jenisPenulisan:
       document.getElementById(
         "jenisPenulisan"
       ).value,
+
+
+    /*
+     * SATU link Drive untuk seluruh order.
+     *
+     * Tidak berada di dalam authors.
+     */
+
+    linkDrive:
+      linkDrive,
+
 
     authors:
       authors
@@ -2528,6 +3483,20 @@ function ambilAuthorMT(){
         ).value;
 
 
+      const babInput =
+        card.querySelector(
+          '[name="mtBab[]"]'
+        );
+
+
+      const bab =
+        babInput
+          ?
+          babInput.value.trim()
+          :
+          "";
+
+
       result.push({
 
         nama:
@@ -2543,7 +3512,10 @@ function ambilAuthorMT(){
           afiliasi,
 
         urutanPenulis:
-          urutanPenulis
+          urutanPenulis,
+
+        bab:
+          bab
 
       });
 
@@ -2702,20 +3674,24 @@ function simpanAuthor(
         '[name="authorNama"]'
       ).value.trim(),
 
+
     email:
       card.querySelector(
         '[name="authorEmail"]'
       ).value.trim(),
+
 
     telp:
       card.querySelector(
         '[name="authorTelp"]'
       ).value.trim(),
 
+
     afiliasi:
       card.querySelector(
         '[name="authorAfiliasi"]'
       ).value.trim(),
+
 
     urutanPenulis:
       urutanPenulis
@@ -2831,22 +3807,14 @@ function simpanAuthor(
 
   alert(
     "Data Author Kolaborasi siap disimpan.\n\n" +
-    "ID Order: " +
-    data.idOrder +
-    "\nJudul Artikel: " +
-    data.judulArtikel +
-    "\nKode Jurnal: " +
-    data.kodeJurnal +
-    "\nBulan Terbit: " +
-    data.bulanTerbit +
-    "\nPenulis ke-" +
-    data.urutanPenulis +
-    "\nMarketing: " +
-    data.marketingInput +
-    "\nAuthor: " +
-    data.author.nama +
-    "\nAfiliasi: " +
-    data.author.afiliasi
+    "ID Order: " + data.idOrder +
+    "\nJudul Artikel: " + data.judulArtikel +
+    "\nKode Jurnal: " + data.kodeJurnal +
+    "\nBulan Terbit: " + data.bulanTerbit +
+    "\nPenulis ke-" + data.urutanPenulis +
+    "\nMarketing: " + data.marketingInput +
+    "\nAuthor: " + data.author.nama +
+    "\nAfiliasi: " + data.author.afiliasi
   );
 
 }
@@ -2875,6 +3843,24 @@ function resetFormOrder(){
   document.getElementById(
     "authorMTSection"
   ).style.display = "none";
+
+
+  document.getElementById(
+    "driveLinkSection"
+  ).style.display = "none";
+
+
+  const linkDrive =
+    document.getElementById(
+      "linkDrive"
+    );
+
+
+  linkDrive.value = "";
+
+  linkDrive.disabled = true;
+
+  linkDrive.required = false;
 
 
   jumlahAuthorMT = 0;
@@ -3078,7 +4064,6 @@ function kembali(){
 }
 
 </script>
-
 
 </body>
 
