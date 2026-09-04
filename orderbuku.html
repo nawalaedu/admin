@@ -562,9 +562,7 @@ small{
 </style>
 
 <script src="api.js"></script>
-<script>
-  const WEB_APP_API_URL = "https://script.google.com/macros/s/AKfycbwZycMn2AtI0pWLmw9vIuid3Wrmoz3fAZDN7GFseq-YQkr9BdwvdkHPcaEqHhF58H-EGw/exec";
-</script>
+
 
 
 <style id="drive-link-order-style">
@@ -598,6 +596,45 @@ small{
   line-height:1.5;
 }
 </style>
+
+
+<script>
+/* =========================================================
+   WEB APP API — TETAP MENGGUNAKAN URL API ASLI
+   ========================================================= */
+const WEB_APP_API_URL =
+  "https://script.google.com/macros/s/AKfycbwZycMn2AtI0pWLmw9vIuid3Wrmoz3fAZDN7GFseq-YQkr9BdwvdkHPcaEqHhF58H-EGw/exec";
+
+async function panggilWebAppAPI(action, data) {
+  const response = await fetch(WEB_APP_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      action: action,
+      data: data || {}
+    })
+  });
+
+  const text = await response.text();
+
+  let result;
+  try {
+    result = JSON.parse(text);
+  } catch (e) {
+    throw new Error(
+      "Respons Google Apps Script bukan JSON. Pastikan Web App API aktif dan deployment terbaru sudah digunakan."
+    );
+  }
+
+  if (result && result.success === false) {
+    throw new Error(result.message || "Google Apps Script menolak permintaan.");
+  }
+
+  return result;
+}
+</script>
 
 </head>
 
@@ -2218,27 +2255,6 @@ function ambilDetailOrder(){
 
 
   /*
-  CEK GOOGLE SCRIPT
-  */
-
-  if(
-    typeof google === "undefined" ||
-    !google.script ||
-    !google.script.run
-  ){
-
-    status.className =
-      "order-status error";
-
-    status.textContent =
-      "Google Apps Script tidak tersedia.";
-
-    return;
-
-  }
-
-
-  /*
   LOADING
   */
 
@@ -2256,14 +2272,15 @@ function ambilDetailOrder(){
     "Sedang mencari ID Order: " + idOrder;
 
 
-  /*
-  AMBIL DETAIL ORDER
-  */
 
-  google.script.run
+  /* =======================================================
+     AMBIL DETAIL ORDER MELALUI WEB APP API
+     ======================================================= */
+  panggilWebAppAPI("ambilDetailOrder", {
+    idOrder: idOrder
+  })
+    .then(function(data){
 
-    .withSuccessHandler(
-      function(data){
 
         button.disabled =
           false;
@@ -2334,11 +2351,10 @@ function ambilDetailOrder(){
           data.rincianBab || ""
         );
 
-      }
-    )
+      
+    })
+    .catch(function(error){
 
-    .withFailureHandler(
-      function(error){
 
         button.disabled =
           false;
@@ -2389,14 +2405,11 @@ function ambilDetailOrder(){
           )
         );
 
-      }
-    )
-
-    .ambilDetailOrder(
-      idOrder
-    );
+      
+    });
 
 }
+
 
 
 /* ==================================================
@@ -2637,69 +2650,51 @@ function simpanOrder(
   };
 
 
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
 
-    google.script.run
+  /* =======================================================
+     SIMPAN KE WEB APP API
+     ======================================================= */
+  panggilWebAppAPI("simpanOrder", data)
+    .then(function(result){
 
-      .withSuccessHandler(
-        function(result){
+      if(
+        result &&
+        result.idOrder
+      ){
+        tampilkanPopupOrder(
+          result.idOrder,
+          result.judulBuku ||
+          data.judulBuku
+        );
+      }
+      else{
+        alert(
+          "Order berhasil disimpan."
+        );
+      }
 
-          if(
-            result &&
-            result.idOrder
-          ){
+    })
+    .catch(function(error){
 
-            tampilkanPopupOrder(
-              result.idOrder,
-              result.judulBuku ||
-              data.judulBuku
-            );
+      alert(
+        "Gagal menyimpan order: " +
+        (
+          error && error.message
+          ?
+          error.message
+          :
+          error
+        )
+      );
 
-          }
-          else{
+      console.error(
+        "WEB APP API ERROR:",
+        error
+      );
 
-            alert(
-              "Order berhasil disimpan."
-            );
+    });
 
-          }
-
-        }
-      )
-
-      .withFailureHandler(
-        function(error){
-
-          alert(
-            "Gagal menyimpan order: " +
-            error.message
-          );
-
-        }
-      )
-
-      .simpanOrder(data);
-
-
-    return;
-
-  }
-
-
-  console.log(
-    "DATA ORDER:",
-    data
-  );
-
-
-  tampilkanPopupOrder(
-    "ORD/BUK/001",
-    data.judulBuku
-  );
+  return;
 
 }
 
@@ -2960,79 +2955,42 @@ function simpanAuthor(
   };
 
 
-  /*
-  SIMPAN KE GOOGLE APPS SCRIPT
-  */
 
-  if(
-    typeof google !== "undefined" &&
-    google.script &&
-    google.script.run
-  ){
+  /* =======================================================
+     SIMPAN AUTHOR MELALUI WEB APP API
+     ======================================================= */
+  panggilWebAppAPI("simpanAuthor", data)
+    .then(function(result){
 
-    google.script.run
+      alert(
+        "Author kolaborasi berhasil disimpan."
+      );
 
-      .withSuccessHandler(
-        function(result){
+      resetFormAuthor();
 
-          alert(
-            "Author kolaborasi berhasil disimpan."
-          );
+    })
+    .catch(function(error){
 
+      alert(
+        "Gagal menyimpan author: " +
+        (
+          error && error.message
+          ?
+          error.message
+          :
+          error
+        )
+      );
 
-          resetFormAuthor();
+      console.error(
+        "WEB APP API ERROR:",
+        error
+      );
 
-        }
-      )
-
-      .withFailureHandler(
-        function(error){
-
-          alert(
-            "Gagal menyimpan author: " +
-            (
-              error && error.message
-              ?
-              error.message
-              :
-              error
-            )
-          );
-
-        }
-      )
-
-      .simpanAuthor(data);
-
-
-    return;
-
-  }
-
-
-  /*
-  MODE TEST
-  */
-
-  console.log(
-    "DATA AUTHOR KOLABORASI:",
-    data
-  );
-
-
-  alert(
-    "Data Author Kolaborasi siap disimpan.\n\n" +
-    "ID Order: " +
-    data.idOrder +
-    "\nJudul: " +
-    data.judulBuku +
-    "\nAuthor: " +
-    data.author.nama +
-    "\nJumlah Bab: " +
-    data.author.bab.length
-  );
+    });
 
 }
+
 
 
 /* ==================================================
