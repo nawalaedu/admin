@@ -153,25 +153,6 @@ small{
 }
 
 /* =========================
-   LINK DRIVE ORDER M
-========================= */
-
-.drive-link-box{
-  background:#fff8e7;
-  border:1px solid #f0d58a;
-  border-left:4px solid #d69e2e;
-  padding:15px;
-  border-radius:9px;
-  margin-bottom:20px;
-}
-
-.drive-link-title{
-  font-weight:bold;
-  margin-bottom:10px;
-  color:#744210;
-}
-
-/* =========================
    SECTION
 ========================= */
 
@@ -581,6 +562,42 @@ small{
 </style>
 
 <script src="api.js"></script>
+<script>
+  const WEB_APP_API_URL = "https://script.google.com/macros/s/AKfycbwZycMn2AtI0pWLmw9vIuid3Wrmoz3fAZDN7GFseq-YQkr9BdwvdkHPcaEqHhF58H-EGw/exec";
+</script>
+
+
+<style id="drive-link-order-style">
+.drive-link-box{
+  margin:12px 0 18px;
+  padding:14px 16px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  background:#f8fafc;
+}
+.drive-link-title{
+  font-weight:700;
+  margin-bottom:8px;
+}
+.drive-link-box label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+}
+.drive-link-box input{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  box-sizing:border-box;
+}
+.drive-link-box small{
+  display:block;
+  margin-top:7px;
+  color:#64748b;
+  line-height:1.5;
+}
+</style>
 
 </head>
 
@@ -845,35 +862,22 @@ T - Tunggal
 
 </select>
 
-</div>
-
-
-<!-- LINK DRIVE KHUSUS M - MANDIRI -->
-
-<div
-  id="driveLinkOrderBox"
-  class="drive-link-box"
-  style="display:none;">
-
-  <div class="drive-link-title">
-    🔗 Link Google Drive Naskah
-  </div>
-
-  <label>
-    Link Drive
-  </label>
-
+<!-- LINK DRIVE KHUSUS M - TAMBAHAN SAJA -->
+<div id="driveLinkOrderBox" class="drive-link-box" style="display:none;">
+  <div class="drive-link-title">🔗 Link Google Drive Naskah</div>
+  <label for="driveLink">Link Drive</label>
   <input
     type="url"
     id="driveLink"
     name="driveLink"
     placeholder="https://drive.google.com/...">
-
   <small>
     Link Drive wajib diisi untuk jenis <strong>M - Mandiri</strong>.
     <br>
     Link ini diisi satu kali untuk seluruh Order Buku Mandiri.
   </small>
+</div>
+
 
 </div>
 
@@ -1444,6 +1448,15 @@ function ubahJenisInput(){
 ================================================== */
 
 function ubahKMT(){
+  const driveBox = document.getElementById("driveLinkOrderBox");
+  const driveInput = document.getElementById("driveLink");
+
+  if (driveBox && driveInput) {
+    driveBox.style.display = "none";
+    driveInput.required = false;
+    driveInput.value = "";
+  }
+
 
   const kmt =
     document.getElementById(
@@ -1474,19 +1487,6 @@ function ubahKMT(){
       "infoAuthorMT"
     );
 
-  /* LINK DRIVE - HANYA UNTUK M */
-  const driveBox =
-    document.getElementById("driveLinkOrderBox");
-
-  const driveInput =
-    document.getElementById("driveLink");
-
-  if(driveBox && driveInput){
-    driveBox.style.display = "none";
-    driveInput.required = false;
-    driveInput.value = "";
-  }
-
 
   container.innerHTML = "";
 
@@ -1503,16 +1503,15 @@ function ubahKMT(){
 
 
   if(kmt === "M"){
+    if (driveBox && driveInput) {
+      driveBox.style.display = "block";
+      driveInput.required = true;
+    }
+
 
     section.style.display = "block";
 
     btnTambah.style.display = "block";
-
-    /* LINK DRIVE KHUSUS M */
-    if(driveBox && driveInput){
-      driveBox.style.display = "block";
-      driveInput.required = true;
-    }
 
     info.innerHTML = `
 
@@ -2626,12 +2625,11 @@ function simpanOrder(
       document.getElementById(
         "jenisPenulisan"
       ).value,
-
-    /* LINK DRIVE - HANYA DIISI UNTUK M */
     driveLink:
       kmt === "M"
         ? document.getElementById("driveLink").value.trim()
         : "",
+
 
     authors:
       authors
